@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>校园招聘-简历搜索列表</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/school.css" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/ui-dialog.css" />
+<script src="{#$QISHI.site_campus_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_campus_template#}js/jquery.resume-list.js" type='text/javascript'></script>
+<script src="{#$QISHI.site_campus_template#}js/dialog-min.js" type='text/javascript' ></script>
+<script src="{#$QISHI.site_campus_template#}js/jquery.graduate-resume-search.js" type='text/javascript'></script>
+<script src="{#$QISHI.site_campus_template#}js/jquery.autocomplete.js" type="text/javascript"></script>
+<script src="{#$QISHI.site_dir#}data/cache_classify.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	$(document).ready(function() {
+		$('.filter-item:last').css({'margin-right':0});
+		$('.data-main .resume-item:odd').css({'background-color':'#f8f8f8'});
+		$('.collect').on('click', function(){
+			$(this).toggleClass('hascollect');
+		})
+		$('.detail-control').each(function(){
+			if ($(this).hasClass('ishow')) {
+				$(this).parent().next().show();
+			};
+			$(this).on('click', function(){
+				if ($(this).hasClass('ishow')) {
+					$(this).removeClass('ishow');
+					$(this).parent().next().hide();
+					$('.resume-item').removeClass('resume-item').addClass('resume-item');  //IE7 BUG Fix
+				}else{
+					$(this).addClass('ishow');
+					$(this).parent().next().show();
+					$('.resume-item').removeClass('resume-item').addClass('resume-item');  //IE7 BUG Fix
+				};
+			});
+		});
+		//详细显示模式
+		$("#detail").click(function(){
+			$(this).addClass('select').siblings('#list').removeClass('select');
+			$('.detail-control').addClass("ishow");
+			$(".resume-more-info").show();
+		});
+		//列表显示模式
+		$("#list").click(function(){
+			$(this).addClass('select').siblings('#detail').removeClass('select');
+			$('.detail-control').removeClass("ishow");
+			$(".resume-more-info").hide();
+		});
+		$(".school-data .data-top .seq a").click(function(event) {
+			generateBackground();
+		});
+		// 正在加载
+		function generateBackground() {
+			var backgroundHtm = '<div id="bonfire-pageloader"><div class="bonfire-pageloader-icon"></div></div>';
+			var html = jQuery('body');
+			html.append(backgroundHtm);
+			jQuery(window).resize(function(){
+				 resizenow();
+			});
+			function resizenow() {
+				var browserwidth = jQuery(window).width();
+				var browserheight = jQuery(window).height();
+				jQuery('.bonfire-pageloader-icon').css('right', ((browserwidth - jQuery(".bonfire-pageloader-icon").width())/2)).css('top', ((browserheight - jQuery(".bonfire-pageloader-icon").height())/2 + $(document).scrollTop() - 109));
+			};
+			resizenow();
+		}
+        allaround("{#$QISHI.site_dir#}");
+	    // 职位类别填充数据 
+		job_filldata("#job_list", QS_jobs_parent, QS_jobs, "#result-list-job", "#aui_outer_job", "#job_result_show", "#jobcategory", "{#$QISHI.site_dir#}");
+		// 所属行业填充数据
+		trade_filldata("#trad_list", QS_trade, "#aui_outer", "#result-list-trade", "#trade_result_show", "#trade", "{#$QISHI.site_dir#}");
+		// 工作地区填充数据
+		city_filldata("#city_list", QS_city_parent, QS_city, "#result-list-city", "#aui_outer_city", "#city_result_show", "#citycategory", "{#$QISHI.site_dir#}");
+		// 专业类别填充数据
+		major_filldata("#major_list", QS_major_parent, QS_major, "#major_tabnav", "#aui_outer_major", "#result-list-major", "#major_result_show", "#major", "{#$QISHI.site_dir#}");
+		//收藏简历
+		favorites("{#$QISHI.site_dir#}");
+		//邀请面试
+         $(".invited").die().live("click",function(){
+         	var id=$(this).attr("id");
+			var tsTimeStamp= new Date().getTime();
+            var user_utype = "{#$smarty.session.utype#}";
+	        if(user_utype=='3')
+	        {
+	            var url="{#$QISHI.site_dir#}user/user_hunter_invited.php?id="+id+"&act=invited&t="+tsTimeStamp;  
+	        }
+	        else 
+	        {
+	            var url="{#$QISHI.site_dir#}user/user_invited.php?id="+id+"&act=invited&t="+tsTimeStamp;  
+	        }
+	        var myDialog = dialog();
+			jQuery.ajax({
+			    url: url,
+			    success: function (data) {
+			        myDialog.content(data);
+			        myDialog.title('邀请面试');
+			        myDialog.width('500');
+			    	myDialog.showModal();
+			    }
+			});
+         }); 
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_campus/default/header.htm"#}
+	<div class="container">
+		<div id="filterSearch">
+		<div class="top-search clearfix">
+			<div class="t-search-box f-left">
+				<div class="type-input-box f-left" id="hidden_input_box">
+					<div class="key">{#$smarty.get.key|default:"请输入关键字"#}</div>
+					<input type="text" name="key" id="key" value="{#$smarty.get.key#}" style="display:none;"/>
+					<input name="jobcategory" id="jobcategory" type="hidden" value="{#$smarty.get.jobcategory#}" />
+					<input name="trade" id="trade" type="hidden" value="{#$smarty.get.trade#}" />
+					<input name="citycategory" id="citycategory" type="hidden" value="{#$smarty.get.citycategory#}"/>
+					<input name="major" id="major" type="hidden" value="{#$smarty.get.major#}" />
+					<input name="experience" id="experience" type="hidden" value="{#$smarty.get.experience#}"/>
+					<input name="resumetag" id="resumetag" type="hidden" value="{#$smarty.get.resumetag#}"/>
+					<input name="education" id="education" type="hidden" value="{#$smarty.get.education#}"/>
+					<input name="sex" id="sex" type="hidden" value="{#$smarty.get.sex#}"/>
+					<input name="photo" id="photo" type="hidden" value="{#$smarty.get.photo#}"/>
+					<input name="talent" id="talent" type="hidden" value="{#$smarty.get.talent#}"/>
+					<input name="settr" id="settr" type="hidden" value="{#$smarty.get.settr#}"/>
+				</div>
+			</div>
+			<div class="t-search-btn f-left"><input type="button" detype="QS_graduateresume" id="searcnbtn" value="找应届生简历" /></div>
+		</div>
+		<div class="fliter-wrap">
+			<div class="filter-drop clearfix">
+				<div class="filter-item f-left">
+					<div class="choose-item">
+						<div class="choose-control">
+							<span class="cc-default" id="job_result_show">选择意向职位</span><i class="choose-icon"></i>
+							<!-- 职位类别弹出框 -->
+							<div class="aui_outer" id="aui_outer_job">
+								<table class="aui_border">
+									<tbody>
+										<tr>
+											<td class="aui_c">
+												<div class="aui_inner">
+													<table class="aui_dialog">
+														<tbody>
+															<tr>
+																<td class="aui_main">
+																	<div class="aui_content" style="padding: 0px;">
+																		<div class="LocalDataMultiC">
+																			<div class="selector-header"><span class="selector-title">职位选择</span><div></div><span id="jb-selector-save" class="selector-save">确定</span><span class="selector-close">X</span><div class="clear"></div></div>
+
+																			<div class="data-row-head"><div class="data-row"><div class="data-row-side">最多选 <strong class="text-warning">3</strong> 项&nbsp;&nbsp;已选 <strong id="ars" class="text-warning">0</strong> 项</div><div id="result-list-job" class="result-list data-row-side-ra"></div></div><div class="cla"></div></div>
+																			<div class="data-row-list data-row-main" id="job_list">
+																				<!-- 列表内容 -->
+																			</div>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 职位类别弹出框 End-->
+						</div>
+					</div>
+				</div>
+				<div class="filter-item f-left">
+					<div class="choose-item">
+						<div class="choose-control">
+							<span class="cc-default" id="trade_result_show">选择意向行业</span><i class="choose-icon"></i>
+							<!-- 所属行业弹出框 -->
+							<div class="aui_outer" id="aui_outer">
+								<table class="aui_border">
+									<tbody>
+										<tr>
+											<td class="aui_c">
+												<div class="aui_inner">
+													<table class="aui_dialog">
+														<tbody>
+															<tr>
+																<td class="aui_main">
+																	<div class="aui_content">
+																		<div class="items jquery-localdata">
+																			<div class="selector-header"><span class="selector-title">行业选择</span><div></div><span id="tr-selector-save" class="selector-save">确定</span><span class="selector-close">X</span><div class="clear"></div></div>
+
+																			<div class="data-row-head"><div class="data-row"><div class="data-row-side">最多选 <strong class="text-warning">3</strong> 项&nbsp;&nbsp;已选 <strong id="arstrade" class="text-warning">0</strong> 项</div><div id="result-list-trade" class="result-list data-row-side-ra"></div></div><div class="cla"></div></div>
+																			<div class="item-table">
+																				<table class="options-table options-table-7">
+																					<tbody class="item-list"><tr><td class="bno"><table><tbody id="trad_list">
+																						<!-- 列表内容 -->
+																					</tbody></table></td></tr>
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 所属行业弹出框 End-->
+						</div>
+					</div>
+				</div>
+				<div class="filter-item f-left">
+					<div class="choose-item">
+						<div class="choose-control">
+							<span class="cc-default" id="city_result_show">选择意向地区</span><i class="choose-icon"></i>
+							<!-- 工作地区弹出框 -->
+							<div class="aui_outer" style="left:-396px;" id="aui_outer_city">
+								<table class="aui_border">
+									<tbody>
+										<tr>
+											<td class="aui_c">
+												<div class="aui_inner">
+													<table class="aui_dialog">
+														<tbody>
+															<tr>
+																<td class="aui_main">
+																	<div class="aui_content" style="padding: 0px;">
+																		<div class="LocalDataMultiC" style="width:623px;">
+																			<div class="selector-header"><span class="selector-title">地区选择</span><div></div><span id="ct-selector-save" class="selector-save">确定</span><span class="selector-close">X</span><div class="clear"></div></div>
+
+																			<div class="data-row-head"><div class="data-row"><div class="data-row-side data-row-side-c">最多选 <strong class="text-warning">3</strong> 项&nbsp;&nbsp;已选 <strong id="arscity" class="text-warning">0</strong> 项</div><div id="result-list-city" class="result-list data-row-side-ra"></div></div><div class="cla"></div></div>
+																			<div class="data-row-list data-row-main" id="city_list">
+																				<!-- 列表内容 -->
+																			</div>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 工作地区弹出框 End-->
+						</div>
+					</div>
+				</div>
+				<div class="filter-item f-left">
+					<div class="choose-item">
+						<div class="choose-control">
+							<span class="cc-default" id="major_result_show">选择专业类别</span><i class="choose-icon"></i>
+							<!-- 专业类别弹出框 -->
+							<div class="aui_outer" style="left:-445px;" id="aui_outer_major">
+								<table class="aui_border">
+									<tbody>
+										<tr>
+											<td class="aui_c">
+												<div class="aui_inner">
+													<table class="aui_dialog">
+														<tbody>
+															<tr>
+																<td class="aui_main">
+																	<div class="aui_content">
+																		<div class="items jquery-localdata">
+																			<div class="selector-header"><span class="selector-title">专业类别</span><div></div><span id="mj-selector-save" class="selector-save">确定</span><span class="selector-close">X</span><div class="clear"></div></div>
+
+																			<div class="data-row-head"><div class="data-row"><div class="data-row-side">最多选 <strong class="text-warning">3</strong> 项&nbsp;&nbsp;已选 <strong id="arsmajor" class="text-warning">0</strong> 项</div><div id="result-list-major" class="result-list data-row-side-ra"></div></div><div class="cla"></div></div>
+																			<ul class="tabnav" id="major_tabnav"></ul>
+
+																			<div class="item-table majorbb">
+																				<table class="options-table options-table-7">
+																					<tbody class="item-list"><tr><td class="bno"><table id="major_list"></table></td></tr>
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 专业类别弹出框 End-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left">工作经验：</div>
+				<div class="fl-content r-choice f-left">
+					{#qishi_get_classify set="列表名:experience,类型:QS_experience,显示数目:100"#}
+					{#foreach from=$experience item=list#}
+					<div class="fl-content-li{#if $list.id == $smarty.get.experience#} select{#/if#}" type="experience" code="{#$list.id#}">{#$list.categoryname#}</div>
+					{#/foreach#}
+				</div>
+			</div>
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left">特长标签：</div>
+				<div class="fl-content f-left forShowMore" id="fliterMore">
+					{#qishi_get_classify set="列表名:resumetag,类型:QS_resumetag,显示数目:100"#}
+					{#foreach from=$resumetag item=list#}
+					<div class="fl-content-li" type="resumetag" code="{#$list.id#}">{#$list.categoryname#}</div>
+					{#/foreach#}
+					<a href="javascript:;" class="show-more">展开</a>
+				</div>
+			</div>
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left">更多筛选：</div>
+				<div class="fl-content f-left">
+					<div class="saixuan{#if $smarty.get.education#} selected{#/if#}">
+						{#qishi_get_classify set="列表名:c_education,类型:QS_education"#}
+						<div class="saixuans">
+							<div class="line"></div>
+							{#foreach from=$c_education item=list#}
+							<a defvalue="{#$list.id#}"{#if $list.id == $smarty.get.education#} class="select"{#/if#} type="education" href="javascript:;">{#$list.categoryname#}</a>
+							{#/foreach#}
+						</div>
+						最高学历
+					</div>
+					<div class="saixuan{#if $smarty.get.sex#} selected{#/if#}">
+						<div class="saixuans">
+							<div class="line"></div>
+							<a defvalue="1"{#if $smarty.get.sex == 1#} class="select"{#/if#} type="sex" href="javascript:;">男</a>
+							<a defvalue="2"{#if $smarty.get.sex == 2#} class="select"{#/if#} type="sex" href="javascript:;">女</a>
+						</div>
+						性别要求
+					</div>
+					<div class="saixuan{#if $smarty.get.photo#} selected{#/if#}">
+						<div class="saixuans">
+							<div class="line"></div>
+							<a defvalue="1"{#if $smarty.get.photo == 1#} class="select"{#/if#} type="photo" href="javascript:;">有</a>
+							<a defvalue="0"{#if $smarty.get.photo == 0#} class="select"{#/if#} type="photo" href="javascript:;">无</a>
+						</div>
+						简历照片
+					</div>
+					<div class="saixuan{#if $smarty.get.talent#} selected{#/if#}">
+						<div class="saixuans">
+							<div class="line"></div>
+							<a defvalue="1"{#if $smarty.get.talent == 1#} class="select"{#/if#} type="talent" href="javascript:;">普通</a>
+							<a defvalue="2"{#if $smarty.get.talent == 2#} class="select"{#/if#} type="talent" href="javascript:;">高级</a>
+						</div>
+						简历等级
+					</div>
+					<div class="saixuan{#if $smarty.get.settr#} selected{#/if#}">
+						<div class="saixuans">
+							<div class="line"></div>
+							<a defvalue="3"{#if $smarty.get.settr == 3#} class="select"{#/if#} type="settr" href="javascript:;">3天内</a>
+							<a defvalue="7"{#if $smarty.get.settr == 7#} class="select"{#/if#} type="settr" href="javascript:;">7天内</a>
+							<a defvalue="15"{#if $smarty.get.settr == 15#} class="select"{#/if#} type="settr" href="javascript:;">15天内</a>
+							<a defvalue="30"{#if $smarty.get.settr == 30#} class="select"{#/if#} type="settr" href="javascript:;">30天内</a>
+						</div>
+						更新时间
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="fliter-result clearfix" id="has_result">
+			<div class="fr-type f-left">已选条件：</div>
+			<div class="fr-content f-left">
+			{#if $smarty.get.experience#}
+				{#qishi_get_classify set="列表名:c_experience,类型:QS_experience"#}
+				{#foreach from=$c_experience item=list#}
+				{#if $list.id == $smarty.get.experience#}
+					<div class="has-select-item f-left" type="experience">{#$list.categoryname#}<i class="fliter-clear-icon"></i></div>
+				{#/if#}
+				{#/foreach#}
+			{#/if#}
+			{#if $smarty.get.resumetag#}
+				<div class="has-select-item f-left" type="resumetag">特长标签<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.education#}
+				{#qishi_get_classify set="列表名:c_education,类型:QS_education"#}
+				{#foreach from=$c_education item=list#}
+				{#if $list.id == $smarty.get.education#}
+					<div class="has-select-item f-left" type="education">{#$list.categoryname#}<i class="fliter-clear-icon"></i></div>
+				{#/if#}
+				{#/foreach#}
+			{#/if#}
+			{#if $smarty.get.sex#}
+				<div class="has-select-item f-left" type="sex">{#if $smarty.get.sex == 1#}男{#elseif $smarty.get.sex == 2#}女{#/if#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.photo#}
+				<div class="has-select-item f-left" type="photo">{#if $smarty.get.photo == 1#}有照片{#elseif $smarty.get.photo == 0#}无照片{#/if#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.talent#}
+				<div class="has-select-item f-left" type="talent">{#if $smarty.get.talent == 1#}普通简历{#elseif $smarty.get.talent == 2#}高级简历{#/if#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.settr#}
+				<div class="has-select-item f-left" type="settr">{#if $smarty.get.settr == 3#}3天内{#elseif $smarty.get.settr == 7#}7天内{#elseif $smarty.get.settr == 15#}15天内{#elseif $smarty.get.settr == 30#}30天内{#/if#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			</div>
+			<div class="fliter-clear f-right" id="clear_all_selected"><a href="javascript:;" class="clear-link">清空所选</a></div>
+		</div>
+	</div>
+		<!-- 数据列表 -->
+{#qishi_resume_list set="列表名:resume,分页显示:1,显示数目:10,应届生简历:1,特长描述长度:130,填补字符:...,关键字:GET[key],职位分类:GET[jobcategory],行业:GET[trade],学历:GET[education],专业:GET[major],工作经验:GET[experience],地区分类:GET[citycategory],标签:GET[tag],照片:GET[photo],等级:GET[talent],性别:GET[sex],更新时间:GET[settr],列表页:QS_graduateresume,排序:GET[sort]"#}
+		<div class="school-data clearfix" id="school-data">
+			<div class="data-top clearfix">
+				<div class="seq f-left"><span>排序</span>
+					<a href="{#"QS_graduateresume,sort:rtime-page:1-key:"|cat:$smarty.get.key|cat:"-jobcategory:"|cat:$smarty.get.jobcategory|cat:"-education:"|cat:$smarty.get.education|cat:"-citycategory:"|cat:$smarty.get.citycategory|cat:"-experience:"|cat:$smarty.get.experience|cat:"-settr:"|cat:$smarty.get.settr|cat:"-trade:"|cat:$smarty.get.trade|cat:"-wage:"|cat:$smarty.get.wage|cat:"-photo:"|cat:$smarty.get.photo|cat:"-tag:"|cat:$smarty.get.tag|cat:"-talent:"|cat:$smarty.get.talent|cat:"-sex:"|cat:$smarty.get.sex|qishi_url#}" class="seq-item time {#if $smarty.get.sort=="rtime" || $smarty.get.sort==""#}selected{#/if#}">更新时间</a>
+				</div>
+				<div class="small-page f-right">
+					<div class="pageminnav">{#$pagemin#}</div>
+				</div>
+			</div>
+			<div class="data-control clearfix">
+				<label class="f-left check-all"><input type="checkbox" name="selectall" id="selectall" class="checkbox" />全选</label>
+				<a href="javascript:;" class="all-opera f-left allfavorites">收藏简历</a>
+				<div class="list-model f-right">
+					<a id="list" href="javascript:;" class="f-left model-item list select">列表</a>
+					<a id="detail" href="javascript:;" class="f-left model-item detail">详细</a>
+				</div>
+			</div>
+			<div class="data-type clearfix resumes">
+				<div class="f-left type-item item1">姓名</div>
+				<div class="f-left type-item item2">性别</div>
+				<div class="f-left type-item item3">年龄</div>
+				<div class="f-left type-item item4">学历</div>
+				<div class="f-left type-item item5">工作经验</div>
+				<div class="f-left type-item item6">意向地区</div>
+				<div class="f-left type-item item7">期望职位</div>
+				<div class="f-left type-item item8">更新时间</div>
+			</div>
+			{#if $resume#}
+			{#foreach from=$resume item=list#}
+			<div class="data-main">
+				<div class="resume-item">
+					<div class="seq-block clearfix">
+						<div class="r-seq-item item1 f-left"><span class="seq-span"><input type="checkbox" name="jid" value="{#$list.id#}" class="checkbox" /><a href="{#$list.resume_url#}" target="_blank" class="underline">{#$list.fullname#}</a> {#if $list.photo_audit==1#}<i class="resume-auth pic" title="照片认证"></i>{#/if#}{#if $list.is_audit_mobile==1#}<i class="resume-auth phone" title="手机已认证"></i>{#/if#}</span></div>
+						<div class="r-seq-item item2 f-left">{#$list.sex_cn#}</div>
+						<div class="r-seq-item item3 f-left">{#$list.age#}岁</div>
+						<div class="r-seq-item item4 f-left">{#$list.education_cn#}</div>
+						<div class="r-seq-item item5 f-left">{#$list.experience_cn#}</div>
+						<div class="r-seq-item item6 f-left">{#$list.district_cn#}</div>
+						<div class="r-seq-item item7 f-left" style="font-family:微软雅黑;">{#if $list.intention_jobs_#}{#$list.intention_jobs_#}{#else#}&nbsp;{#/if#}</div>
+						<div class="r-seq-item item8 f-left">{#$list.refreshtime_cn#}</div>
+						<a href="javascript:;" class="detail-control f-left"></a>
+					</div>
+					<div class="resume-more-info clearfix">
+						<div class="info-text f-left">
+							<p>专业：{#$list.major_cn#} | 期望工作性质：{#$list.nature_cn#} | 目前求职状态：{#$list.current_cn#}</p>
+							<div>期望从事行业：{#$list.trade_cn_#} | 期望薪资：{#$list.wage_cn#}</div>
+						</div>
+						<div class="info-operaing f-right">
+							<div><input id="{#$list.id#}" type="button" value="邀请面试" class="invite-btn invited" /></div>
+							<a href="javascript:;" class="collect add_favorites" id="{#$list.id#}">收藏</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{#/foreach#}
+			{#if $page#}
+			<table align="center" cellspacing="0" cellpadding="0" border="0" class="link_bk">
+          	<tbody><tr>
+            <td align="center" height="50">
+			<div class="page">
+				{#$page#}
+			</div>
+			</td>
+	          </tr>
+	      	</tbody></table>
+	      	{#/if#}
+	      	{#else#}
+	      	<div class="data-main">
+	      		<div class="emptytip">抱歉，没有符合此条件的信息！</div>
+	      	</div>
+	      	{#/if#}
+		</div>
+	</div>
+	{#include file="../tpl_campus/default/footer.htm"#}
+</body>
+</html>

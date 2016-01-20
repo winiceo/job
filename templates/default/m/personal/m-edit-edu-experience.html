@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-添加教育经历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script type="text/javascript" src="../js/popWin.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript">
+			$(document).ready(function()
+			{
+				// 提交 表单
+				var isPost = true;
+				$("#edu_submit").click(function(){
+					var resume_edu="{#$resume_edu#}";
+					if(resume_edu){
+					var id = "{#$resume_edu.id#}";
+					}
+					var pid = {#$smarty.get.pid#};
+					var school = $("input[name='school']").val();
+					var speciality = $("input[name='speciality']").val();
+					var startyear = $("#startDate_dummy").val().split(".")[0];
+					var startmonth = $("#startDate_dummy").val().split(".")[1];
+					var endyear = $("#endDate_dummy").val().split(".")[0];
+					var endmonth = $("#endDate_dummy").val().split(".")[1];
+					var education = $("#education").val();
+					var education_cn = $("#education_cn").val();
+					if (isPost) {
+						isPost = false;
+						$.post("?act=resume_education_save",{id:id,pid:pid,school:school,speciality:speciality,startyear:startyear,startmonth:startmonth,endyear:endyear,endmonth:endmonth,education:education,education_cn:education_cn},function(data){
+							if(data=="ok"){
+								layer.msg('添加成功！', {icon: 1});
+								setTimeout(function () {
+								    window.location.href="?act=resume_education&pid="+pid+"";
+								}, 2000);
+							}else if(data=="err"){
+								layer.msg('添加失败！', {icon: 2});
+							}else{
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+							}
+							isPost = true;
+						})
+					};
+				});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">教育经历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="formDiv comresume">
+				<div class="formChild">
+					<div class="lt">学校名称<span>*</span></div>
+					<div class="mt"><input id="school" name="school" value="{#$resume_edu.school#}"></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">所学专业<span>*</span></div>
+					<div class="mt"><input id="speciality" name="speciality" value="{#$resume_edu.speciality#}"></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">入学时间<span>*</span></div>
+					<label id="startDateTxt" data-type="yearStart" data-text="选择入学时间" class="mt check mbs">{#$resume_edu.startyear#}年{#$resume_edu.startmonth#}月</label>
+					<input type="hidden" id="startDate_dummy" name="startDate" value="{#$resume_edu.startyear#}.{#$resume_edu.startmonth#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">毕业时间<span>*</span></div>
+					<label id="endDateTxt" data-type="yearEnd" data-text="选择毕业时间" class="mt check mbs">{#$resume_edu.endyear#}年{#$resume_edu.endmonth#}月</label>
+					<input type="hidden" id="endDate_dummy" name="endDate" value="{#$resume_edu.endyear#}.{#$resume_edu.endmonth#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">获得学历<span>*</span></div>
+					<label id="educationTxt" data-type="education" data-text="选择获得学历" class="mt check mbs">{#$resume_edu.education_cn#}</label>
+					<input type="hidden" data-err="请选择获得学历" id="education" name="education" value="{#$resume_edu.education#}" readonly="" class="hide">
+					<input type="hidden" data-err="请选择获得学历" id="education_cn" name="education_cn" value="{#$resume_edu.education_cn#}" readonly="" class="hide">
+				</div>
+			</article>
+			<article class="flex-box arlogout"><a id="edu_submit" class="logout" href="javascript:;">保存</a></article>
+		</div>
+	</body>
+</html>

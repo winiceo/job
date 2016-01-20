@@ -1,0 +1,684 @@
+ .dn{display: none;}
+/*企业会员中心首页头部*/
+.infohead{width: 100%;height: 107px;background-image: url(../images/info-head-bg.gif);background-repeat: repeat-x;padding:20px 15px;display: flex;}
+.infoheadpv{background-image: url(../images/info-head-bgpv.gif);background-repeat: repeat-x;height: 225px;position: relative;}
+.flexinfoheadlogo{  
+    width: 26%; height: 100%;  
+    display: block;  
+    text-align:left;
+    border-radius: 5px;
+} 
+.infoheadpv .flexinfoheadlogo{width: 35%;border-radius: 0px;}
+.infohead .infolist{width: 100%;height:16px;line-height:16px;padding-left:27px;background-repeat: no-repeat;overflow: hidden;text-align: left;font-size: 9pt;color: #333333;background-image: url(../images/info-head-icony.gif);margin-bottom: 9px;}
+.infohead .infolist.d{background-position-y: 1px;}
+.infohead .infolist.m{background-position-y: -25px;}
+.infohead .infolist.my{background-image: url(../images/info-head-iconw.gif);background-position-y: -3px;}
+.infohead .infolist.e{background-position-y: -51px;margin-bottom: 0px;}
+.infohead .infolist.ey{background-image: url(../images/info-head-iconw.gif);background-position-y: -29px;margin-bottom: 0px;}
+.infohead .infolistpv{width: 100%;height:16px;line-height:16px;overflow: hidden;text-align: left;font-size: 9pt;color: #333333;margin-bottom: 9px;}
+.infohead .infolistpv span.name{font-size: 11pt;background-image: url(../images/info-head-icony.gif);background-position-x: right;background-repeat: no-repeat;background-position-y: -23px;padding-right: 20px;}
+.infohead .infolistpv.co999{color: #999999;}
+.infoheadperfect{height: 89px;background-image: url(../images/info-headperfect-bg.gif);position: relative;}
+.infoheadperfect .flexinfoheadlogo{width: 40%;height:16px;line-height:16px;}
+.infoheadperfect .flexinfoheadlogo .edit{background-image: url(../images/flexinfoheadlogo-edit-bg.gif);background-repeat: no-repeat;background-position-x: right;padding-right: 20px;font-size: 12pt;color: #333333;}
+.infoheadperfect .infolistpf{width: 100%;height:16px;line-height:16px;overflow: hidden;text-align: left;font-size: 9pt;color: #666666;margin-bottom: 9px;text-align: right;}
+.infoheadperfect .resumeintegrityrungs{width: 100%;height: 18px;line-height: 18px;position: absolute;left: 0px;bottom: 22px;text-align: left;padding-left: 15px;font-size: 9pt;color: #666666;}
+.infoheadperfect .resumeintegrityrungs .left{width: 25%;height: 18px;line-height: 18px;}
+.infoheadperfect .resumeintegrityrungs .center{width: 40%;height: 16px;border: 1px solid #76D963;border-radius: 1px;margin-right: 5px;position: relative;}
+.infoheadperfect .resumeintegrityrungs .center .barbg{position: absolute;left: 0px;top: 0px;background-color: #76D963;height: 16px;}
+.infoheadperfect .resumeintegrityrungs .right{color: #76D963;}
+.infoheadsetmeal{height: 107px;background-image: url(../images/info-headsetmeal-bg.gif);position: relative;margin-bottom: 10px;}
+.infoheadsetmeal .resumeintegrityrungs{left: 0px;bottom: 30px;}
+.infoheadsetmeal .resumeintegrityrungs .left{width: 22%;height: 18px;line-height: 18px;font-size: 11pt;color: #333333;padding-left: 20px;margin-left: 8px;position: relative;}
+.infoheadsetmeal .resumeintegrityrungs .left .img{position: absolute;top: 0px;left: 0px;}
+.infoheadsetmeal .resumeintegrityrungs .right{color: #333333;font-size: 11pt;}
+.tagbox {position: absolute;left: 15px;bottom:66px;}
+.tagbox .tag{float: left;padding: 5px;font-size: 9pt;color: #FFFFFF;background-color: #53b6f3;border-radius: 3px;margin-right: 7px;}
+.tagbox .tag:last-child{margin-right: 0px;}
+.tagbox .tag2{background-color: #2fcfcd;}
+.tagbox .tag3{background-color: #f8c45f;}
+.tagbox .tag4{background-color: #fd9fcb;}
+.tagbox .tag5{background-color: #fa9964;}
+.lookbox {position: absolute;left: 15px;bottom:20px;color: #999999;font-size: 9pt;}
+.lookbox .list{float: left;height: 12px;line-height: 12px;padding-left: 18px;background-repeat: no-repeat;margin-right: 10px;}
+.lookbox .list:last-child{margin-right: 0px;}
+.lookbox .list.w{padding-left: 0px;}
+.lookbox .list.l{background-image: url(../images/lookbox-list-lbg.gif);}
+.lookbox .list.d{background-image: url(../images/lookbox-list-dbg.gif);}
+.lookbox .list.t{background-image: url(../images/lookbox-list-tbg.gif);}
+.optionlist{width: 100%;height: auto;background-color: #FFFFFF;border-bottom: 1px solid #E2E2E2;margin-top: 10px;}
+.optionlisteditworkexp{margin-top: 0px;}
+.accountmanager{margin-top: 0px;}
+.optionlist .blocktheline{width: 100%;height: 10px;background-color: #F0F0F0;}
+.optionlist .list{height: 50px;}
+.optionlisteditworkexp .list{height: 40px;overflow: visible;}
+.optionlisteditworkexp .list.duties{height: 80px;}
+.companyinfo .list.duties{height: 109px;}
+.companyinfo .list{height: 50px;}
+.personalinfo .list.resumephoto{height: 60px;}
+.selfassessment textarea{border: none;resize: none;width: 100%;height: auto;font-size: 10pt;color: #999999;overflow: hidden;min-height: 140px;font-family: 'Microsoft YaHei';}
+.optionlist .list .left{width: 16%; height: 100%;display: block;overflow: hidden;position: relative;}
+.optionlist .list .left .icon {font-size: 20px;position: absolute;top: 23%;right: 10%;color: #FFFFFF;width: 30px;height: 30px;border-radius: 50% 50%;font-size: 20px;}
+.optionlisteditworkexp .list .left{background-image: none;position: relative;overflow: visible;}
+.optionlisteditworkexp .list .left .circle{width: 12px;height: 12px;position: absolute;left: 15px;top:13px;border-radius: 50%;background-color: #4CCAFF;}
+.optionlisteditworkexp .list .left .circle.bgcoffa94c{background-color: #FFA94C;}
+.optionlisteditworkexp .list .left .verticalbar{width: 1px;height: 20px;position: absolute;left: 20px;top:29px;border-left: 1px dotted #E2E2E2;}
+.optionlist .list .left.com .enterinfo{background-color: #ee6ec5;}
+.optionlist .list .left.com .enterauthe{background-color: #b0db52;}
+.optionlist .list .left.com .accountsecurity{background-color: #02db8c;}
+.optionlist .list .left.com .mealallowance{background-color: #e66363;}
+.optionlist .list .left.resume .receivedresume{background-color: #ee6ec5;}
+.optionlist .list .left.resume .makeinvited{background-color: #b0db52;}
+.optionlist .list .left.resume .downloadresume{background-color: #e66363;}
+.optionlist .list .left.resume .seenaposition{background-color: #02cdb3;}
+.optionlist .list .left.resume .myfavorite{background-color: #b57af1;}
+.optionlist .list .left.resume .readtheresume{background-color: #17baff;}
+.optionlist .list .right{height: 49px;line-height: 49px;border-bottom: 1px solid #E2E2E2;position: relative;background-color:#FFFFFF;padding-left: 11px;font-size: 11pt;color: #333333;text-align: left;}
+.optionlisteditworkexp .list .right{height: 39px;line-height: 39px;border-bottom: 1px solid #E2E2E2;position: relative;background-color:#FFFFFF;padding-left: 11px;font-size: 10pt;color: #333333;text-align: left;}
+.personalinfo .list .right.resumephoto{height: 59px;line-height: 59px;border-bottom: 1px solid #E2E2E2;position: relative;background-color:#FFFFFF;padding-left: 11px;font-size: 11pt;color: #333333;text-align: left;}
+.companyinfo .list .right{height: 49px;line-height: 49px;}
+.personalinfo .list .resumephoto{position: relative;}
+.personalinfo .list .resumephoto .photobox{position: absolute;top: 11px;right: 35px;width: 35px;height: 38px;background-image: url(../images/resumephoto-photobox-bg.gif);overflow: hidden;background-repeat: no-repeat;}
+.personalinfo .list .resumephoto .photobox img{width: 35px;height: 38px;border: 0px;}
+.optionlisteditworkexp .list .right.cof90{color: #FF9900;}
+.none{display: none;}
+.wantjob .list .right:last-child{border-bottom: none;}
+.optionlistpf .list .right{padding-left: 15px;}
+.optionlisteditworkexp .list .right{padding-left: 15px;}
+.optionlisteditworkexp .list .right.creatjob{color: #FF9900;font-weight: bold;}
+.optionlisteditworkexp .list .right.qq{background-image: url(../images/optionlist-list-right-qq-bg.gif);background-repeat: no-repeat;padding-left: 35px;background-position-y: center;background-position-x: 15px;}
+.optionlisteditworkexp .list.duties .right{height: 79px;border-bottom: none;}
+.optionlist .list .right.nobm{border-bottom: 0px;}
+.optionlist .list .right .circle{position:absolute;border-radius: 50%;width: 20px;height: 20px;line-height: 20px;background-color: #ff3333;top:14px;right: 0px;text-align: center;font-size: 9pt;color: #FFFFFF;}
+.optionlistpf .list .right .txt{position:absolute;height: 20px;line-height: 20px;top:14px;right: 5px;text-align: center;color: #999999;font-size: 10pt;}
+.optionlisteditworkexp .list .right .txt{position:absolute;height: 20px;line-height: 20px;top:10px;right: 5px;text-align: center;color: #999999;font-size: 10pt;}
+.wantjob .list .right .txt{color: #333333;}
+.personalinfo .list .right .txt{color: #333333;}
+.optionlistpf .list .right .txt.cof90{color: #FF9900;}
+.optionlistpf .list .right .star{position:absolute;width: 5px;height: 4px;top:22px;right: 200px;overflow: hidden;background-image: url(../images/optionlistpf-list-right-star.gif);}
+.optionlisteditworkexp .list .right .star{position:absolute;width: 5px;height: 4px;top: 18px;right: 10px;overflow: hidden;background-image: url(../images/optionlistpf-list-right-star.gif);}
+.optionlisteditworkexp .list .right.twoword .star{right: 38px;}
+.optionlisteditworkexp .list .right .star.nohaveleft{right: 200px;}
+.optionlisteditworkexp .list .haveleft{padding-left: 0px;}
+.optionlisteditworkexp .list .haveleft .star{right: 165px;}
+.optionlist .list .arrow{width: 10%; height: 49px;display: block;overflow: hidden;border-bottom: 1px solid #E2E2E2;position: relative;}
+.optionlist .list.creatjoblist{position: relative;}
+.optionlist .list .dowup{position: absolute;top: 18px;right: 18px;background-image: url(../images/resumeconlist-title-dowup-bg.gif);background-repeat: no-repeat;background-position-x: right;width: 9px;height: 14px;}
+.optionlist .list .call{position: absolute;top: 12px;right: 32px;background-image: url(../images/resumeconlist-title-call-bg.gif);background-repeat: no-repeat;background-position-x: right;width: 24px;height: 25px;}
+.optionlisteditworkexp .list .arrow{height: 39px;}
+.companyinfo .list .arrow{height: 49px;}
+.optionlisteditworkexp .list .inptxt{width: 70%; height: 31px;display: block;overflow: hidden;border-bottom: 1px solid #E2E2E2;padding: 4px 0px;}
+.personalinfo .list .inptxt.radio{line-height: 31px;font-size: 11pt;}
+.personalinfo .list .inptxt li{float: right;margin-right: 25px;}
+.optionlisteditworkexp .list.duties .inptxt{height: 71px;display: block;overflow: hidden;border-bottom: none;}
+.optionlisteditworkexp .list .inptxt input{width: 80%;text-align: right;line-height: 31px;border: none;padding-right: 30px;font-size: 10pt;}
+.personalinfo .list .inptxt input{color: #333333;}
+.companyinfo .list .inptxt{height: 41px;}
+.companyinfo .list .inptxt input{line-height: 41px;}
+.optionlisteditworkexp .list.duties .inptxt textarea{width: 80%;text-align: right;line-height: 31px;border: none;padding-right: 0px;font-size: 10pt;resize: none;}
+.companyinfo .list.duties .inptxt{height: 100px;}
+.optionlist .list .arrow:before{content:''; height:8px; width:8px; display:block; border:1px solid #a9a9a9; border-left-width:0; border-top-width:0; transform:rotate(-45deg);-webkit-transform:rotate(-45deg);-moz-transform:rotate(-45deg);-o-transform:rotate(-45deg);-ms-transform:rotate(-45deg); position:absolute; top:20px; right:20px;}
+.optionlisteditworkexp .list .arrow:before{top: 16px;}
+.optionlist .list .arrow.nobm{border-bottom: 0px;}
+.companyinfo .list .arrow:before{top: 20px;}
+.companyinfo .list .right .txt{top: 14px;right: 38px;}
+.arlogout{margin-top: 20px;}
+.mt10{margin-top: 10px;}
+.arlogout .logout{display: block;height: 40px;line-height: 40px;color: #FFFFFF;width: 90%;margin: 0 auto;background-color: #0180CF;border-radius: 5px;font-size: 11pt;}
+.arlogout .logout.co63a9d4{background-color: #63A9D4;border: none}
+.arlogout .operatea{width: 72%;height: 32px;line-height: 32px;margin: 0 auto;font-size: 11pt;}
+.arlogout .operatea a{display: block;width: 92px;height: 30px;line-height: 30px;border-radius: 3px;font-size: 11pt;}
+.arlogout .operatea a.checkall{background-color: #0180CF;border: 1px solid #0180CF;color: #FFFFFF;float: left;}
+.arlogout .operatea a.delete{background-color: #FFFFFF;border: 1px solid #E2E2E2;color: #666666;float: right;}
+.arlogout.salary{background-color: #FFFFFF;padding: 20px 0px;margin-top: 0px;display: block;margin-bottom: 10px;}
+/*面试邀请*/
+.classifylist{padding: 20px 15px;background-color: #FFFFFF;height: auto;overflow: hidden;border-bottom: 1px solid #E2E2E2;margin-bottom: 10px;color: #666666;box-sizing:border-box;}
+.classifylistworke{position: relative;}
+.classifylistworke .deletebtn{width: 50px;height: 24px;line-height: 24px;border: 1px solid #E2E2E2;border-radius: 3px;text-align: center;top: 15px;right: 15px;font-size: 9pt;color: #0180CF;position: absolute;}
+.classifylist.nomb{margin-bottom: 0px;}
+.classifylist.ed{color: #999999;}
+.classifylist:last-child{margin-bottom: 0px;}
+.classifylist .title{height: 16px;line-height: 16px;text-align: left;}
+.classifylist .title.interlist{height: 17px;}
+.classifylist .title .chk{width: 10%;height: 100%;display: block;overflow: hidden;display: none;}
+.classifylist .title .name{width: 66%; height: 100%;display: block;overflow: hidden;font-size: 12pt;color: #333333;background-repeat: no-repeat;background-position-x: 52px;}
+.classifylist .title .name.comindex{font-weight: bold;}
+.classifylist .title .name.perc{width: 60%;}
+.classifylist .title .name.suitable{background-image: url(../images/user-icon36.png);background-position-y: -26px;}
+.classifylist .title .name.nosuitable{background-image: url(../images/user-icon36.png);background-position-y: -65px;}
+.classifylist .title .name.undetermined{background-image: url(../images/user-icon36.png);background-position-y: -105px;}
+.classifylist .title .name.inappropriate{background-image: url(../images/user-icon36.png);background-position-y: -148px;}
+.makeresumecf{border-bottom: 0px;background-color: #F0F0F0}
+.makeresumecf .title{margin-bottom: 10px;}
+.makeresumecf .title:last-child{margin-bottom: 0px;}
+.makeresumecf .title .chk{width: 8%;display: block;}
+.makeresumecf .title .name.perc{width: 60%;font-size: 9pt;}
+.classifylist.ed .title .name{color: #999999;}
+.classifylist .title .status{text-align: right;}
+.classifylist .title .status span{color: #FF9900;font-size: 9pt;}
+.classifylist .title .status span.money{color: #FF2222;}
+.interviewlist{padding-bottom: 15px;}
+.interviewlist .title .status{font-size: 9pt;}
+.classifylist .txt{height: 16px;line-height: 16px;text-align: left;font-size: 9pt;margin-top: 10px;}
+.classifylistcomindx .txt{margin-top: 12px;}
+.classifylist .txt .chk{width: 10%;height: 100%;display: block;overflow: hidden;display: none;}
+.classifylist .txt .left{width: 60%; height: 100%;display: block;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.classifylist .txt .left.wage{font-size: 11pt;color: #FF2222;font-weight: bold;}
+.classifylist .txt .left.normalbig{font-size: 10pt;}
+.classifylistcomindx {position: relative;}
+.classifylistcomindx .more{position: absolute;font-size: 9pt;right: 15px;top: 33px;}
+.classifylistcomindx .more a{text-decoration: none;color: #0180CF;font-family: 'Microsoft YaHei';}
+.resumelist {width: 94%;margin: 0 auto;padding: 20px;margin-top: 10px;border-bottom: none;position: relative;overflow: visible;margin-bottom: 15px;}
+.resumelist .txt .left{width: 55%;}
+.resumelist .txt .left .cof90{color: #FF9900;}
+.resumelist .compilehandle{margin-top: 40px;height: 54px;}
+.resumelist .compilehandle .handle{width: 20%;height: 100%;display: block;overflow: hidden;position: relative;}
+.resumelist .compilehandle .handle .icon{width: 30px;height: 30px;border-radius: 50% 50%;background-color: #17baff;font-size: 20px;margin: 0 auto;color: #FFFFFF;}
+.resumelist .compilehandle .handle .icon-user-refresh:before {position: absolute;top: 9%;left: 30%;}
+.resumelist .compilehandle .handle .icon-user-compile:before {position: absolute;top: 9%;left: 30%;}
+.resumelist .compilehandle .handle .icon-user-popularize:before {position: absolute;top: 9%;left: 30%;}
+.resumelist .compilehandle .handle .icon-user-share:before {position: absolute;top: 9%;left: 30%;}
+.resumelist .compilehandle .handle .icon-user-more:before {position: absolute;top: 9%;left: 30%;}
+.resumelist .compilehandle .handle .txt{font-size: 9pt;color: #333333;margin: 40px 0px 0px 3px;position: absolute;left: 20%;bottom: 0;}
+.resumelist .compilehandle .handle .txt{font-size: 9pt;color: #333333;margin: 40px 0px 0px 3px;}
+.resumelist .bottom{width: 100%;height: 5px;position: absolute;left: 0px;bottom: -5px;background-image: url(../images/resumelist-bottom-bg.gif);background-repeat: repeat-x;}
+.resumelist .linebar{width: 100%;height: 11px;background-color: #FFFFFF;position: absolute;top: 50%;left: 0px;}
+.resumelist .linebar .whole{position: relative;width: 100%;height: 11px;overflow: hidden;}
+.resumelist .linebar .whole .boxleft{width: 11px;height: 11px;background-color: #F0F0F0;position: absolute;top: 0px;left: -5px;border-radius: 50%;}
+.resumelist .linebar .whole .boxright{width: 11px;height: 11px;background-color: #F0F0F0;position: absolute;top: 0px;right: -5px;border-radius: 50%;}
+.resumelist .linebar .whole .boxline{width: 95%;height: 1px;position: absolute;left: 7px;top: 5px;border-top: 1px dotted #E2E2E2;}
+.classifylistworke .txt .left{width: 100%;}
+.classifylist .txt .right{text-align: right;}
+.resumelist .txt .right{text-align: left;}
+.resumelist .txt .right .cof90{color: #FF9900;}
+.resumelist .txt .right .f815{color: #F81515;}
+.classifylist .txt .perc{width: 45%;}
+.classifylist .content{margin-top: 10px;font-size: 9pt;line-height: 20px;text-align: left;}
+.nodata{text-align: center;margin-top: 96px;}
+.nodata .cryimg{width: 60px;height: 60px;background-image: url(../images/nodata-cryimg.gif);margin: 0 auto;}
+.nodata .txt{font-size: 12pt;color: #333333;text-align: center;margin-top: 12px;display: block;}
+.nodata .hint{font-size: 9pt;color: #999999;margin-top: 6px;display: block;}
+.nodata .hint span{color: #FF9900;}
+/*账号安全页面样式*/
+.satabwidget{width: 100%;height: 39px;border-bottom: 1px solid #E2E2E2;background-color: #FFFFFF;box-sizing:border-box;padding: 8px 0px;}
+.satabwidget .con{width: 100%;height: 22px;line-height: 22px;overflow: visible;}
+.satabwidget .con div{border-right: 1px solid #E2E2E2;color: #333333;font-size: 12pt;position: relative;}
+.satabwidget .con div.left{width: 33%;height: 100%;display: block;}
+.satabwidget .con div.right{border-right: 0px;}
+.satabwidget .con div .line{position: absolute;bottom: -8px;left: 0px;width: 100%;height: 2px;background-color: #0180CF;display: none;}
+.satabwidget .con div.h{color: #0180CF;}
+.satabwidget .con div.h .line{display: block;}
+.conforsatabwidget{width: 100%;height: auto;font-family: 'Microsoft YaHei';}
+.conforsatabwidget .widget{display: none;}
+.conforsatabwidget .widget:first-child{display: block;}
+.conforsatabwidget .con{padding: 0px 15px;position: relative;}
+.conforsatabwidget .con .reminder{width: 100%;height: 38px;line-height: 38px;color: #999999;font-size: 9pt;box-sizing:border-box;}
+.conforsatabwidget .consalary{padding-left: 0px;}
+.conforsatabwidget .con .reminder.creatjobrem{height: 33px;line-height: 33px;color: #666666;}
+.conforsatabwidget .consalary .reminder.creatjobrem{height:22px;line-height:22px;color: #666666;}
+.conforsatabwidget .consalary .reminder.creatjobrem .red{color: #FF0000;}
+.conforsatabwidget .con .reminder.icon{padding-left: 22px;background-image: url(../images/reminder-icon-bg.gif);background-repeat: no-repeat;}
+.conforsatabwidget .con .inp{width: 100%;height: 40px;line-height: 40px;border: 1px solid #E2E2E2;background: #FFFFFF;color: #666666;font-size: 11pt;padding-left: 40px;box-sizing:border-box;background-repeat: no-repeat;}
+.conforsatabwidget .con .inp.mobile{background-image: url(../images/icon-sa-mobile.gif);}
+.conforsatabwidget .con .inp.captcha{background-image: url(../images/icon-sa-captcha.gif);}
+.conforsatabwidget .con .inp.email{background-image: url(../images/icon-sa-email.gif);}
+.conforsatabwidget .con .inp.pwd{background-image: url(../images/icon-sa-pwd.gif);}
+.conforsatabwidget .con .inp.nbt{border-top: 0px;}
+.conforsatabwidget .con .getcaptcha{position: absolute;width: 80px;height: 26px;line-height: 26px;right: 26px;bottom: 46px;background-color: #DEDEDE;font-size: 9pt;text-align: center;color: #666666;border-radius: 3px;}
+.mt20{}
+
+.resumeconlist{padding: 20px 15px;background-color: #FFFFFF;height: auto;overflow: hidden;margin-top: 10px;color: #666666;box-sizing:border-box;padding-bottom: 0px;}
+.resumeconlist .con{border-bottom: 1px dotted #E2E2E2;padding-bottom: 10px;margin-top: 10px;}
+.resumeconlist .con:first-child{margin-top: 0px;}
+.resumeconlist .con:last-child{border-bottom: none;}
+.resumeconlist .title{width: 100%;height: 14px;line-height: 12px;position: relative;padding-left: 8px;background-image: url(../images/resumeconlist-title-bg.gif);background-repeat: no-repeat;color: #333333;text-align: left;font-size: 11pt;font-weight: bold;font-family: 'Microsoft YaHei';margin-bottom: 10px;}
+.resumeconlist .title .dowup{position: absolute;top: 0px;right: 0px;background-image: url(../images/resumeconlist-title-dowup-bg.gif);background-repeat: no-repeat;background-position-x: right;padding-right: 14px;font-size: 9pt;color: #0180CF;font-weight: normal;}
+.resumeconlist .list{width: 100%;line-height: 26px;text-align: left;color: #666666;font-size: 9pt;overflow: visible;}
+.resumeconlist .list .name{font-size: 11pt;}
+.resumeconlist .list .reason{padding: 4px 15px;float: left;margin-right: 10px;background-color: #E2E2E2;}
+.resumeconlist .list .reason:last-child{margin-right: 0px;color: #333333;font-size: 9pt;}
+.resumeconlist .list .reason.no{background-color: #FF9900;color: #F0F0F0;}
+.resumeconlist .list.lx{background-repeat: no-repeat;padding-left: 17px;background-image: url(../images/resumeconlist-list-lx-bg.gif);}
+.resumeconlist .list.lx.p{background-position-y: 6px;}
+.resumeconlist .list.lx.m{background-position-y: -23px;position: relative;}
+.resumeconlist .list.lx.m .call{position: absolute;width: 20px;height: 20px;background-image: url(../images/resumeconlist-list-lx-m-call.gif);top:3px;left: 100px;cursor: pointer;}
+.resumeconlist .list.lx.e{background-position-y: -50px;}
+.resumeconlist .list.lx.d{background-position-y: -78px;}
+.invitecollectresume{width: 100%;height: auto;border-top: 1px solid #0180CF;padding: 8px 0px;}
+.makeresumesuccess{border-top: none;padding-bottom: 20px;padding-top: 0px;}
+.invitecollectresume .left{width: 50%;height: 100%;display: block;overflow: hidden;}
+.invitecollectresume .left .invite{width: 110px;height: 38px;line-height: 38px;background-color: #0180CF;margin: 0 auto;border-radius: 3px;text-align: center;font-size: 11pt;color: #FFFFFF;cursor: pointer;}
+.makeresumesuccess .left .improve{width: 92px;height: 32px;line-height: 32px;background-color: #0180CF;margin: 0 auto;border-radius: 3px;text-align: center;font-size: 11pt;color: #FFFFFF;cursor: pointer;}
+.invitecollectresume .right .collect{background-image: url(../images/invitecollectresume-right-bg.gif);background-repeat: no-repeat;width: 49px;height: 40px;margin: 0 auto;cursor: pointer;}
+.makeresumesuccess .right .membercenter{display: block;width: 92px;height: 30px;line-height: 30px;background-color: #FFFFFF;margin: 0 auto;border-radius: 3px;text-align: center;font-size: 11pt;color: #FFFFFF;cursor: pointer;color: #0180CF;border: 1px solid #E2E2E2;}
+.makeresumetitbox{width: 100%;height: 58px;background-color: #e9f5ff;border-bottom: 1px solid #d8edfe;}
+.makeresumetitbox .left{width: 20%;height: 100%;position: relative;}
+.makeresumetitbox .left .icon-user-smile:before {font-size: 32px;color: #FF9900;position: absolute;top: 23%;left: 50%;}
+.companyinfotitbox{border-bottom: none;}
+.companyinfotitbox .left{width: 52%;background-image:none;}
+.makeresumetitbox .right{padding-left: 10px;padding-top: 18px;}
+.makeresumetitbox .right .txt{width: 100%;height: 14px;line-height: 14px;text-align: left;font-size: 9pt;color: #333333;margin-top: 10px;}
+.makeresumetitbox .right .txt.down{margin-top: 6px;}
+
+
+.entautitbox.entbfail{border-bottom: 1px solid #E2E2E2;}
+.entautitbox .left{width: 20%;}
+.entautitbox .left.pass{background-image: url(../images/entautitbox-leftpass-bg.gif);}
+.entautitbox .left.review{background-image: url(../images/entautitbox-leftreview-bg.gif);}
+.entautitbox .left.fail{background-image: url(../images/entautitbox-leftfail-bg.gif);}
+.entautitbox .right{padding-left: 10px;padding-top: 12px;}
+.entautitbox .right .txt{width: 100%;height: 14px;line-height: 14px;text-align: left;font-size: 9pt;color: #333333;margin-top: 0px;}
+.entautitbox .right .txt.down{margin-top: 6px;}
+
+
+.enautsatabwidget{background-color: #F0F0F0;}
+.companyinfotitbox .right .txt{color: #999999;}
+.companyinfotitbox .right .txt{/* margin-top: 28px; */}
+.companyinfotitbox {height: 90px;background-color: #FFFFFF;}
+.companyindextitbox{height: 119px;background-image: url(../images/companyindextitbox-bg.gif);background-repeat: repeat-x;position: relative;}
+.companyindextitbox .title{height: 16px;line-height: 16px;color: #333333;font-size: 12pt;position: absolute;top: 15px;left: 15px;}
+.companyindextitbox .left{width: 52%;background-image:none;position: relative;}
+.companyindextitbox .left .img{position: absolute;top: 39%;left: 15px;width: 150px;height: 49px;border: 0px;}
+.companyindextitbox .right .txt{padding-top: 50px;margin-top: 0px;color: #666666;}
+.companyindextitbox .right .txt .state{color: #0180CF;}
+.companyindextitbox .right .txt .state a{color: #0180CF;}
+.companyindextitbox .right .txt.down{margin-top: 12px;height: 18px;line-height: 18px;font-size: 9pt;color: #666666;/*padding-left: 20px;*/position: relative;padding-top: 0px;vertical-align: middle;}
+.companyindextitbox .right .txt.down .img{position: relative;top: -1px;left: 0px;margin-right: 5px;vertical-align: middle;}
+.successbox{width: 100%;height: 106px;}
+.successbox .left{width: 40%;height: 100%;background-image: url(../images/successbox-left-bg.gif);background-repeat: no-repeat;background-position-x: 96px;background-position-y: center;}
+.successbox .right{line-height: 106px;font-size: 15pt;color: #333333;text-align: left;padding-left: 15px;}
+/*企业特权*/
+.privilegebox{width: 100%;height: 375px;background-color: #FFFFFF;background-image: url(../images/privilegebox-bg.gif);background-repeat: no-repeat;position: relative;}
+.privilegebox .list{width: 90%;height: 70px;position: absolute;left: 36px;}
+.privilegebox .list div{height: 20px;line-height: 20px;text-align: left;}
+.privilegebox .list .title{font-size: 12pt;color: #2eb5e6;font-weight: bold;}
+.privilegebox .list .txt{font-size: 10pt;color: #666666;margin-top: 5px;}
+.privilegebox .list.identifier{top: 25px;}
+.privilegebox .list.makejob{top: 95px;}
+.privilegebox .list.downresume{top: 165px;}
+.privilegebox .list.jobpromotion{top: 235px;}
+.privilegebox .list.moreinvite{top: 305px;}
+.filtratebar{width: 100%;height: 50px;border-bottom: 1px solid #E2E2E2;background-color: #FFFFFF;padding: 12px 0px;}
+.filtratebar .condition{height: 26px;border-right: 1px solid #E2E2E2;}
+.filtratebar .condition:last-child{border-right: none;}
+.filtratebar .condition .txt{font-size: 11pt;color: #333333;position: relative;width: 100%;height: 26px;line-height: 26px;}
+.filtratebar .condition .txt i{position: absolute;width: 8px;height: 5px;background-image: url(../images/condition-txt-ibg.gif);background-repeat: no-repeat;overflow: hidden;top: 11px;right: 10px;}
+.filtratebar.triplet .condition{width: 33%;}
+.filtratebar.fourparts .condition{width: 25%;}
+.filtratebar.double .condition{width: 50%;}
+.filtratebar.double .condition .txt i{top: 11px;right: 36px;}
+.listshowmore{width: 100%;height: 42px;line-height: 42px;color: #0180CF;font-size: 11pt;background-color: #FFFFFF;display: block;}
+.listshowmorecomindx{margin-top: 10px;color: #ff2222;}
+.module{width: 100%;padding: 17px 15px;margin-top: 10px;background-color: #FFFFFF;margin-bottom: 10px;box-sizing: border-box;}
+.module .list{width: 100%;height: 62px;margin-bottom: 10px;}
+.module .list:last-child{margin-bottom: 0px;}
+.module .list div{height: 100%;border-radius: 3px;background-position-x: center;background-repeat: no-repeat;background-position-y: 12px;}
+.module .list .txt{width: 100%;height: 14px;line-height: 90px;font-size: 10pt;color: #FFFFFF;}
+.module .list .left{width: 48%;position: relative;}
+.module .list .right{margin-left: 10px;width: 48%;position: relative;}
+.module .list .left .icon{font-size: 24px;position: absolute;left: 43%;top: 7px;color: #FFFFFF;}
+.module .list .right .icon{font-size: 24px;position: absolute;left: 43%;top: 7px;color: #FFFFFF;}
+.module .list .jobposted{background-color: #fa8e8e;}
+.module .list .managerialposition{background-color: #f6be44;}
+.module .list .resumesearch{background-color: #48dbe0;}
+.module .list .resumemanage{background-color: #8ae758;}
+.module .list .refreshposition{background-color: #f28bd4;}
+.module .list .accountmanagement{background-color: #65aaea;}
+/*管理的全选和单选*/
+/* Checkmark style starts */
+@-moz-keyframes dothabottomcheck {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 5px;
+  }
+}
+@-webkit-keyframes dothabottomcheck {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 5px;
+  }
+}
+@keyframes dothabottomcheck {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 5px;
+  }
+}
+@keyframes dothatopcheck {
+  0% {
+    height: 0;
+  }
+
+  50% {
+    height: 0;
+  }
+
+  100% {
+    height: 10px;
+  }
+}
+@-webkit-keyframes dothatopcheck {
+  0% {
+    height: 0;
+  }
+
+  50% {
+    height: 0;
+  }
+
+  100% {
+    height: 10px;
+  }
+}
+@-moz-keyframes dothatopcheck {
+  0% {
+    height: 0;
+  }
+
+  50% {
+    height: 0;
+  }
+
+  100% {
+    height: 10px;
+  }
+}
+input[type=checkbox] {
+  display: none;
+}
+
+.check-box {
+  height: 16px;
+  width: 16px;
+  background-color: transparent;
+  border: 1px solid #a1a1a1;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transition: border-color ease 0.2s;
+  -o-transition: border-color ease 0.2s;
+  -webkit-transition: border-color ease 0.2s;
+  transition: border-color ease 0.2s;
+  cursor: pointer;
+}
+.check-box::before, .check-box::after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  height: 0;
+  width: 1px;
+  background-color: #FFFFFF;
+  display: inline-block;
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -o-transform-origin: left top;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+  border-radius: 5px;
+  content: ' ';
+  -webkit-transition: opacity ease .5;
+  -moz-transition: opacity ease .5;
+  transition: opacity ease .5;
+}
+.check-box::before {
+  top: 12px;
+  left: 5px;
+  -moz-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+.check-box::after {
+  top: 8px;
+  left: 2px;
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+input[type=checkbox]:checked + .check-box,
+.check-box.checked {
+  border-color: #0180cf;
+  background-color: #0180cf;
+}
+input[type=checkbox]:checked + .check-box::after,
+.check-box.checked::after {
+  height: 5px;
+  -moz-animation: dothabottomcheck 0.2s ease 0s forwards;
+  -o-animation: dothabottomcheck 0.2s ease 0s forwards;
+  -webkit-animation: dothabottomcheck 0.2s ease 0s forwards;
+  animation: dothabottomcheck 0.2s ease 0s forwards;
+}
+input[type=checkbox]:checked + .check-box::before,
+.check-box.checked::before {
+  height: 12px;
+  -moz-animation: dothatopcheck 0.4s ease 0s forwards;
+  -o-animation: dothatopcheck 0.4s ease 0s forwards;
+  -webkit-animation: dothatopcheck 0.4s ease 0s forwards;
+  animation: dothatopcheck 0.4s ease 0s forwards;
+}
+/*Custom radio button*/
+ .radio-btn {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    float: left;
+    margin: 7px 7px 0 0;
+    cursor: pointer;
+    position: relative;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 1px #ccc;
+    background: rgb(255, 255, 255);
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(47%, rgba(246, 246, 246, 1)), color-stop(100%, rgba(237, 237, 237, 1)));
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+    background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(246, 246, 246, 1) 47%, rgba(237, 237, 237, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed', GradientType=0);
+}
+.checkedRadio {
+    -moz-box-shadow: inset 0 0 5px 1px #ccc;
+    -webkit-box-shadow: inset 0 0 5px 1px #ccc;
+    box-shadow: inset 0 0 5px 1px #ccc;
+}
+.radio-btn i {
+    border: 1px solid #E1E2E4;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+}
+.checkedRadio i {
+    background-color: #898A8C;
+}
+.radio-btn input[type="radio"] {
+    visibility: hidden;
+}
+/* 筛选条件样式 */
+.select_bar {width: 100%;position: relative;background-color: #FFF;border-bottom: 1px solid #dbdbdb;z-index:6;}
+.select_bar ul {z-index: 6;}
+.select_bar .col {float: left;width: 25%;border-left: 1px solid #dbdbdb;text-align: center;margin: 10px 0;font-size: .9rem;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-o-box-sizing: border-box;box-sizing: border-box;margin-left: -1px;padding: 0 2px;line-height: 1rem;}
+.col div {padding-right: 12px;}
+.col div span {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-o-box-sizing: border-box;box-sizing: border-box;display: inline-block;max-width: 100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+.col div:after {font-size: .6rem;font-family: "chrfonticon" !important;font-style: normal;content: "\e62d";position: absolute;margin-left: 5px;}
+.select_bar .col.on {color:#0180CF;}
+.select_bar .col i {font-size: .8rem;margin-left: 5px;}
+.select_bar .colt{width: 33.3%}
+.select_bar .coltw{width: 50%}
+.col.on div:after {transform: rotate(180deg);-webkit-transform: rotate(180deg);display: inline-block;}
+
+.select_bar_more {  display: none;position: fixed;top: 0;z-index: 1000;width: 100%;right: 0;background-color: rgba(0, 0, 0, 0.29);overflow: hidden;}
+.select_bar_more.on {display: block;}
+.more_main {padding-left: 50px;background: transparent;transition: all 300ms ease;-webkit-transition: all 300ms ease;}
+.more_main .close {z-index: 2;padding-top: 5px;padding-left: 10px;}
+.more_main .header .title {font-size: 1.3rem;}
+.more_ok {position: absolute;right: 15px;line-height: 50px;font-size: 1rem;color: #FFF;padding: 0 10px;z-index: 2;}
+#moreList {background: #F5F5F5;}
+#more_level .more_child_div {background: #FFF;}
+#more_level .more_child_div li {float: left;background: #F8F8F8;padding: 5px 15px;margin: 5px;color: #555555;border-radius: 3px;-webkit-border-radius: 3px;transition: all 300ms ease;-webkit-transition: all 300ms ease;}
+#more_level .more_child_div li.on {background: #00A0E9;color:#FFF;}
+#more_level>div {transition: none;-webkit-transition: none;  margin-bottom: 50px;}
+.more_child_title {font-size: 1rem;padding: 10px;color: #3D3D3D;}
+.more_foot {height: 45px;}
+.clear_more {position: fixed;bottom: 0;background-color: #FFF;padding: 10px 0;width: 100%;text-align: center;color: #227BC0;font-size: 1rem;text-indent: -50px;transition: all 300ms ease;-webkit-transition: all 300ms ease;}
+.clear_more.on {background: #227BC0;color:#FFF;}
+.lock {display: none;position: absolute;z-index: 5;background-color: rgba(0, 0, 0, 0.4);width: 100%;height: 100%;top: 45px;}
+
+.searchlist {background: #FFF;position: relative;z-index:2;}
+.list_child {margin-left: 10px;padding: 10px 10px 10px 0;border-bottom: 1px solid #dbdbdb;}
+.list_child.off {display: none;}
+.list_child:after,.list_child>div:after {content: "020"; display: block; height: 0; clear: both; visibility: hidden;}
+.list_child div>div {float:left;display: block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.list_job {width:80%;font-weight:bold;font-size: 1.1rem;position: relative;color:#000;}
+.list_date {width:20%;color:#aaaaaa;text-align: right;font-size: .9rem;}
+.list_com {color:#555555;margin:4px 0;width:80%;font-size: .9rem;}
+.list_mark {text-align: right;width:20%;margin: 4px 0;}
+.list_loc {width:50%;color:#aaaaaa;font-size: .9rem;}
+.list_price {width:50%;color:#e83838;text-align: right;float: right!important;font-size: .9rem;font-weight: 600;}
+
+.mark_bottom {opacity: 0;width:100%;height: 2px;position: relative;margin-top: -2px;z-index: 7;}
+.mark_bottom.on {opacity: 1;}
+.mark_bottom .mark_line{width:25%;height: 2px;background: #0180CF;position: absolute;margin-left:-2px;transition: all 300ms ease;-webkit-transition: all 300ms ease;}
+.mark_bottom .colt{width: 33.3%}
+.mark_bottom .coltw{width: 50%}
+
+#say_sorry {padding-top: 30px;padding-bottom: 80px;background: #F1F1F1;}
+#say_sorry img {width: 20%;margin: 0 40%;}
+
+.search .ser_search{width:96%;height:38px;background: #fff; border:1px solid #cdcdcd; border-radius: 5px;margin:0 auto;}
+.search .ser_search input{width: inherit;background:none;border:none;text-indent:0;padding:0 5px; height: 20px; line-height: 20px; margin-top: 11px;text-align: center;}
+.clear:after{content:" ";display:block;height:0;clear:both;visibility:hidden}
+/* 查工资柱状图 */
+.resumeconlist table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+@keyframes grow-padding-left {
+  from {
+    padding-left: 0;
+  }
+}
+@keyframes grow-padding-right {
+  from {
+    padding-right: 0;
+  }
+}
+.resumeconlist ul {
+  list-style-type: none;
+  padding: 0;
+}
+.resumeconlist ul li {
+  font-weight: bold;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  width: 300px;
+}
+.resumeconlist ul em {
+  display: inline-block;
+  width: 80px;
+  font-style: normal;
+}
+.resumeconlist ul span {
+  display: inline-block;
+}
+.resumeconlist .style-2 em {
+  text-align: right;
+  padding: 8px 8px 8px 0;
+}
+.resumeconlist .style-2 span {
+  color: white;
+  background: cornflowerblue;
+  padding: 0px;
+  width: 30px;
+  animation: grow-padding-right 5s;
+}
+.resumeconlist .tableSalary{border:1px #e1e8f0 solid; border-right:none;position: relative;margin-bottom: 30px;} 
+.resumeconlist .tableSalary td{border:none; height:78px; vertical-align:top;border-right:1px #e1e8f0 solid;}
+.resumeconlist .tableSalary .salaryHistogram{position: absolute;top: 40%;left: 0px;}
+.resumeconlist .salarytext{margin-left:0;position: absolute;left: 0px;bottom: -28px;width: 100%;}
+.resumeconlist .salarytext span{display:inline-block; width: 10%;margin-right: 7%;font-family: Arial;}
+.resumeconlist .salarytext span.first{margin-right: 2%;};
+.resumeconlist .skillbar {
+	position:absolute;
+	display:block;
+	margin-bottom:15px;
+	width:100%;
+	background:#eee;
+	height:35px;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	-webkit-transition:0.4s linear;
+	-moz-transition:0.4s linear;
+	-ms-transition:0.4s linear;
+	-o-transition:0.4s linear;
+	transition:0.4s linear;
+	-webkit-transition-property:width, background-color;
+	-moz-transition-property:width, background-color;
+	-ms-transition-property:width, background-color;
+	-o-transition-property:width, background-color;
+	transition-property:width, background-color;
+}
+
+.resumeconlist .skillbar-title {
+	position:absolute;
+	top: 10px;
+	left:0;
+	font-weight:bold;
+	font-size:13px;
+}
+
+.resumeconlist .skillbar-title span {
+	display:block;
+	padding:0px;
+	height:20px;
+	line-height:20px;
+	color: #333333;
+}
+
+.resumeconlist .skillbar-bar {
+	position: absolute;
+	top:45%;
+	left:0;
+	height:20px;
+	width:0px;
+	background:#FF9900;
+}
+
+.resumeconlist .skill-bar-percent {
+	position:absolute;
+	right:10px;
+	top:45%;
+	font-size:11px;
+	height:20px;
+	line-height:20px;
+	font-weight:bold;
+	color:#333333;
+	display: none;
+}
+.makeresumetitbox .pdtop0{padding-top: 0px;}
+.makeresumetitbox .pdtop2{padding-top: 2px;}

@@ -1,0 +1,172 @@
+{#qishi_campus_show set="列表名:campus,院校ID:GET[id],院校介绍长度:500"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>校园招聘-合作院校简历列表</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/school.css" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/ui-dialog.css" />
+<script src="{#$QISHI.site_campus_template#}js/jquery.js" type='text/javascript'></script>
+<script src="{#$QISHI.site_campus_template#}js/jquery.resume-list.js" type='text/javascript'></script>
+<script src="{#$QISHI.site_campus_template#}js/dialog-min.js" type='text/javascript' ></script>
+<script>
+	$(document).ready(function() {
+		$('.data-main .resume-item:odd').css({'background-color':'#f8f8f8'});
+		$('.collect').on('click', function(){
+			$(this).toggleClass('hascollect');
+		})
+		$('.detail-control').each(function(){
+			if ($(this).hasClass('ishow')) {
+				$(this).parent().next().show();
+			};
+			$(this).on('click', function(){
+				if ($(this).hasClass('ishow')) {
+					$(this).removeClass('ishow');
+					$(this).parent().next().hide();
+					$('.resume-item').removeClass('resume-item').addClass('resume-item');  //IE7 BUG Fix
+				}else{
+					$(this).addClass('ishow');
+					$(this).parent().next().show();
+					$('.resume-item').removeClass('resume-item').addClass('resume-item');  //IE7 BUG Fix
+				};
+			});
+		});
+		//详细显示模式
+		$("#detail").click(function(){
+			$(this).addClass('select').siblings('#list').removeClass('select');
+			$('.detail-control').addClass("ishow");
+			$(".resume-more-info").show();
+		});
+		//列表显示模式
+		$("#list").click(function(){
+			$(this).addClass('select').siblings('#detail').removeClass('select');
+			$('.detail-control').removeClass("ishow");
+			$(".resume-more-info").hide();
+		});
+		//收藏简历
+		favorites("{#$QISHI.site_dir#}");
+		//邀请面试
+         $(".invited").die().live("click",function(){
+         	var id=$(this).attr("id");
+			var tsTimeStamp= new Date().getTime();
+            var user_utype = "{#$smarty.session.utype#}";
+	        if(user_utype=='3')
+	        {
+	            var url="{#$QISHI.site_dir#}user/user_hunter_invited.php?id="+id+"&act=invited&t="+tsTimeStamp;  
+	        }
+	        else 
+	        {
+	            var url="{#$QISHI.site_dir#}user/user_invited.php?id="+id+"&act=invited&t="+tsTimeStamp;  
+	        }
+	        var myDialog = dialog();
+			jQuery.ajax({
+			    url: url,
+			    success: function (data) {
+			        myDialog.content(data);
+			        myDialog.title('邀请面试');
+			        myDialog.width('500');
+			    	myDialog.showModal();
+			    }
+			});
+         }); 
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_campus/default/header.htm"#}
+	<div class="container">
+		<div class="school-box clearfix">
+			<div class="school-logo f-left"><img src="{#$campus.logo#}" alt="logo" width="218" height="104" /></div>
+			<div class="school-information f-left">
+				<h4><span>学校名称：</span>{#$campus.campusname#}</h4>
+				<div class="school-text"><span>学校主页：</span><a target="_blank" href="{#$campus.website#}" class="underline">{#$campus.website_#} </a></div>
+				<div class="school-text"><span>学校地址：</span>{#$campus.address#}</div>
+				<div class="school-text">已注册毕业生简历<em>{#$campus.graduate_num#}</em>份</div>
+			</div>
+		</div>
+		<div class="school-tab clearfix">
+			<a href="{#"QS_campusshow,id:$campus.id"|qishi_url#}" class="s-tab-item f-left">学校介绍</a>
+			<a href="{#"QS_campusresume,id:$campus.id"|qishi_url#}" class="s-tab-item f-left active">校生简历</a>
+		</div>
+		<!-- 数据列表 -->
+		{#qishi_resume_list set="列表名:resume,分页显示:1,显示数目:10,填补字符:...,院校名称:$campus.campusname,列表页:QS_campusresume,排序:rtime>desc"#}
+		<div class="school-data clearfix" id="school-data">
+			<div class="data-top clearfix">
+				<div class="seq f-left"><span>排序</span>
+					<a href="{#"QS_campusresume,sort:rtime-id:$smarty.get.id-page:1-key:"|qishi_url#}" class="seq-item {#if $smarty.get.sort=='' || $smarty.get.sort=='rtime-page'#}selected{#/if#} time">更新时间</a>
+				</div>
+				<div class="small-page f-right">
+					<div class="pageminnav">{#$pagemin#}</div>
+				</div>
+			</div>
+			<div class="data-control clearfix">
+				<label class="f-left check-all"><input type="checkbox" name="selectall" id="selectall" class="checkbox" />全选</label>
+				<a href="javascript:;" class="all-opera f-left allfavorites">收藏简历</a>
+				<div class="list-model f-right">
+					<a id="list" href="javascript:;" class="f-left model-item list select">列表</a>
+					<a id="detail" href="javascript:;" class="f-left model-item detail">详细</a>
+				</div>
+			</div>
+			<div class="data-type clearfix resumes">
+				<div class="f-left type-item item1">姓名</div>
+				<div class="f-left type-item item2">性别</div>
+				<div class="f-left type-item item3">年龄</div>
+				<div class="f-left type-item item4">学历</div>
+				<div class="f-left type-item item5">工作经验</div>
+				<div class="f-left type-item item6">意向地区</div>
+				<div class="f-left type-item item7">期望薪资</div>
+				<div class="f-left type-item item8">更新时间</div>
+			</div>
+			{#if $resume#}
+			<div class="data-main">
+				{#foreach from=$resume item=list#}
+				<div class="resume-item">
+					<div class="seq-block clearfix">
+						<div class="r-seq-item item1 f-left"><span class="seq-span"><input type="checkbox" name="jid" value="{#$list.id#}" class="checkbox" /><a href="{#$list.resume_url#}" target="_blank" class="underline">{#$list.fullname#}</a> {#if $list.photo_audit==1#}<i class="resume-auth pic" title="照片认证"></i>{#/if#}{#if $list.is_audit_mobile==1#}<i class="resume-auth phone" title="手机已认证"></i>{#/if#}</span></div>
+						<div class="r-seq-item item2 f-left">{#$list.sex_cn#}</div>
+						<div class="r-seq-item item3 f-left">{#$list.age#}岁</div>
+						<div class="r-seq-item item4 f-left">{#$list.education_cn#}</div>
+						<div class="r-seq-item item5 f-left">{#$list.experience_cn#}</div>
+						<div class="r-seq-item item6 f-left">{#$list.district_cn#}</div>
+						<div class="r-seq-item item7 f-left" style="font-family:微软雅黑;">{#$list.wage_cn#}</div>
+						<div class="r-seq-item item8 f-left">{#$list.refreshtime_cn#}</div>
+						<a href="javascript:;" class="detail-control f-left"></a>
+					</div>
+					<div class="resume-more-info clearfix">
+						<div class="info-text f-left">
+							<p>专业：{#$list.major_cn#} | 期望工作性质：{#$list.nature_cn#} | 目前求职状态：{#$list.current_cn#}</p>
+							<div>期望从事行业：{#$list.trade_cn_#} | 期望从事岗位：{#$list.intention_jobs_#}</div>
+						</div>
+						<div class="info-operaing f-right">
+							<div><input id="{#$list.id#}" type="button" value="邀请面试" class="invite-btn invited" /></div>
+							<a href="javascript:;" class="collect add_favorites" id="{#$list.id#}">收藏</a>
+						</div>
+					</div>
+				</div>
+				{#/foreach#}
+			</div>
+			{#if $page#}
+			<table align="center" cellspacing="0" cellpadding="0" border="0" class="link_bk">
+          	<tbody><tr>
+            <td align="center" height="50">
+			<div class="page">
+				{#$page#}
+			</div>
+			</td>
+	          </tr>
+	      	</tbody></table>
+	      	{#/if#}
+	      	{#else#}
+	      	<div class="data-main">
+	      		<div class="emptytip">抱歉，没有符合此条件的信息！</div>
+	      	</div>
+	      	{#/if#}
+		</div>
+	</div>
+	{#include file="../tpl_campus/default/footer.htm"#}
+</body>
+</html>

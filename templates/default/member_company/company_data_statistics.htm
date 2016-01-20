@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_common.css" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_company.css" />
+<script src="{#$QISHI.site_template#}js/jquery.js"></script>
+<script type="text/javascript" src="{#$QISHI.site_template#}js/fusioncharts.js"></script>
+<script type="text/javascript" src="{#$QISHI.site_template#}js/fusioncharts.theme.fint.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.data-filter').on('click', function(e){
+			$(this).find('.filter-down').toggle();
+			var fWidth = $(this).find('.filter-span').outerWidth(true) - 2;
+			$(this).find(".filter-down").width(fWidth);
+			$(document).one("click",function(){
+				$('.filter-down').hide();
+			});
+			e.stopPropagation();
+			$(".data-filter").not($(this)).find('.filter-down').hide();
+		})
+	});
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 微信招聘</div>
+	<div class="usermain">
+		<div class="leftmenu com link_bk">
+			{#include file="member_company/left.htm"#}
+		</div>
+		<div class="rightmain">
+			<div class="bbox1">
+				<div class="mobile-job">
+					<h1>微信招聘</h1>
+					<div class="m-effect-wrap">
+						<div class="m-effect-title clearfix">
+							<h3 class="f-left">微信招聘效果数据</h3>
+							<a href="company_jobs.php?act=simple_jobs" class="underline f-right">返回>></a>
+						</div>
+						<div class="m-effect-tips">
+							<i class="me-icon"></i>
+							<p>微信招聘效果数据是统计您微信招聘主页访问量和通过访问微信招聘主页而带来的简历投递和查看信息效果的统计。效果的好坏与您的分享传播力度相关</p>
+						</div>
+						<div class="price-data mobile-effect">
+							<table>
+								<thead>
+									<tr>
+										<th class="align-left" width="100">&nbsp;</th>
+										<th width="">浏览次数</th>
+										<th width="">分享次数</th>
+										<th width="">点赞次数</th>
+										<th width="">独立IP</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="align-left">昨日</td>
+										<td>{#$data.yesterday.1|intval#}</td>
+										<td>{#$data.yesterday.3|intval#}</td>
+										<td>{#$data.yesterday.2|intval#}</td>
+										<td>{#$data.yesterday.4|intval#}</td>
+									</tr>
+									<tr>
+										<td class="align-left">本周</td>
+										<td>{#$data.week.1|intval#}</td>
+										<td>{#$data.week.3|intval#}</td>
+										<td>{#$data.week.2|intval#}</td>
+										<td>{#$data.week.4|intval#}</td>
+									</tr>
+									<tr>
+										<td class="align-left">上周</td>
+										<td>{#$data.last_week.1|intval#}</td>
+										<td>{#$data.last_week.3|intval#}</td>
+										<td>{#$data.last_week.2|intval#}</td>
+										<td>{#$data.last_week.4|intval#}</td>
+									</tr>
+									<tr>
+										<td class="align-left">本月</td>
+										<td>{#$data.month.1|intval#}</td>
+										<td>{#$data.month.3|intval#}</td>
+										<td>{#$data.month.2|intval#}</td>
+										<td>{#$data.month.4|intval#}</td>
+									</tr>
+									<tr>
+										<td class="align-left">上月</td>
+										<td>{#$data.last_month.1|intval#}</td>
+										<td>{#$data.last_month.3|intval#}</td>
+										<td>{#$data.last_month.2|intval#}</td>
+										<td>{#$data.last_month.4|intval#}</td>
+									</tr>
+									<tr>
+										<td class="align-left">历史累计</td>
+										<td>{#$data.total.1|intval#}</td>
+										<td>{#$data.total.3|intval#}</td>
+										<td>{#$data.total.2|intval#}</td>
+										<td>{#$data.total.4|intval#}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="form-filter clearfix">
+							<div class="data-filter span-filter f-left">
+								<span class="filter-span">{#if $smarty.get.settr_cn==''#}最近7天{#else#}{#$smarty.get.settr_cn#}{#/if#}（单位：天）<i class="filter-icon"></i></span>
+								<ul class="filter-down">
+									<li><a href="{#"settr:7,settr_cn:最近7天"|qishi_parse_url#}">最近7天（单位：天）</a></li>
+									<li><a href="{#"settr:15,settr_cn:最近15天"|qishi_parse_url#}">最近15天（单位：天）</a></li>
+									<li><a href="{#"settr:30,settr_cn:最近30天"|qishi_parse_url#}">最近30天（单位：天）</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="data-graph">
+							<div id="chartContainer"></div>
+							<script type="text/javascript">
+								  FusionCharts.ready(function(){
+								    var revenueChart = new FusionCharts({
+								        "type": "msline",//
+								        "renderAt": "chartContainer",
+								        "width": "100%",
+								        "height": "300",
+								        "dataFormat": "json",
+								        "dataSource":  {
+								          "chart": {
+								            "theme": "fint"
+								         },
+								         "categories": {#$categories#},
+								         "dataset": {#$dataset#}
+								      }
+
+								  });
+								revenueChart.render();
+								});
+
+							</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	{#include file="user/footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-基本信息</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script src="{#$QISHI.site_template#}js/jquery.js"></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script src="{#$QISHI.site_template#}js/ajaxfileupload.js" type='text/javascript' language="javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".radio-btn").on('click', function () {
+				    var _this = $(this),
+				    block = _this.parent().parent();
+				    block.find('input:radio').attr('checked', false);
+				    block.find(".radio-btn").removeClass('checkedRadio');
+				    _this.addClass('checkedRadio');
+				    _this.find('input:radio').attr('checked', true);
+				    $("#sex").val(_this.find('input:radio').val());
+				    $("#sex_cn").val(_this.find('input:radio').attr("title"));
+				});
+				$("#unfoldoptionalinfo").on('click', function(event) {
+					$(this).remove();
+					$(".optionalinfo").show();
+				});
+				// ajax提交保存简历
+				$("#resume_save").click(function(event) {
+					var pid = {#$smarty.get.pid#}
+					var title = $("input[name=title]").val();
+					var fullname = $("input[name=fullname]").val();
+					var sex = $("input[name=sex]").val();
+					var sex_cn = $("input[name='sex_cn']").val();
+					var birthdate = $("input[name='birthdate']").val();
+					var education = $("input[name='education']").val();
+					var education_cn = $("input[name='education_cn']").val();
+					var major = $("input[name='major']").val();
+					var major_cn = $("input[name='major_cn']").val();
+					var experience = $("input[name='experience']").val();
+					var experience_cn = $("input[name='experience_cn']").val();
+					var residence = $("input[name='residence']").val();
+					var telephone = $("input[name='telephone']").val();
+					var email = $("input[name='email']").val();
+					var height = $("input[name='height']").val();
+					var householdaddress = $("input[name='householdaddress']").val();
+					var marriage = $("input[name='marriage']").val();
+					var marriage_cn = $("input[name='marriage_cn']").val();
+
+					$.post('?act=resume_basic_save', {"pid":pid,"title":title,"fullname":fullname,"sex":sex,"sex_cn":sex_cn,"birthdate":birthdate,"education":education,"education_cn":education_cn,"major":major,"major_cn":major_cn,"experience":experience,"experience_cn":experience_cn,"residence":residence,"telephone":telephone,"email":email,"height":height,"householdaddress":householdaddress,"marriage":marriage,"marriage_cn":marriage_cn}, 
+						function(data) {
+							if (data == "ok") {
+								layer.msg('修改基本信息成功！', {icon: 1});
+								setTimeout(function () {
+								    window.location.href = "user.php?act=resume_one&pid=" + pid;
+								}, 2000);
+							} else if(data == "err") {
+								layer.msg('修改基本信息失败！', {icon: 2});
+							} else {
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+							}
+					});
+				});
+				// 上传 简历照片
+				$("#logo").click(function(event) {
+					$("#logo_img").click();
+				});
+				$("#logo_img").die().live('change',function() {
+		  			credent();
+				});
+				function credent() {
+					var filepath = $("input[name='logo_img']").val();
+		            var extStart = filepath.lastIndexOf(".");
+		            var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+		            if (ext != ".BMP" && ext != ".PNG" && ext != ".GIF" && ext != ".JPG" && ext != ".JPEG") {
+		                layer.msg("图片限于bmp,png,gif,jpeg,jpg格式");
+		                return false;
+		            }
+					$.ajaxFileUpload ({
+						url:'?act=logo_save&pid='+{#$smarty.get.pid#},
+						secureuri :false,
+						fileElementId :'logo_img',
+						dataType : 'json',
+						success : function (data, status){
+							switch(data){
+								case -1 :layer.msg("上传图片失败：上传目录不存在!");return false;break;
+								case -2 :layer.msg("上传图片失败：上传目录无法写入!");return false;break;
+								case -3 :layer.msg("上传图片失败：你选择的文件无法上传");return false;break;
+								case -4 :layer.msg("上传图片失败：文件大小超过限制");return false;break;
+								case -5 :layer.msg("上传图片失败：文件类型错误！");return false;break;
+								case -6 :layer.msg("上传图片失败：文件上传出错！");return false;break;
+								case -7 :layer.msg("上传图片失败：企业图片最多发布8张！");return false;break;
+								case -8 :layer.msg("简历编号丢失！");return false;break;
+								default:
+									location.reload();
+								break;
+							}
+						}
+					});
+				}
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">基本信息</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="optionlist optionlisteditworkexp personalinfo formDiv">
+				<section class="flex-box list resumephoto" url="">
+					<div class="right flex2 resumephoto">简历照片
+						<div class="photobox"><img src="{#if $$resume_basic.photo_img#}{#$QISHI.site_dir#}data/photo/{#$resume_basic.photo_img#}{#else#}{#$QISHI.site_template#}images/06.jpg{#/if#}"   id="logo"/></div>
+						<input type="file" name="logo_img" id="logo_img" style="display: none;">
+					</div>
+				</section>
+				<div class="formChild">
+					<div class="lt">姓名<span>*</span></div>
+					<div class="mt"><input id="fullname" name="fullname" placeholder="请填写" value="{#$resume_basic.fullname#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">性别<span>*</span></div>
+					<div class="inptxt radio">
+            			{#if $resume_basic.sex==1 || $resume_basic.sex==""#}
+						<li><div class="radio-btn checkedRadiospec"><i><input type="radio" value="2" name="radio-btn" title="女"></i></div>女</li>
+						<li><div class="radio-btn checkedRadio checkedRadiospec"><i><input type="radio" value="1" checked="checked" name="radio-btn" title="男"></i></div>男</li>
+						{#else#}
+						<li><div class="radio-btn checkedRadio checkedRadiospec"><i><input type="radio" value="2" checked="checked" name="radio-btn" title="女"></i></div>女</li>
+						<li><div class="radio-btn checkedRadiospec"><i><input type="radio" value="1" name="radio-btn" title="男"></i></div>男</li>
+						{#/if#}
+      					<input type="hidden" name="sex" id="sex" value="1"/>
+      					<input type="hidden" name="sex_cn" id="sex_cn" value="男"/>
+					</div>
+				</div>
+				<div class="formChild">
+					<div class="lt">出生年份<span>*</span></div>
+					<label id="brithdayTxt" data-type="birthday" data-text="选择出生年份" class="mt check mbs">{#if $resume_basic.birthdate#}{#$resume_basic.birthdate#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="birthdate" name="birthdate" value="{#$resume_basic.birthdate#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">最高学历<span>*</span></div>
+					<label id="educationTxt" data-type="education" class="mt check mbs">{#if $resume_basic.education_cn#}{#$resume_basic.education_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="education" name="education" value="{#$resume_basic.education#}" />
+					<input type="hidden" id="education_cn" name="education_cn" value="{#$resume_basic.education_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">专业</div>
+					<label id="majorTxt" data-type="major" data-go="major" data-text="选择专业" class="mt check mbs">{#if $resume_basic.major_cn#}{#$resume_basic.major_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="major" name="major" value="{#$resume_basic.major#}" />
+					<input type="hidden" id="major_cn" name="major_cn" value="{#$resume_basic.major_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">工作经验<span>*</span></div>
+					<label id="experienceTxt" data-type="experience" data-text="选择工作经验" class="mt check mbs">{#if $resume_basic.experience_cn#}{#$resume_basic.experience_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="experience" name="experience" value="{#$resume_basic.experience#}" />
+					<input type="hidden" id="experience_cn" name="experience_cn" value="{#$resume_basic.experience_cn#}" />
+				</div>
+			</article>
+			<div class="cline"></div>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt">现居住地<span>*</span></div>
+					<div class="mt"><input id="residence" name="residence" placeholder="请填写" value="{#$resume_basic.residence#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">手机号码<span>*</span></div>
+					<div class="mt"><input id="telephone" name="telephone" placeholder="请填写" value="{#$resume_basic.telephone#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">邮箱<span>*</span></div>
+					<div class="mt"><input id="email" name="email" placeholder="请填写" value="{#$resume_basic.email#}" /></div>
+				</div>
+			</article>
+			<div class="cline"></div>
+			<article class="formDiv">
+				<div class="formChild" id="showNotrequired">
+					<div class="lt row">展开选填信息，填写更加分</div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">身高</div>
+					<div class="mt"><input id="height" name="height" placeholder="请填写" value="{#$resume_basic.height#}" />cm</div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">籍贯</div>
+					<div class="mt"><input id="householdaddress" placeholder="请填写" name="householdaddress" value="{#$resume_basic.householdaddress#}" /></div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">婚姻状况</div>
+					<label id="marriageTxt" data-type="marriage" data-text="选择婚姻状况" class="mt check mbs">{#if $resume_basic.marriage_cn#}{#$resume_basic.marriage_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="marriage" name="marriage" value="{#$resume_basic.marriage#}" />
+					<input type="hidden" id="marriage_cn" name="marriage_cn" value="{#$resume_basic.marriage_cn#}" />
+				</div>
+				<input type="hidden" name="title" value="{#$resume_basic.title#}"/>
+			</article>
+			<div class="select_bar_div"></div>
+			<article class="flex-box arlogout"><a id="resume_save" class="logout" href="javascript:;">保存</a></article>
+		</div>
+	</body>
+</html>

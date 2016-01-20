@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-账号安全</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// 头部选项卡切换
+				var widgetMenus = $('.satabwidget > .con div');
+				widgetMenus.on('click', function(event) {
+					$(this).addClass('h').siblings().removeClass('h');
+					$('.conforsatabwidget > .widget').eq($(this).index()).show().siblings().hide();
+				});
+				//点修改密码触发的事件
+				$("#pass_submit").click(function(){
+					var oldpassword=$("input[name='oldpassword']").val();
+					var password=$("input[name='password']").val();
+					var password1=$("input[name='password1']").val();
+					$.post("?act=save_password",{"oldpassword":oldpassword,"password":password,"password1":password1},function(data){
+						if(data=="密码修改成功！"){
+							layer.msg('密码修改成功！', {icon: 1});
+	                        setTimeout(function () {
+	                            window.location.href="user.php";
+	                        }, 2000);
+						}else
+						{
+							layer.msg(data);
+							$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+						}
+					});
+				}); 
+				//发送手机验证码
+				$("#send_code").click(function(){
+					$("#send_code").html("正在发送...");
+					$.post("?act=send_code", {"mobile": $("#mobile").val(),"send_key": "{#$send_mobile_key#}","time":new Date().getTime(),"act":"send_code"},
+						function (data,textStatus)
+						{
+							if (data=="success")
+							{	
+								$("#send_code").hide();			 
+							}
+							else
+							{
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+								$("#send_code").html("发送验证短信");
+							}
+						}
+					,"text"
+					)	
+				}); 
+				//验证手机验证码
+				$("#mobile_submit").click(function()
+				{
+					if($("#mobile_verifycode").val()=='')
+					{
+						layer.msg("请填写验证码");
+					}
+					else
+					{
+						$.post("?act=verify_code", {"verifycode": $("#mobile_verifycode").val(),"send_key": "{#$send_mobile_key#}","time":new Date().getTime(),"act":"verify_code"},
+						function (data,textStatus)
+						{
+							if (data=="success")
+							{	
+								layer.msg('验证成功！', {icon: 1});
+		                        setTimeout(function () {
+		                            window.location.reload();
+		                        }, 2000);
+							}
+							else
+							{
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+							}
+						})		
+					}
+				});
+				//修改邮箱
+				$("#email_submit").click(function()
+				{
+					var str =/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]w+)*$/; 
+					if($("#email").val()=='')
+					{
+						layer.msg('请输入邮箱！', {icon: 2});
+					}
+					else if(!str.test($("#email").val()))
+					{
+						layer.msg('邮箱填写错误！', {icon: 2});
+					}
+					else
+					{
+						$.post("?act=edit_email", {"email": $("#email").val(),"password":$("#e_password").val(),"send_key": "{#$send_mobile_key#}","time":new Date().getTime(),"act":"edit_email"},
+						 	function (data,textStatus)
+						 	{
+								if (data=="success")
+								{	
+									layer.msg('修改成功！', {icon: 1});
+			                        setTimeout(function () {
+			                            window.location.reload();
+			                        }, 2000);
+								}
+								else
+								{
+									layer.msg(data);
+									$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+								}
+						 	}
+							,"text"
+						)				 
+					}
+				});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">账号安全</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="satabwidget">
+				<div class="con flex-box">
+					<div class="left h">手机号<div class="line"></div></div>
+					<div class="center flex2">邮箱<div class="line"></div></div>
+					<div class="right flex2">密码<div class="line"></div></div>
+				</div>
+			</article>
+			<article class="conforsatabwidget">
+				<form class="widget" name="" id="" autocomplete="on">
+					<section class="con">
+						<div class="reminder flex-box">
+							{#if $userinfo.mobile_audit==1#}
+							当前已验证手机号为：{#$userinfo.mobile#}
+							{#else#}
+							验证后，您可以用手机号登录和找回密码哦！
+							{#/if#}
+						</div>
+						<div class="inputsec"><span class="icon-user-mobilphone"></span><input class="inp" type="text" name="mobile" id="mobile" required="required" pattern="^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$" placeholder="xxx-xxxx-xxxx" value="{#$mobile#}"/>
+						<div class="inputsec"><span class="icon-user-vercode"></span><input class="inp nbt" type="text" id="mobile_verifycode" name="mobile_verifycode" required="required" placeholder="请输入验证码" /></div>
+						<div class="getcaptcha" id="send_code">获取验证码</div>
+						<div class="reminder flex-box"><span class="icon-user-prompt"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span><font class="txtt">手机号修改后，简历与登录手机号将同步修改哦！</font></div>
+					</section>
+					<article class="flex-box arlogout mt10"><input id="mobile_submit" type="submit" class="logout co63a9d4" value="确定" /></article>
+				</form>
+				<form class="widget" name="" id="" autocomplete="on">
+					<section class="con">
+						<div class="reminder flex-box">
+							修改后，邮箱验证失效！
+						</div>
+						<div class="inputsec"><span class="icon-user-email"></span><input class="inp" type="email" id="email" name="email" required="required" value="{#$email#}"  autocomplete="off" placeholder="xxxxxx@xx.xxx" /></div>
+						<div class="inputsec"><span class="icon-user-lock"></span><input class="inp nbt" type="password" id="e_password" name="e_password" required="required" placeholder="请输入密码" /></div>
+						<div class="reminder flex-box"><span class="icon-user-prompt"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span><font class="txtt">简历与登录邮箱将同步修改哦！</font></div>
+					</section>
+					<article class="flex-box arlogout mt10"><input id="email_submit" type="button" class="logout co63a9d4" value="确定" /></article>
+				</form>
+				<form class="widget" name="Form1"  id="Form1" autocomplete="on">
+					<section class="con mt20">
+						<div class="inputsec"><span class="icon-user-lockp1"></span><input class="inp nbt" type="password" name="oldpassword" id="oldpassword" required="required" autocomplete="off" placeholder="请输入旧密码" /></div>
+						<div class="inputsec"><span class="icon-user-lockp2"></span><input class="inp nbt" type="password" name="password" id="password" required="required" autocomplete="off" placeholder="请输入6-16位数字加字母" /></div>
+						<div class="inputsec"><span class="icon-user-lockp3"></span><input class="inp nbt" type="password" name="password1" id="password1" required="required" autocomplete="off" placeholder="请再次输入新密码" /></div>
+					</section>
+					<article class="flex-box arlogout"><input id="pass_submit" type="button" class="logout co63a9d4" value="确定" /></article>
+				</form>
+			</article>
+		</div>
+	</body>
+</html>

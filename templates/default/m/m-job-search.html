@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>{#$QISHI.site_name#}-职位搜索</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/search.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left">
+				<a href="javascript:;" class="header-back" id="pageback"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center">
+				<div class="header-search"><i class="w-icon w-icon-search"></i><input type="text" name="" id="" class="header-search-text" placeholder="搜索职位或公司"></div>
+			</div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="job-search">
+				<div class="search-filter-box">
+					<div class="s-filter-item clearfix">
+						<span class="f-left">销售</span>
+						<a href="javascript:;" class="f-right"><i class="w-icon w-icon-close"></i></a>
+					</div>
+					<div class="s-filter-item clearfix">
+						<span class="f-left">销售销售销售销售销售销售销售销售销售销售销售</span>
+						<a href="javascript:;" class="f-right"><i class="w-icon w-icon-close"></i></a>
+					</div>
+				</div>
+				<div class="hot-job-box">
+					<div class="hot-title">热搜职位</div>
+					<ul class="hot-job-list clearfix">
+						{#foreach from=$hotword item=list#}
+						<li class="hot-job f-left"><a href="jobs-list.php?key={#$list.w_word#}">{#$list.w_word#}</a></li>
+						{#/foreach#}
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+		{#include file="m/footer.htm"#}
+	</div>
+	
+
+	<script src="js/jquery.min.js"></script>
+</body>
+</html>

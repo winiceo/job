@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>职位列表 - {#$QISHI.site_name#}</title>
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/search.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type="text/javascript" src="./js/iscroll.js" ></script>
+	<script type="text/javascript" src="./js/filter.js" ></script>
+	<script type='text/javascript' src="./js/jquery.pinterest.js" ></script>
+	<script type="text/javascript" src="./js/searchBar.js" ></script>
+	<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.thisurl').on('click', function(event) {
+				window.location.href =  $(this).attr('url');
+			});
+			var	key = $("#key").val(),
+				district = $("#hdistrict").val(),
+				sdistrict = $("#hsdistrict").val(),
+				district_cn = $("#hdistrict_cn").val(),
+				experience = $("#hexperience").val(),
+				experience_cn = $("#hexperience_cn").val(),
+				education = $("#heducation").val(),
+				education_cn = $("#heducation_cn").val(),
+				topclass = $("#htopclass").val(),
+				category = $("#hcategory").val(),
+				subclass = $("#hsubclass").val(),
+				category_cn = $("#hcategory_cn").val(),
+				settr = $("#hsettr").val(),
+				settr_cn = $("#hsettr_cn").val(),
+				wage = $("#hwage").val(),
+				wage_cn = $("#hwage_cn").val(),
+				nature = $("#hnature").val(),
+				nature_cn = $("#hnature_cn").val(),
+				scale = $("#hscale").val(),
+				scale_cn = $("#hscale_cn").val();
+			pinterest("{#$QISHI.wap_domain#}/plus/ajax.php?act=ajaxjobslist&key=" + encodeURIComponent(key) + "&district=" + district + "&sdistrict=" + sdistrict + "&experience=" + experience + "&education=" + education + "&topclass=" + topclass + "&category=" + category + "&subclass=" + subclass + "&settr=" + settr + "&wage=" + wage + "&nature=" + nature + "&scale=" + scale + "&district_cn=" + district_cn + "&category_cn=" + category_cn + "&experience_cn=" + experience_cn + "&settr_cn=" + settr_cn + "&education_cn=" + education_cn + "&wage_cn=" + wage_cn + "&nature_cn=" + nature_cn + "&scale_cn=" + scale_cn + "");
+			$(".search-block input").on("focus",function(e){
+				if($("body").has("#search_div").length){
+					searchBar.show();
+				}else{
+					searchBar.init();
+				}
+				$("#search_div .search input").focus();
+			});
+		});
+	</script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center">
+				<div class="header-tab clearfix">
+					<div class="h-tab-item active">找工作</div>
+					<a href="jobs-near-list.php"><div class="h-tab-item">离我最近</div></a>
+				</div>
+			</div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="top-search">
+				<div class="search-block">
+					<i class="w-icon w-icon-search w-icon-searchjobs"></i>
+					<input type="text" name="key" id="key" class="search-text" value="{#$smarty.get.key#}" placeholder="搜索职位或公司" data-code="joblist">
+				</div>
+				<div id="hiddenHotWords" style="display:none">
+					{#foreach from=$hotword item=list#}
+					<li data-self="{#$list.w_hot#}">{#$list.w_word#}</li>
+					{#/foreach#}
+				</div>
+			</div>
+			<div class="select_bar clear">
+				<ul class="clear">
+					<li class="col s_city" data-go="cityjob"><div><span>{#if $smarty.get.district_cn#}{#$smarty.get.district_cn#}{#else#}地区{#/if#}</span></div></li>
+					<li class="col s_job" data-go="jobjob"><div><span>{#if $smarty.get.category_cn#}{#$smarty.get.category_cn#}{#else#}职能{#/if#}</span></div></li>
+					<li class="col s_wage" data-go="wagejob"><div><span>{#if $smarty.get.wage_cn#}{#$smarty.get.wage_cn#}{#else#}薪资{#/if#}</span></div></li>
+					<li class="col s_morejob" data-go="morejob"><div><span>更多</span></div></li>
+				</ul>
+				<div class="mark_bottom"><div class="mark_line"></div></div>
+				<div class="lock"></div>
+				<div class="select_bar_div">
+					<div id="cityjobList" class="sl_list"><div><ul></ul></div></div>
+					<div id="jobjobList" class="sl_list"><div><ul></ul></div></div>
+					<div id="wagejobList" class="sl_list"><div><ul></ul></div></div>
+				</div>
+				<input type="hidden" id="hdistrict" value="{#$smarty.get.district#}">
+				<input type="hidden" id="hsdistrict" value="{#$smarty.get.sdistrict#}">
+				<input type="hidden" id="hdistrict_cn" value="{#$smarty.get.district_cn#}">
+				<input type="hidden" id="htopclass" value="{#$smarty.get.topclass#}">
+				<input type="hidden" id="hcategory" value="{#$smarty.get.category#}">
+				<input type="hidden" id="hsubclass" value="{#$smarty.get.subclass#}">
+				<input type="hidden" id="hcategory_cn" value="{#$smarty.get.category_cn#}">
+				<input type="hidden" id="hwage" value="{#$smarty.get.wage#}">
+				<input type="hidden" id="hwage_cn" value="{#$smarty.get.wage_cn#}">
+				<input type="hidden" id="hsettr" value="{#$smarty.get.settr#}">
+				<input type="hidden" id="hsettr_cn" value="{#$smarty.get.settr_cn#}">
+				<input type="hidden" id="heducation" value="{#$smarty.get.education#}">
+				<input type="hidden" id="heducation_cn" value="{#$smarty.get.education_cn#}">
+				<input type="hidden" id="hexperience" value="{#$smarty.get.experience#}">
+				<input type="hidden" id="hexperience_cn" value="{#$smarty.get.experience_cn#}">
+				<input type="hidden" id="hnature" value="{#$smarty.get.nature#}">
+				<input type="hidden" id="hnature_cn" value="{#$smarty.get.nature_cn#}">
+				<input type="hidden" id="hscale" value="{#$smarty.get.scale#}">
+				<input type="hidden" id="hscale_cn" value="{#$smarty.get.scale_cn#}">
+			</div>
+			<div class="select_bar_more">
+				<div class="more_main">
+					<div class="header">
+						<ul class="clear">
+							<li class="close"></li>
+							<li class="title">更多选择</li>
+							<li class="more_ok">确定</li>
+						</ul>
+					</div>
+					<div id="morejobList" class="sl_list"><div></div></div>
+					<div class="clear_more on">清空已选项</div>
+				</div>
+			</div>
+			<div class="search-data-block">
+				<div class="search-data-list jobs">
+					<div id="container">
+						{#foreach from=$jobs item=list#}
+						<section class="jobs-item thisurl box" url="{#$list.url#}">
+							{#if $list.stick=="1"#}<span class="job-ding"></span>{#/if#}
+							<h3><a href="{#$list.url#}">{#$list.jobs_name#}</a>
+								{#if $list.emergency=="1"#}<i class="ji-icon">急</i>{#/if#}
+								{#if $list.recommend=="1"#}<i class="jian-icon">荐</i>{#/if#}
+							</h3>
+							<div class="jobs-add">{#$list.district_cn#} | {#$list.companyname#}</div>
+							<div class="pay-date clearfix">
+								<div class="money f-left">{#$list.wage_cn#}</div>
+								<span class="f-right date">{#$list.refreshtime|date_format:"%Y-%m-%d"#}</span>
+							</div>
+						</section>
+						{#/foreach#}
+					</div>
+					<!-- 正在加载 -->
+					<article class="loadinglist flex-box">
+						<div class="spinner">
+							<div class="spinner-container container1"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div>
+							<div class="spinner-container container2"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div>
+							<div class="spinner-container container3"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div>
+						</div>
+					</article>
+					<!-- 没有更多职位了 -->
+					<article class="optionlist optionlisteditworkexp personalinfo remindnoinfo">
+						<section class="flex-box list" url="">
+							<div class="right cof90 flex2 nobm">没有更多职位了！</div>
+						</section>
+					</article>
+				</div>
+				<div class="global-list-more layout-box box-center-v">
+					{#if !$jobs#}
+					<a href="javascript:;" class="box-col ">没有更多职位了</a>
+					{#/if#}
+				</div>
+			</div>
+		</div>
+		{#include file="m/footer.htm"#}
+	</div>
+	<div class="back-to-top"><i class="w-icon w-icon-up"></i></div>
+
+	<div class="search-popup">
+		<div class="filter-control layout-box box-center-v">
+			<div class="condition-item box-col">地区<i class="w-icon w-icon-down"></i></div>
+			<div class="condition-item box-col">职能<i class="w-icon w-icon-down"></i></div>
+			<div class="condition-item box-col">薪资<i class="w-icon w-icon-down"></i></div>
+			<div class="condition-item box-col">更多<i class="w-icon w-icon-down"></i></div>
+		</div>
+		<div class="filter-content">
+			<section class="filter-class">地区</section>
+			<section class="filter-class">职能</section>
+		</div>
+	</div>
+	
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script src="js/search.js"></script>
+</body>
+</html>

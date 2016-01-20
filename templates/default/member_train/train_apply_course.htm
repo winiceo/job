@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link href="{#$QISHI.site_template#}css/user_common.css" rel="stylesheet" type="text/css" />
+<link href="{#$QISHI.site_template#}css/user_train.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.vtip-min.js" type="text/javascript" ></script>
+<script src="{#$QISHI.site_template#}js/jquery.dialog.js" type="text/javascript" ></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+//查看联系方式
+	$(".contact").click(function(){
+		var id=$(this).attr("id");
+		var tsTimeStamp= new Date().getTime();
+				var url="{#$QISHI.site_dir#}user/user_apply_contact.php?id="+id+"&act=downtype&t="+tsTimeStamp;
+				dialog("查看申请人联系方式","url:"+url,"500px","auto","");
+	})
+	//删除课程申请
+	$("#del").click(function(){
+		if(confirm("您确定要删除吗")){
+			$("#form1").attr("action","?act=del_apply&delete=1");
+			$("#form1").submit();
+		}
+		
+	})
+
+});
+
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 课程申请</div>
+<div class="usermain">
+  <div class="leftmenu  train link_bk">
+  	 {#include file="member_train/left.htm"#}
+  </div>
+  <div class="rightmain">
+  
+ 	<div class="bbox1 link_bk">
+		<div class="topnav" style="height:62px;">
+			<div class="titleH1">
+				<div class="h1-title">我收到的课程申请</div>
+			</div>
+		
+		</div>
+		<form id="form1" name="form1" method="post" action="?act=set_apply_course">
+		<!-- 所有课程 -->
+
+		<!-- 新的收到的课程申请 -->
+		<div class="new_apply_course">
+			<table class="n_apply_table" cellspacing="0">
+				<tbody>
+					<tr bgcolor="F5F5F5">
+						<th class="n_apply_first" align="left" width="150"><label><input type="checkbox" id="chk" name="chkAll"> 申请人</label></th>
+						<th align="center" width="250">申请的课程</th>
+						<th align="center" width="80">其他</th>
+						<th align="center" width="200">申请时间</th>
+						<th align="center" width="120">查看联系方式</th>
+					</tr>
+					{#if $course_apply#}
+					{#foreach from=$course_apply item=list#}
+					<tr>
+						<td class="n_apply_first" align="left" width="">
+							<input name="y_id[]" type="checkbox" id="y_id"   value="{#$list.did#}"/> {#$list.realname#}
+							 {#if $list.personal_look=="1"#}
+							   <span style="color: #FF6600">[未看]</span>
+							 {#else#}
+							   <span style="color: #999999">[已看]</span>
+							 {#/if#}				
+						</td>
+						<td align="center" width=""><a target="_blank" href="{#$list.course_url#}">{#$list.course_name#}</a></td>
+						<td align="center" width="">
+							{#if $list.notes#}
+							<img src="{#$QISHI.site_template#}images/25.jpg"  border="0"  style="cursor:pointer" title="{#$list.notes|nl2br#}" class="vtip"/>
+							{#else#}
+							无
+							{#/if#}
+						</td>
+						<td align="center" width="">{#$list.apply_addtime|date_format:"%Y-%m-%d"#}</td>
+						<td align="center" width=""><span class="contact" id="{#$list.did#}" style="cursor:pointer;color:#0180CF">查看</span></td>
+					</tr>
+					{#/foreach#}
+					<tr>
+						<td width="" style="border:0" colspan="4">
+							<label><input type="checkbox" name="chkAll"   id="chk2" title="全选/反选" /> <span> 全选 </span></label>
+							<input type="submit" name="set" value="设为已查看" class="but95_35lan" id="set"/>
+							<input type="submit" name="del" value="删除所选" class="but95_35lan" id="del"/>
+						</td> 
+						<td style="border:0" class="n_apply_first">
+							&nbsp;
+						</td>
+					</tr>
+					{#if $page#}
+					<table border="0" align="center" cellpadding="0" cellspacing="0" class="link_bk">
+				          <tr>
+				            <td height="50" align="center"> <div class="page link_bk">{#$page#}</div></td>
+				          </tr>
+				      </table>
+				      {#/if#}
+					{#else#}
+					<tr><td colspan="5" style="border:0"><div class="emptytip">还没有人申请课程！</div></td></tr>
+					{#/if#}
+				</tbody>
+			</table>
+
+		</div>
+		</form>
+
+  	</div>
+  </div>
+  <div class="clear"></div>
+</div>
+{#include file="user/footer.htm"#}
+</body>
+</html>

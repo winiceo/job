@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<title>积分商城-排行榜</title>
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/shop.css" />
+<script src="{#$QISHI.site_shop_template#}js/jquery.js"></script>
+<script>
+$(document).ready(function() {
+	$('.commodity-list .commodity-item:nth-child(4n)').css({'margin-right':0});
+});	
+</script>
+</head>
+<body>
+	{#include file="../tpl_shop/default/header.htm"#}
+	<div class=" container shop-main clearfix">
+		<!-- left -->
+		<div class="threefour-left">
+			<div class="item-nav">
+				<h2 class="i-nav-title">全部礼品分类</h2>
+				<ul class="big-type">
+					{#qishi_get_classify set="列表名:c_province,类型:QS_shop_category,id:0"#}
+          			{#foreach from=$c_province item=clist#}
+					<li class="b-type-li">
+						{#if $clist.parentid==0#}<h3>{#$clist.categoryname#}</h3>
+						{#qishi_get_classify set="列表名:scategory,类型:QS_shop_category,id:$clist.id"#}
+						{#/if#}
+						<ul class="small-type">
+							{#if $scategory#}
+							{#foreach from=$scategory item=slist#}
+							<li {#if $smarty.get.scategory==$slist.id#}style="font-weight:bold;"{#/if#}><a href="{#"scategory:$slist.id"|qishi_parse_url#}">{#$slist.categoryname#}</a></li>
+							{#/foreach#}
+							{#/if#}
+						</ul>
+					</li>
+					{#/foreach#}
+				</ul>
+			</div>
+		</div>
+		<!-- right -->
+				<div class="threefour-right">
+			<div class="right-common-box">
+				<div class="r-com-top">
+					<div class="rank-top clearfix">
+						<div class="rank-title f-left">兑换排行榜<span>TOP30</span></div>
+						<div class="rank-filter f-right">排名：<a {#if $smarty.get.display=="1" || $smarty.get.display==""#}class="display"{#/if#} href="{#"display:1,display2:10"|qishi_parse_url#}">1-10位</a>|<a {#if $smarty.get.display=="10"#}class="display"{#/if#} href="{#"display:10,display2:20"|qishi_parse_url#}">10-20位</a>|<a {#if $smarty.get.display=="20"#}class="display"{#/if#} href="{#"display:20,display2:30"|qishi_parse_url#}">20-30位</a></div>
+					</div>
+				</div>
+				<div class="rank-list">
+					{#if $list#}
+					{#foreach from=$list item=li#}
+					<div class="rank-item clearfix">
+						<div class="rank-icon f-left">{#$li.displaynum#}</div>
+						<div class="rank-item-pic f-left"><a href="{#$li.shop_url#}"><img src="{#if $li.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$li.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="产品图片" width="98" height="98" /></a></div>
+						<div class="rank-item-detail f-left">
+							<h4><a href="{#$li.shop_url#}">{#$li.shop_title#}</a></h4>
+							<p>礼品号：{#$li.shop_number#}</p>
+							<div class="rank-item-price">积分：<span>{#$li.shop_points#}</span></div>
+							<p>累计兑换：{#$li.click#} </p>
+						</div>
+					</div>
+					{#/foreach#}
+					<div class="rank-top clearfix">
+						<div class="rank-title f-left">兑换排行榜<span>TOP30</span></div>
+						<div class="rank-filter f-right">排名：<a {#if $smarty.get.display=="1" || $smarty.get.display==""#}class="display"{#/if#} href="{#"display:1,display2:10"|qishi_parse_url#}">1-10位</a>|<a {#if $smarty.get.display=="10"#}class="display"{#/if#} href="{#"display:10,display2:20"|qishi_parse_url#}">10-20位</a>|<a {#if $smarty.get.display=="20"#}class="display"{#/if#} href="{#"display:20,display2:30"|qishi_parse_url#}">20-30位</a></div>
+					</div>
+					{#else#}
+					<div class="data-empty"><img src="{#$QISHI.site_shop_template#}images/empty-box.png" alt="">没有数据了！</div>
+					{#/if#}
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{#include file="footer.htm"#}
+</body>
+</html>

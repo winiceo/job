@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// 添加链接
+				$('.optionlist .list').click( function () {window.location.href =  $(this).attr('url');});
+				$('.infolist.my').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">个人中心</span></div>
+				<div class="header-right flex3">
+					<a href="../index.php">
+						<div class="home">
+							<span class="homespan1">
+								<span class="homespan2">
+								</span>
+							</span>
+						</div>
+					</a>
+				</div>
+			</header>
+			<article class="infohead flex-box">
+				<div class="flexinfoheadlogo">
+					{#if $user.avatars==""#}
+					<img src="{#$QISHI.site_template#}images/06.jpg" width="59" height="64" border="0" />
+					{#else#}
+					<img src="{#$QISHI.site_dir#}data/avatar/100/{#$user.avatars#}" width="59" height="64" border="0" />
+					{#/if#}
+				</div>
+				<div class='flex2'>
+					<div class="infolist d">{#$user.username#} | {#$resume_info.sex_cn#} | {#$resume_info.age#}岁</div>
+					<div class="infolist {#if $user.mobile_audit==1#}m{#else#}my{#/if#}" url="../personal/account_security.php">手机号：{#$resume_info.phone#}</div>
+					<div class="infolist {#if $user.email_audit==1#}e{#else#}ey{#/if#}">邮箱：{#$resume_info.email#}</div>
+				</div>
+			</article>
+			<article class="optionlist">
+				<section class="flex-box list" url="?act=resume_list">
+					<div class="left"><div class="icon resume"><span class="icon-user-resumelist"></span></div></div>
+					<div class="right flex2">我的简历<div class="circle">{#$count_resume#}</div></div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="../personal/interview.php">
+					<div class="left"><div class="icon invi"><span class="icon-user-interview"></span></div></div>
+					<div class="right flex2">面试邀请{#if $count_interview!=0#}<div class="circle">{#$count_interview#}</div>{#/if#}</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="../personal/apply.php">
+					<div class="left"><div class="icon apply"><span class="icon-user-apply"></span></div></div>
+					<div class="right flex2">申请的职位</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="../personal/attentionme.php">
+					<div class="left"><div class="icon looked"><span class="icon-user-attentionme"></span></div></div>
+					<div class="right flex2">谁看过我</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="?act=favorites">
+					<div class="left"><div class="icon collect"><span class="icon-user-favorites"></span></div></div>
+					<div class="right flex2">我的收藏</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="../personal/account_security.php">
+					<div class="left"><div class="icon safety"><span class="icon-user-account"></span></div></div>
+					<div class="right flex2 nobm">账号安全</div>
+					<div class="arrow"></div>
+				</section>
+			</article>
+			<article class="flex-box arlogout"><a class="logout" href="../login.php?act=logout">退出登录</a></article>
+		</div>
+	</body>
+</html>

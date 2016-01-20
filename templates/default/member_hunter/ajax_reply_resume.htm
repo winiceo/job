@@ -1,0 +1,51 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall" id="ajax_delay_table">
+    	<tr>
+    		<td width="70" align="right"></td>
+		<td style="padding:5px 0"><input type="radio" name="is_reply" value="1" checked>&nbsp;您的简历符合要求。</td>
+		<td width="50">&nbsp;</td>
+	</tr>
+	<tr>
+    		<td width="70" align="right"></td>
+		<td style="padding:5px 0"><input type="radio" name="is_reply" value="2" checked>&nbsp;您的简历不符合要求。</td>
+		<td width="50">&nbsp;</td>
+	</tr>
+	<tr>
+    		<td width="70" align="right"></td>
+		<td style="padding:5px 0"><input type="radio" name="is_reply" value="3" checked>&nbsp;<span style="line-height:25px;">对不起，我们认为您不太符合该职位的要求，但我们</span><p style="padding-left:16px;line-height:25px;">会关注您的简历，以后有合适的职位我们会联系您。</p></td>
+		<td width="50">&nbsp;</td>
+	</tr>
+  	<tr>
+		<td colspan="3">
+			<div style="width:220px;margin:0 auto;">
+			<input type="hidden" id="resume_id" value="{#$resume_id#}"> 
+			<input type="hidden" id="jobs_id" value="{#$jobs_id#}"> 
+			<input type="button" value="确定" class="but95cheng" id="add" />
+			<input type="button" value="取消" class="but95hui" onclick="jacascript:location.reload();" />
+			</div>
+		</td>
+   	</tr>
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#add").click(function(){
+		var resume_id = $("#resume_id").val();  
+		var jobs_id = $("#jobs_id").val();  
+		var is_reply = $("input[name='is_reply']:checked").attr('value');   
+		if(is_reply == 'undefined'){ 
+			alert('请选择要设置的选择！');
+		}
+		$.post("hunter_ajax.php?act=reply_save",{resume_id:resume_id,jobs_id:jobs_id,is_reply:is_reply},function(result){  
+			if(result=="1"){
+				alert_dialog("success:设置成功！","","","","");
+				location.reload();
+			}else if(result=="-1"){
+				alert_dialog("fail:参数错误！","","","","");
+				return false;
+			}else{
+				alert_dialog("fail:"+result,"300px","","","");
+				return false;
+			}
+		});
+	}); 
+});
+</script>

@@ -1,0 +1,119 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	//点击批量取消	
+	$("#ButDel").click(function(){
+		if (confirm('你确定要删除吗？'))
+		{
+			$("form[name=form1]").submit()
+		}
+	});
+		
+});
+</script>
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	<!-- {#include file="jobfair/admin_jobfair_nav.htm"#} -->
+  <div class="clear"></div>
+</div>
+ <div class="toptip">
+	<h2>提示：</h2>
+	<p>
+ 可以直接复制链接,到您想要显示的地方。<br />
+</p>
+</div>
+
+
+ <div class="seltpye_x">
+		<div class="left">添加时间</div>	
+		<div class="right">
+		<a href="{#"settr:"|qishi_parse_url#}" {#if $smarty.get.settr==""#}class="select"{#/if#}>不限</a>
+		<a href="{#"settr:3"|qishi_parse_url#}" {#if $smarty.get.settr=="3"#}class="select"{#/if#}>三天内</a>
+		<a href="{#"settr:7"|qishi_parse_url#}" {#if $smarty.get.settr=="7"#}class="select"{#/if#}>一周内</a>
+		<a href="{#"settr:30"|qishi_parse_url#}" {#if $smarty.get.settr=="30"#}class="select"{#/if#}>一月内</a>
+		<a href="{#"settr:180"|qishi_parse_url#}" {#if $smarty.get.settr=="180"#}class="select"{#/if#}>半年内</a>
+		<a href="{#"settr:360"|qishi_parse_url#}" {#if $smarty.get.settr=="360"#}class="select"{#/if#}>一年内</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  
+  <form id="form1" name="form1" method="post" action="?act=jobfair_section_del">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_bk">
+    <tr>
+      <td height="26" class="admin_list_tit admin_list_first" width="220">
+      <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>招聘会标题</label>
+	  </td>
+      <td align="center" class="admin_list_tit">是否是单行业</td>
+      <td align="center" class="admin_list_tit"> 行业 </td>
+      <td align="center" class="admin_list_tit" >添加日期</td>
+      <td align="center" class="admin_list_tit" >招聘会链接</td>
+      <td align="center" class="admin_list_tit" >操作</td>
+    </tr>
+	  {#foreach from=$list item=list#}
+      <tr>
+      <td  class="admin_list admin_list_first">
+        <input name="id[]" type="checkbox" id="id" value="{#$list.id#}"/>    
+        {#$list.title#}
+	    </td>
+		<td  align="center" class="admin_list" >
+			{#if $list.is_singleness==1#}单行业{#else#}多行业{#/if#}
+		</td>
+        <td align="center"  class="admin_list" title="{#$list.trade_cn#}">{#$list.trade_cn#}</td>
+        <td align="center"  class="admin_list">
+		{#$list.addtime|date_format:"%Y-%m-%d"#}
+		</td>
+		<td align="center"  class="admin_list" title="{#$list.jobfair_url#}">
+		<a href="{#$list.jobfair_url#}" target="_balank">{#$list.jobfair_url#}</a>
+		</td>
+        <td align="center"  class="admin_list">
+		<a href="?act=jobfair_section_show&id={#$list.id#}">修改</a> &nbsp;&nbsp;
+		<a href="?act=jobfair_section_del&id={#$list.id#}" onclick="return confirm('你确定要删除吗？')">删除</a></td>
+      </tr>
+      {#/foreach#}
+    </table>
+  </form>
+	{#if !$list#}
+	<div class="admin_list_no_info">没有任何信息！</div>
+	{#/if#}	
+<table width="100%" border="0" cellspacing="10"  class="admin_list_btm">
+<tr>
+        <td>
+        <input name="ButADD" type="button" class="admin_submit" id="ButADD" value="新增"  onclick="window.location='?act=jobfair_add'"/>
+		<input name="ButDel" type="button" class="admin_submit" id="ButDel"  value="删除所选"/>
+		</td>
+        <td width="305" align="right">
+		<form id="formseh" name="formseh" method="get" action="?">	
+			<div class="seh">
+			    <div class="keybox"><input name="key" type="text"   value="{#$smarty.get.key#}" /></div>
+			    <div class="selbox">
+					<input name="key_type_cn"  id="key_type_cn" type="text" value="{#$smarty.get.key_type_cn|default:"标题"#}" readonly="true"/>
+						<div>
+								<input name="key_type" id="key_type" type="hidden" value="{#$smarty.get.key_type|default:"1"#}" />
+												<div id="sehmenu" class="seh_menu">
+														<ul>
+														<li id="1" title="标题">标题</li>
+														</ul>
+												</div>
+						</div>				
+				</div>
+				<div class="sbtbox">
+				<input name="act" type="hidden" value="" />
+				<input type="submit" name="" class="sbt" id="sbt" value="搜索"/>
+				</div>
+				<div class="clear"></div>
+		  </div>
+		  </form>
+		  <script type="text/javascript">$(document).ready(function(){showmenu("#key_type_cn","#sehmenu","#key_type");});	</script>
+	    </td>
+      </tr>
+  </table>
+{#if $list#}
+<div class="page link_bk">{#$page#}</div>
+{#/if#}
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

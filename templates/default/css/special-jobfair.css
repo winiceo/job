@@ -1,0 +1,75 @@
+/*
+***此样式文件为3.7版本专场招聘会相关样式，此样式独立于主站任何CSS文件
+*/
+/*CSS reset*/
+body, html{ margin:0px;background-color: #ffffff;font-family:Arial,"Microsoft Yahei",sans-serif; font-size:12px; color:#000000; height:100%;background-color: #fff;}
+html.bg-body,
+html.bg-body body{background-color: #f2eee9;}
+h1,h2,h3,h4,h5,form,p,ul{ margin:0px; padding:0px;font-weight: normal;}
+ul, ol{list-style: none;}
+input,textarea {font-family:Arial,"Microsoft Yahei",sans-serif;font-size:14px; color: #666666;outline: none;border:0;margin:0;padding:0;}
+li {padding:0px; margin:0px;list-style-type:none;}
+a{text-decoration:none;}
+img{border:0;vertical-align: middle;}
+.clearfix:after{content:"";display:block;clear:both;}
+.clearfix{zoom:1;}
+.f-left{float: left;}
+.f-right{float: right;}
+label{cursor: pointer;}
+textarea{border:0;resize:none;overflow: auto;}
+input.checkbox{position: relative;top:2px;margin-right: 7px;}
+input.radio{position: relative;top:2px;margin-right: 5px;}
+.container{width: 1000px;margin:0 auto;}
+a.underline:hover{text-decoration: underline;}
+
+.header-logo{height: 60px;position: relative;z-index: 10;padding-top: 13px;}
+.banner-wrap{width: 100%;height: 451px;background: url(../images/jobfair-banner.jpg) no-repeat center center;margin-top: -74px;}
+.banner-wrap.industry{background: url(../images/jobfair-banner2.jpg) no-repeat center center;}
+.nav-wrap{width: 100%;background-color: #fff;height: 80px;border-bottom:1px solid #cecece;}
+.nav-wrap ul{width: 800px;overflow: hidden;}
+.nav-wrap ul li{font-size: 24px;width: 200px;text-align: center;}
+.nav-wrap ul li.active a,
+.nav-wrap ul li:hover a{color:#0180cf;border-bottom:7px solid #0180cf;}
+.nav-wrap ul li a{display: block;border-bottom: 7px solid transparent;color:#333;padding:23px 0 20px;}
+.nav-wrap .share{margin:20px 0;border-left:1px solid #cecece;height: 40px;width: 198px;}
+.nav-wrap .share span{padding-left: 10px;line-height: 40px;color:#999;font-family: "SimSun";}
+.nav-wrap .share .share-link{width: 30px;height: 25px;background: url(../images/s-jobfair-icon.png) no-repeat;margin-left: 12px;text-indent: -9999px;margin-top: 6px;}
+.nav-wrap .share .share-link.qq{background-position: 2px 1px;}
+.nav-wrap .share .share-link.sina{background-position: -35px 1px;}
+.nav-wrap .share .share-link.wechat{background-position: -74px 0px;}
+/*多行业*/
+.participate-industry{margin-top: 60px;padding-bottom: 20px;}
+.participate-industry .title{width: 430px;height: 40px;margin:0 auto;}
+.participate-industry .title .decoration{width: 60px;height: 40px;position: relative;background: url(../images/s-jobfair-icon.png) no-repeat;z-index: 5;}
+.participate-industry .title .decoration.left{background-position: 0px -60px;top:10px;left:15px;}
+.participate-industry .title .decoration.right{background-position: -140px -60px;top:10px;right:15px;}
+.participate-industry .title .title-block{width: 310px;height: 40px;background-color: #d10000;line-height: 40px;color:#fff;font-size: 24px;text-align: center;position: relative;z-index: 10}
+.participate-list{padding-top: 25px;margin-left: -40px;}
+.participate-list .participate-item{margin:20px 0 0 40px;width: 304px;height: 334px;border:1px dashed #dcdcdc;background-color: #fff;}
+.participate-list .participate-item .local{text-align: center;padding-top: 15px;line-height: 16px;font-size: 12px;color:#999;}
+.participate-list .participate-item .local .local-icon{display: inline-block;height: 16px;width: 12px;background: url(../images/s-jobfair-icon.png) no-repeat -190px 0px;vertical-align: middle;margin-right: 5px;}
+.participate-list .participate-item .com-logo{width: 176px;height: 82px;margin:20px auto;}
+.participate-list .participate-item .com-info{width: 200px;text-align:center;border-top:1px solid #ededed;margin:0 auto;line-height: 32px;font-size: 12px;color:#999;}
+.participate-list .participate-item .com-job-list{padding:0 20px;}
+.com-job-list .job-item{font-size: 14px;line-height: 20px;margin-top: 10px;}
+.com-job-list .job-item div{width: 160px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.com-job-list .job-item div a{color:#333;}
+.com-job-list .job-item span{font-size: 14px;color:#ff9900;}
+.participate-list .participate-item .more-job-btn{display: block;width: 130px;height: 30px;margin:25px auto 0;text-align: center;line-height: 30px;border:1px solid #0180cf;background-color: #fff;font-size: 14px;color:#0180cf;border-radius: 20px;}
+.participate-list .participate-item .more-job-btn:hover{background-color: #0180cf;color:#fff;}
+
+/*单行业*/
+.industry-container{padding-top: 100px;margin-left: -75px;}
+.industry-container .industry-item{width: 280px;height: 436px;border:1px solid #7fb7e5;background-color: #fff;margin-left: 75px;margin-bottom: 40px;overflow: hidden;position: relative;}
+.industry-item .logo-box{margin:30px auto 0;width: 188px;height: 99px;border:1px solid #7fb7e5;overflow: hidden;}
+.industry-item .com-name{line-height: 38px;height: 38px;font-size: 18px;text-align: center;}
+.industry-item .com-name a{color:#333;}
+.industry-item .com-name a:hover{color:#7fb7e5;}
+.industry-item .com-text{width: 260px;height: 40px;line-height: 40px;font-size: 12px;color:#fff;text-align: center;margin:8px auto 0;background-color: #7fb7e5;}
+.industry-item .industry-job-list{padding:25px 10px;}
+.industry-item .industry-job-list .industry-job-item{font-size: 14px;margin-bottom: 10px;line-height: 20px;}
+.industry-item .industry-job-list .industry-job-item .job-name{width: 155px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.industry-item .industry-job-list .industry-job-item .job-name a{color:#333;}
+.industry-item .industry-job-list .industry-job-item span{color:#ff9900;}
+.industry-item .more-link{position: absolute;left:0;bottom:0;height: 40px;width: 100%;color:#fff;font-size: 18px;text-align: center;line-height: 40px;background-color: #7fb7e5;}
+.industry-item .more-link:hover{background-color: #72a3cc;}

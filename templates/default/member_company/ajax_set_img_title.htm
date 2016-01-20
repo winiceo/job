@@ -1,0 +1,57 @@
+<!-- 风采备注弹出 -->
+<div class="img-edit-dialog dialog-block">
+	<div class="dialog-item clearfix">
+		<div class="d-type f-left">上传日期：</div>
+		<div class="d-content f-left">{#$addtime#}</div>
+	</div>
+	<div class="dialog-item clearfix">
+		<div class="d-type f-left">照片描述：</div>
+		<div class="d-content f-left"><textarea name="title" id="des_title" cols="30" rows="10" class="dialog-textarea">{#$title#}</textarea></div>
+	</div>
+	<div class="center-btn-wrap">
+		<input type="hidden" id="id" value="{#$id#}">
+		<input type="button" value="保存" class="btn-65-30blue btn-big-font" id="set_title"/>
+		<input type="button" value="取消" class="btn-65-30grey btn-big-font DialogClose"/>
+	</div>
+</div>
+<script src="{#$site_template#}js/dialog-min.js" type='text/javascript' language="javascript"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#set_title").click(function()
+	{
+		var id = $("#id").val();
+		var title = $("#des_title").val();
+		$.post("company_ajax.php?act=img_title_save",{id:id,title:title},function(result)
+		{
+			if(result=="1")
+			{
+				dialog({
+					title: '系统提示',
+				    content: "备注成功！",
+				    width:300,
+				}).show();
+				location.reload();
+			}
+			else if(result=="-1")
+			{
+				dialog({
+					title: '系统提示',
+				    content: "参数错误！",
+				    width:300,
+				}).show();
+				return false;
+			}
+			else
+			{
+				dialog({
+					title: '系统提示',
+				    content: "参数失败："+result,
+				    width:300,
+				}).show();
+				return false;
+			}
+		});
+	});
+});
+</script>

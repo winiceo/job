@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-职位管理</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<link rel="stylesheet" href="../css/nativeShare.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCM.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script type="text/javascript" src="../js/nativeShare.js" ></script>
+		<script type="text/javascript">
+		$(document).ready(function()
+		{
+			// ajax 发布职位
+			$(".arlogout").click(function(){
+				$.post("company_jobs.php?act=ajax_jobs_add",function(data){
+					if(data=="1")
+					{
+						window.location.href='company_jobs.php?act=jobs_add';
+					}
+					else if(data=="2")
+					{
+						layer.msg('请完善企业资料！', {icon: 3});
+						setTimeout(function () {
+						window.location.href='user.php?act=company_info_add';
+						}, 2000);
+					}
+					else
+					{
+						layer.msg(data);
+						$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+						setTimeout(function () {
+						window.location.href='user.php';
+						}, 2000);
+					}
+				})
+			});
+		});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">职位管理</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			{#if $row#}
+			{#foreach from=$row  item=list#}
+			<article class="classifylist resumelist">
+				<section class="title flex-box"><div class="name">{#$list.jobs_name_#}</div></section>
+				<section class="txt flex-box"><div class="left">职位状态：<span class="cof90">{#$list.status_cn#}</span></div><div class="right flex2">应聘简历：{#$list.countresume#}</div></section>
+				<section class="txt flex-box"><div class="left">刷新时间：{#$list.refreshtime|date_format:'%Y-%m-%d'#}</div><div class="right flex2">浏览次数：{#$list.click#}</div></section>
+				<section class="linebar">
+					<div class="whole">
+						<div class="boxleft"></div>
+						<div class="boxline"></div>
+						<div class="boxright"></div>
+					</div>
+				</section>
+				<section class="compilehandle flex-box">
+					<div class="handle refresh {#if $list.display==1#}jobs_refresh{#/if#}" jid="{#$list.id#}"><div class="icon"><span class="icon-user-refresh"></span></div><div class="txt">刷新</div></div>
+					<div class="handle compile" onclick="window.location.href='?act=jobs_edit&id={#$list.id#}'"><div class="icon"><span class="icon-user-compile"></span></div><div class="txt">编辑</div></div>
+					<div class="handle popularize" data-name="{#$list.jobs_name_#}" data-jobsid="{#$list.id#}"  data-type="{#$QISHI.operation_mode#}"><div class="icon"><span class="icon-user-popularize"></span></div><div class="txt">推广</div></div>
+					<div class="handle share" data-url="{#$QISHI.site_domain#}{#$QISHI.site_dir#}m/jobs-show.php?id={#$list.id#}" data-title="【{#$list.jobs_name_#}_{#$list.companyname#}】" data-img="{#$QISHI.site_domain#}{#$QISHI.site_dir#}data/images/logo.gif" data-from="{#$QISHI.site_name#}" data-imgtitle="薪资{#$list.wage_cn#}|学历{#$list.education_cn#}|工作经验{#$list.experience_cn#}{#if $list.tag_cn#}|标签{#$list.tag_cn#}{#/if#}"><div class="icon"><span class="icon-user-share"></span></div><div class="txt">分享</div></div>
+					<div class="handle more setMore" data-jid="{#$list.id#}" data-state="{#$list.display#}"><div class="icon"><span class="icon-user-more"></span></div><div class="txt">更多</div></div>
+				</section>
+				<section class="bottom"></section>
+			</article>
+			{#/foreach#}
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"></div>
+				<div class="txt flex-box">您没有发布职位！</div>
+			</article>
+			{#/if#}
+			<div class="select_bar_div"></div>
+			<article class="flex-box arlogout"><a class="logout" href="javascrtpt:;">发布职位</a></article>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>人才测评-测评</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_evaluation_template#}css/review.css" />
+<link href="{#$QISHI.site_template#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_evaluation_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script>
+	$(function() {
+		// $('.q-choose-group').find('label:first').css({'margin-left':0});
+		var recoverQueItemArr = $(".question-item"),
+			revoverCookieArr = new Array(),
+			radioArr = $(".question-item input");
+		$.each(revoverCookieArr, function(index, val) {
+			 $.each(radioArr, function(ind, va) {
+			 	if (val == $(this).attr("value")) {
+			 		$(this).attr("checked",!$(this).is(":checked"));
+			 	};
+			 });
+		});
+		$("#next_page").on('click',function() {
+			var questionItemArr = $(".question-item");
+
+			var checkLength = 0;
+			$.each(questionItemArr, function(index, val) {
+				var checkObj = $(this).find('input[name="question['+$(this).data("code")+']"]:checked '),
+					checkValue = checkObj.val();
+				checkLength+=checkObj.length;
+			});
+			if (checkLength < $(".question-item").length) {
+				var myDialog = dialog();
+				myDialog.title('系统提示');
+				myDialog.content("您有未完成的项目，请完成后操作！");
+				myDialog.width('300');
+				myDialog.showModal();
+				/* 关闭 */
+				$(".DialogClose").live('click',function() {
+					myDialog.close().remove();
+				});
+				return false;
+			}  else {
+				$("form1").submit();
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_evaluation/default/header.htm"#}
+	<div class="review-main container">
+		<div class="review-wrap">
+			<div class="g-top-box">
+				<h1><span>{#$paper_info.title#}</span></h1>
+				<div class="review-detail-top">
+					<div>
+						<span>题量：{#$paper_info.question_num#}题</span>
+						<span>测评时间：{#$paper_info.timelimit#}分钟</span>
+						<span>价格：<em>{#if $paper_info.price>0#}{#$paper_info.price#}{#else#}免费{#/if#}</em></span>
+						<span>请您仔细阅读并作答。</span>
+					</div>
+					<p>关键词：{#$paper_info.keywords#}</p>
+					<p>{#$paper_info.description#}</p>
+				</div>
+			</div>
+			<form action="evaluation_ajax.php?act=next_page" method="POST" id="form1" name="form1">
+			<div class="g-main-box">
+				{#if $question_list#}
+				<div class="questions">
+					{#foreach from=$question_list item=list#}
+					<div class="question-item error clearfix" data-code="{#$list.id#}">
+						<div class="question-index f-left">第{#$list.key#}题</div>
+						<div class="question-content">
+							<div class="q-title">{#$list.title#}</div>
+							<div class="q-choose-group clearfix">
+								{#foreach from=$list.option item=op#}
+								<label><input type="radio" name="question[{#$list.id#}]" id="" class="radio" value="{#$op.id#}" {#if $op.id|in_array:$answer_id#}checked{#/if#}/>{#$op.name#}</label>
+								<input type="hidden" name="question_score[{#$op.id#}]" value="{#$op.score#}">
+								{#/foreach#}
+							</div>
+						</div>
+					</div>
+					{#/foreach#}
+				</div>
+				<div class="question-control clearfix">
+					<span class="f-left">本部分第{#$page#}/{#$page_num#}页，每页{#$perpage#}题   共有{#$total_val#}道题</span>
+					{#if $next_page#}
+					<input type="submit" name="next_page" id="next_page" value="下一页" class="question-btn f-right next_page">
+					{#else#}
+					<input type="submit" name="submit_button" id="next_page" value="提交" class="question-btn f-right next_page">
+					{#/if#}
+					{#if $pre_page#}
+					<input type="submit" name="pre_page" value="上一页" class="question-btn f-right next_page" >
+					{#/if#}
+					<input type="hidden" name="act" value="next_page">
+					<input type="hidden" name="id" value="{#$paper_info.id#}">
+					<input type="hidden" name="page" value="{#$page#}">
+					<input type="hidden" name="page_num" value="{#$page_num#}">
+					<input type="hidden" name="perpage" value="{#$perpage#}">
+					<input type="hidden" name="total_val" value="{#$total_val#}">
+				</div>
+				{#else#}
+				<div class="no-data">
+					<i class="no-data-icon"></i><span>没有相关测题！</span>
+				</div>
+				{#/if#}
+			</div>
+		</form>
+		</div>
+	</div>
+	{#include file="../tpl_evaluation/default/footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-首页</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/wapcheckall.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript">
+		$(document).ready(function()
+		{
+			// ajax 发布职位
+			$(".jobposted").click(function(){
+				$.post("company_jobs.php?act=ajax_jobs_add",function(data){
+					if(data=="1")
+					{
+						window.location.href='company_jobs.php?act=jobs_add';
+					}
+					else if(data=="2")
+					{
+						layer.msg('请完善企业资料！', {icon: 3});
+						setTimeout(function () {
+						window.location.href='user.php?act=company_info_add';
+						}, 2000);
+					}
+					else
+					{
+						layer.msg(data);
+						$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+						setTimeout(function () {
+						window.location.href='user.php';
+						}, 2000);
+					}
+				})
+			});
+		});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">会员中心</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="makeresumetitbox flex-box companyinfotitbox companyindextitbox">
+				<div class="title">{#$company_info.companyname#}</div>
+				<div class="left">
+					{#if $company_info.logo==""#}
+					<img class="img" src="{#$QISHI.site_template#}images/no_logo.gif" />
+					{#else#}
+					<img class="img" src="{#$QISHI.site_dir#}data/logo/{#$company_info.logo#}" />
+					{#/if#}
+				</div>
+				<div class="right pdtop0">
+					<div class="txt">企业认证：<span class="state">{#if $company_info.audit==0#}<a href="?act=company_auth">未认证</a>{#elseif $company_info.audit==1#}认证通过{#elseif $company_info.audit==2#}等待认证{#else#}认证未通过{#/if#}</span></div>
+					<div class="txt down">{#if $QISHI.operation_mode=="1"#}当前积分：{#$user_points#}{#elseif $QISHI.operation_mode=="2"#} {#if $user_setmeal.setmeal_id>'1'#}<img class="img" src="{#$QISHI.site_dir#}data/setmealimg/{#$user_setmeal.setmeal_id#}.gif" width="14" height="17" />{#/if#}当前套餐：{#$user_setmeal.setmeal_name#}{#else#} {#if $user_setmeal.setmeal_id>'1'#}<img class="img" src="{#$QISHI.site_dir#}data/setmealimg/{#$user_setmeal.setmeal_id#}.gif" width="14" height="17" />{#/if#}{#$user_setmeal.setmeal_name#}&nbsp;{#$user_points#} {#$QISHI.points_byname#}{#/if#}</div>
+				</div>
+			</article>
+			<article class="module">
+				<div class="list flex-box">
+					<div class="left jobposted"><span class="icon icon-user-compile"></span><div class="txt">发布职位</div></div>
+					<div class="right managerialposition" onclick="window.location.href='company_jobs.php'"><span class="icon icon-user-managerialposition"></span><div class="txt">管理职位</div></div>
+				</div>
+				<div class="list flex-box">
+					<div class="left resumesearch" onclick="window.location.href='../resume-list.php'"><span class="icon icon-user-search"></span><div class="txt">简历搜索</div></div>
+					<div class="right resumemanage" onclick="window.location.href='company_resume.php'"><span class="icon icon-user-apply"></span><div class="txt">简历管理</div></div>
+				</div>
+				<div class="list flex-box">
+					<div class="left refreshposition" onclick="window.location.href='company_jobs.php'"><span class="icon icon-user-refresh"></span><div class="txt">刷新职位</div></div>
+					<div class="right accountmanagement" onclick="window.location.href='account_manager.php'"><span class="icon icon-user-setup"></span><div class="txt">账户管理</div></div>
+				</div>
+			</article>
+			<article class="classifylist classifylistcomindx nomb">
+				<section class="title flex-box">
+					<div class="name comindex">套餐会员产品</div>
+				</section>
+				<section class="txt flex-box">
+					<div class="left normalbig">多种特权随心享</div>
+				</section>
+				<section class="more"><a href="?act=setmeal_product">了解详情</a></section>
+			</article>
+			<article class="classifylist classifylistcomindx nomb">
+				<section class="title flex-box">
+					<div class="name comindex">企业认证</div>
+				</section>
+				<section class="txt flex-box">
+					<div class="left normalbig">认证企业更受青睐</div>
+				</section>
+				<section class="more">{#if $company_info.audit!=1#}<a href="?act=company_auth">立即认证</a>{#else#}已经通过认证{#/if#}</section>
+			</article>
+			<article class="classifylist classifylistcomindx nomb">
+				<section class="title flex-box">
+					<div class="name comindex">联系客服</div>
+				</section>
+				<section class="txt flex-box">
+					<div class="left normalbig">{#if $consultant#}专属客服 QQ : {#$consultant#}{#else#}请联系管理员为您分配顾问{#/if#}</div>
+				</section>
+			</article>
+			<article class="listshowmore listshowmorecomindx flex-box" onclick="window.location.href='../login.php?act=logout'">安全退出</article>
+		</div>
+	</body>
+</html>

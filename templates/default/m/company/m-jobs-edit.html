@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-修改职位</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCM.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/popWin.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript">
+		$(document).ready(function()
+		{
+			// ajax 修改职位
+			$("#edit_job_but").click(function(){
+				var id = "{#$jobs.id#}";
+				var add_mode =$("input[name=add_mode]").val();
+				var jobs_name =$("input[name=jobs_name]").val();
+				var topclass =$("input[name=topclass]").val();
+				var category =$("input[name=category]").val();
+				var subclass =$("input[name=subclass]").val();
+				var category_cn =$("input[name=category_cn]").val();
+				var contents =$("input[name=contents]").val();
+				var wage =$("input[name=wage]").val();
+				var wage_cn =$("input[name=wage_cn]").val();
+				var tag =$("input[name=tag]").val();
+				var tag_cn =$("input[name=tag_cn]").val();
+				var district =$("input[name=district]").val();
+				var sdistrict =$("input[name=sdistrict]").val();
+				var district_cn =$("input[name=district_cn]").val();
+				var address =$("input[name=address]").val();
+				var contact =$("input[name=contact]").val();
+				var email =$("input[name=email]").val();
+				var telephone =$("input[name=telephone]").val();
+				$.post("?act=jobs_edit_save",{id:id,add_mode:add_mode,jobs_name:jobs_name,topclass:topclass,category:category,subclass:subclass,category_cn:category_cn,tag:tag,tag_cn:tag_cn,email:email,district:district,sdistrict:sdistrict,district_cn:district_cn,wage:wage,wage_cn:wage_cn,contents:contents,contact:contact,telephone:telephone,address:address},function(data){
+					if(data=="ok")
+					{
+						layer.msg('修改职位成功！', {icon: 1});
+						setTimeout(function () {
+		                    window.location.href='?act=index';
+		                }, 2000);
+					}
+					else if(data=="err")
+					{
+						layer.msg('修改职位失败！', {icon: 2});
+					}else{
+						layer.msg(data);
+						$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+					}
+				})
+			});
+		});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">修改职位</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="conforsatabwidget">
+			</article>
+			<article class="formDiv comresume">
+				<div class="formChild">
+					<div class="lt">职位名称</div>
+					<div class="mt"><input id="jobs_name" name="jobs_name" value="{#$jobs.jobs_name#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">职位类别</div>
+					<label id="jobTxt" data-type="jobs" data-go="job" class="mt check mbs">{#$jobs.category_cn#}</label>
+					<input name="topclass" id="topclass" type="hidden" value="{#$jobs.topclass#}" />
+					<input name="category" id="category" type="hidden" value="{#$jobs.category#}" />
+					<input name="subclass" id="subclass" type="hidden" value="{#$jobs.subclass#}" />
+					<input name="category_cn" id="category_cn" type="hidden" value="{#$jobs.category_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">职位描述</div>
+					<label id="contentsTxt" class="mt check">{#$jobs.contents#}</label>
+					<input type="hidden" id="contents" name="contents" value="{#$jobs.contents#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">薪资待遇</div>
+					<label id="wageTxt" data-type="wage" data-text="选择薪资待遇" class="mt check mbs">{#$jobs.wage_cn#}</label>
+					<input type="hidden" id="wage" name="wage" value="{#$jobs.wage#}" />
+					<input type="hidden" id="wage_cn" name="wage_cn" value="{#$jobs.wage_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">工作地区</div>
+					<label id="cityTxt" data-type="city" data-go="city" data-text="选择工作地区" class="mt check mbs">{#$jobs.district_cn#}</label>
+					<input type="hidden" id="district" name="district" value="{#$jobs.district#}" />
+					<input type="hidden" id="sdistrict" name="sdistrict" value="{#$jobs.sdistrict#}" />
+					<input type="hidden" id="district_cn" name="district_cn" value="{#$jobs.district_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">职位亮点</div>
+					<label id="tagTxt" data-type="tag" data-text="选择职位亮点" class="mt check mbs">{#$jobs.tag_cn#}</label>
+					<input type="hidden" id="tag" name="tag" value="{#$jobs.tag#}" />
+					<input type="hidden" id="tag_cn" name="tag_cn" value="{#$jobs.tag_cn#}" />
+				</div>
+			</article>
+			<div class="cline"></div>
+			<article class="formDiv">
+				<div class="formChild" id="showNotrequired">
+					<div class="lt row">联系方式（必填）</div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">联系人</div>
+					<div class="mt"><input id="contact" name="contact" value="{#$jobs.contact.contact#}" /></div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">邮箱</div>
+					<div class="mt"><input id="email" name="email" value="{#$jobs.contact.email#}" /></div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">联系电话</div>
+					<div class="mt"><input id="telephone" name="telephone" value="{#$jobs.contact.telephone#}" /></div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">详细地址</div>
+					<div class="mt"><input id="address" name="address" value="{#$jobs.contact.address#}" /></div>
+				</div>
+			</article>
+			<div class="select_bar_div"></div>
+			<input type="hidden" name="add_mode" value="{#$jobs.add_mode#}"/>
+			<article class="flex-box arlogout"><a class="logout" id="edit_job_but" href="javascript:;">修改职位</a></article>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>触屏版企业会员中心-查工资</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="./css/user-common.css" />
+		<link rel="stylesheet" href="./css/user-company.css" />
+		<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="./js/jquery.common.js" ></script>
+		<script type="text/javascript" src="./js/layer/layer.js" ></script>
+		<script type="text/javascript" src="./js/iscroll.js" ></script>
+		<script type="text/javascript" src="./js/popWin.js" ></script>
+		<script type="text/javascript" src="./js/salarySetBar.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript" src="./js/fusioncharts.js"></script>
+		<script type="text/javascript" src="./js/themes/fusioncharts.theme.zune.js"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$("#search_salary_button").click(function(){
+					var district = $("#district_cn").val();
+					var category = $("#category_cn").val();
+					search_location(district,category);
+				});
+				function search_location(district,category)
+				{
+					$.get("./plus/ajax.php", {"act":"salary_search","district":district,"category":category},
+						function (data,textStatus)
+						 {
+							 window.location.href=data;
+						 }
+					);
+				}
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">查工资</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="conforsatabwidget">
+				<section class="con"><div class="reminder creatjobrem flex-box">你的工资够高吗？只需1秒，还你真相！</div></section>
+			</article>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt">选择职位</div>
+					<label id="jobTxt" data-type="jobs" data-go="job" class="mt check mbs">{#$smarty.get.category#}</label>
+					<input name="category_cn" id="category_cn" type="hidden" value="{#$smarty.get.category#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">选择地区</div>
+					<label id="cityTxt" data-type="city" data-go="city" class="mt check mbs">{#$smarty.get.district#}</label>
+					<input type="hidden" id="district_cn" name="district_cn" value="{#$smarty.get.district#}" />
+				</div>
+			</article>
+			<article class="flex-box arlogout salary"><a class="logout" id="search_salary_button" href="javascript:;">查工资</a></article>
+			<article class="resumeconlist">
+				<section class="title">{#$str#}平均月薪</section>
+				<article class="conforsatabwidget">
+					<section class="con consalary"><div class="reminder creatjobrem flex-box">{#$str#}平均月薪为：<font class="red">￥{#$all_salary.wage#}</font> 元</div></section>
+				</article>
+				<div class="tableSalary">
+					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+						<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+					</table>
+					<div class="skillbar clearfix" data-wage="{#$all_salary.wage#}" data-percent="">
+						<div class="skillbar-title"><span>{#$str#}平均月薪</span></div>
+						<div class="skillbar-bar"></div>
+						<div class="skill-bar-percent">￥{#$all_salary.wage#}</div>
+					</div>
+					<div class="salarytext">
+                        <span class="first">元/月</span><span>2000</span><span>4000</span><span>6000</span><span>8000</span><span>10000</span>
+                    </div>
+				</div>
+				<article class="conforsatabwidget">
+					<section class="con consalary"><div class="reminder creatjobrem flex-box">说明：统计截止到{#$smarty.now|date_format:'%Y-%m-%d'#}，该数据仅供参考。</div></section>
+				</article>
+			</article>
+			<article class="resumeconlist">
+				<section class="title">{#$str2#}招聘待遇分布</section>
+				<article class="conforsatabwidget">
+					<div id="chartContainer"></div>
+					<script type="text/javascript">
+						FusionCharts.ready(function(){
+							var revenueChart = new FusionCharts({
+							  type: "column2d",
+							  renderAt: "chartContainer",
+							  width: "100%",
+							  // height: "300",    
+							  dataFormat: "json",
+							  dataSource: {
+							"chart": {
+								"numberprefix": "￥",
+								"yaxismaxvalue": "10000",
+								"showborder": "0",
+								"theme": "zune",
+								"formatNumberScale":"0"
+							},
+							"data": {#$salary_barchart_experience#}
+						}
+						 
+						  });
+						  revenueChart.render("chartContainer");
+						}); 
+						 
+						</script>
+					<section class="con consalary"><div class="reminder creatjobrem flex-box">说明：统计截止到{#$smarty.now|date_format:'%Y-%m-%d'#}，该数据仅供参考。</div></section>
+				</article>
+			</article>
+		</div>
+		<div class="select_bar_div"></div>
+	</body>
+</html>

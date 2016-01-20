@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-简历创建成功</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">创建简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="successbox flex-box">
+				<div class="left"><span class="icon-user-smile"></span></div>
+				<div class="right">创建成功</div>
+			</article>
+			<article class="invitecollectresume makeresumesuccess flex-box">
+				<div class="left"><div class="improve" onclick="window.location.href='?act=resume_one&pid={#$smarty.get.pid#}'">继续完善</div></div>
+				<div class="right flex2"><a href="user.php" class="membercenter">会员中心</a></div>
+			</article>
+			<article class="optionlist optionlisteditworkexp personalinfo">
+				<section class="flex-box list" url="">
+					<div class="right cof90 flex2 nobm">根据您的求职意向，为您推荐以下职位：</div>
+				</section>
+			</article>
+			{#if $resume_jobs#}
+			{#foreach from=$resume_jobs item=list#}
+			<article class="classifylist nomb">
+				<section class="title flex-box">
+					<div class="name">{#$list.jobs_name#}</div>
+				</section>
+				<section class="content flex-box">{#$list.district_cn#} | {#$list.companyname#}</section>
+				<section class="txt flex-box">
+					<div class="left wage">{#$list.wage_cn#}</div>
+					<div class="right flex2">{#$list.refreshtime|date_format:"%Y-%m-%d"#}</div>
+				</section>
+			</article>
+			{#/foreach#}
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"><span class="icon-user-crying"></span></div>
+				<div class="txt flex-box">未匹配到相关职位，请继续完善简历！</div>
+			</article>
+			{#/if#}
+		</div>
+	</body>
+</html>

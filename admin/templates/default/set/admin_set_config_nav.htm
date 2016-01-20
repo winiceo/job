@@ -1,0 +1,18 @@
+<div class="topnav">
+<a href="?act=" {#if  $navlabel=='set'#}class="select"{#/if#}><u>网站配置</u></a>
+<a href="?act=agreement" {#if  $navlabel=='agreement'#}class="select"{#/if#}><u>注册设置</u></a>
+<a href="?act=map" {#if  $navlabel=='map'#}class="select"{#/if#}><u>电子地图</u></a>
+<div class="clear"></div>
+</div>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	//指定密码类型
+	var password_tpye=$("#reg_weixin_password_tpye  :radio[checked]").val();
+	password_tpye=="3"?$("#config_reg_password").show():$("#config_reg_password").hide();
+	$("#reg_weixin_password_tpye :radio").click(function(){
+	var password_tpye=$("#reg_weixin_password_tpye  :radio[checked]").val();
+	password_tpye=="3"?$("#config_reg_password").show():$("#config_reg_password").hide();
+	});	 
+});
+</script>

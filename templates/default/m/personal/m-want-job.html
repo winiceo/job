@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>触屏版个人会员中心-求职意向</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// ajax提交保存期望职位
+				$("#resume_save").click(function(event) {
+					var pid= {#$smarty.get.pid#};
+					var intention_jobs = $("input[name='intention_jobs']").val();
+					var intention_jobs_id = $("input[name='intention_jobs_id']").val();
+					var trade_cn=$("input[name=trade_cn]").val();
+					var trade=$("input[name=trade]").val();
+					var wage=$("input[name=wage]").val();
+					var wage_cn=$("input[name=wage_cn]").val();
+					var nature=$("input[name=nature]").val();
+					var nature_cn=$("input[name=nature_cn]").val();
+					var district_cn=$("input[name=district_cn]").val();
+					var district_id=$("input[name=district_id]").val();
+					var current=$("input[name=current]").val();
+					var current_cn=$("input[name=current_cn]").val();
+
+					$.post('?act=resume_jobs_save', {"intention_jobs":intention_jobs,"intention_jobs_id":intention_jobs_id,"pid":pid,"trade":trade,"trade_cn":trade_cn,"district_cn":district_cn,"district_id":district_id,"wage_cn":wage_cn,"wage":wage,"nature":nature,"nature_cn":nature_cn,"current":current,"current_cn":current_cn}, 
+					function(data) {
+						if (data == "ok") {
+							layer.msg('修改成功！', {icon: 1});
+	                        setTimeout(function () {
+	                            window.location.href = "user.php?act=resume_one&pid=" + pid;
+	                        }, 2000);
+						} else if(data == "err") {
+							layer.msg('修改失败！', {icon: 2});
+						} else {
+							layer.msg(data);
+							$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+						}
+					});
+				});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">求职意向</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt ltsmall">目前状态<span>*</span></div>
+					<label id="currentTxt" data-type="current" data-text="选择目前状态" class="mt check mbs">{#$resume_one.current_cn#}</label>
+					<input type="hidden" id="current" name="current" value="{#$resume_one.current#}" />
+					<input type="hidden" id="current_cn" name="current_cn" value="{#$resume_one.current_cn#}" />
+				</div>
+			</article>
+			<div class="cline"></div>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt">工作性质<span>*</span></div>
+					<label id="natureTxt" data-type="nature" data-text="选择工作性质" class="mt check mbs">{#$resume_one.nature_cn#}</label>
+					<input type="hidden" id="nature" name="nature" value="{#$resume_one.nature#}" />
+					<input type="hidden" id="nature_cn" name="nature_cn" value="{#$resume_one.nature_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望行业<span>*</span></div>
+					<label id="tradeTxt" data-type="trade" data-text="选择期望行业" class="mt check mbs">{#$resume_one.trade_cn#}</label>
+					<input type="hidden" id="trade" name="trade" value="{#$resume_one.trade#}" />
+					<input type="hidden" id="trade_cn" name="trade_cn" value="{#$resume_one.trade_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望职位<span>*</span></div>
+					<label id="jobTxt" data-type="jobs" data-go="job" data-text="选择期望职位" class="mt check mbs">{#$resume_one.intention_jobs#}</label>
+					<input type="hidden" id="intention_jobs_id" name="intention_jobs_id" value="{#$resume_jobs.topclass#}.{#$resume_jobs.category#}.{#$resume_jobs.subclass#}" />
+					<input type="hidden" id="intention_jobs" name="intention_jobs" value="{#$resume_one.intention_jobs#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望地区<span>*</span></div>
+					<label id="cityTxt" data-type="city" data-go="city" data-text="选择期望地区" class="mt check mbs">{#$resume_one.district_cn#}</label>
+					<input type="hidden" id="district" name="district" value="{#$resume_one.district#}" />
+					<input type="hidden" id="sdistrict" name="sdistrict" value="{#$resume_one.sdistrict#}" />
+					<input type="hidden" id="district_cn" name="district_cn" value="{#$resume_one.district_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望薪资<span>*</span></div>
+					<label id="wageTxt" data-type="wage" data-text="选择期望薪资" class="mt check mbs">{#$resume_one.wage_cn#}</label>
+					<input type="hidden" id="wage" name="wage" value="{#$resume_one.wage#}" />
+					<input type="hidden" id="wage_cn" name="wage_cn" value="{#$resume_one.wage_cn#}" />
+				</div>
+			</article>
+			<div class="select_bar_div"></div>
+			<article class="flex-box arlogout"><a id="resume_save" class="logout" href="javascript:;">保存</a></article>
+		</div>
+	</body>
+</html>

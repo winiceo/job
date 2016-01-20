@@ -1,0 +1,115 @@
+{#qishi_train_lecturer_show set="列表名:teacher,讲师ID:GET[id]"#}
+{#qishi_train_show set="列表名:train,机构ID:"|cat:$teacher.train_id#}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>{#$teacher.teachername#} - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$train.description#}},讲师简介">
+<meta name="keywords" content="{#$teacher.teachername#},讲师简介">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/css.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/train.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type='text/javascript' ></script>
+<script src="{#$QISHI.site_template#}js/jquery.dialog.js" type='text/javascript' ></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+		var teacher_id="{#$teacher.id#}";
+		var tsTimeStamp= new Date().getTime();
+		$.get("{#$QISHI.site_dir#}plus/ajax_contact.php", { "id": teacher_id,"time":tsTimeStamp,"act":"teacher_contact"},
+			function (data,textStatus)
+			 {			
+				$(".teacher_contact").html(data);
+			 }
+		);
+});
+</script>
+</head>
+<body class="bgf5">
+{#include file="../tpl_train/default/header-train.htm"#}
+<div class="talents_information">
+	<div class="between">
+		<!-- 基本信息 -->
+		<div class="hunterbox_container hunter_info_box" style="margin-bottom:0px;">
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="photo"><img src="{#$train.logo#}" width="197" height="68" border="0"></div>
+						<div class="text">
+							<div class="c ch20"><h4>{#$train.trainname#}</h4></div>
+							<div class="c">{#$train.address#}</div>
+						</div>
+					</div>
+				</div>
+				<div class="com_nav">
+					<ul>
+						<li><a href="{#"QS_train_agencyshow,id:"|cat:$train.id|qishi_url#}">机构介绍</a></li>
+						<li><a href="{#"QS_train_agency_curriculum,id:"|cat:$train.id|qishi_url#}">培训课程</a></li>
+						<li class="active"><a href="{#"QS_train_agency_lecturer,id:"|cat:$train.id|qishi_url#}">师资力量</a></li>
+						<li><a href="{#"QS_train_agency_news,id:"|cat:$train.id|qishi_url#}">新闻动态</a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="teacher_dateil">
+					<div class="teacher_info">
+						<div class="teacher_avater"><a><img src="{#$teacher.photosrc#}" width="120" height="150" /></a></div>
+						<div class="teacher_txt">
+							<h4><a>{#$teacher.teachername#}</a></h4>
+							<p>{#$teacher.education_cn#} ｜ {#$teacher.graduated_school#} ｜ {#$teacher.speciality#}</p>
+							<p>工作单位：{#$teacher.work_unit#}</p>
+							<p>现有职称：{#$teacher.positionaltitles#}</p>
+							<p>所在地区：{#$teacher.district_cn#}</p>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="teacher_tip">
+						<p>个人简介：{#$teacher.contents|nl2br#}</p>
+						<p>重要成果：{#$teacher.achievements|nl2br#}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 基本信息 End-->
+	</div>
+	<div class="between">
+		<!-- 机构名片 -->
+		<div class="hunterbox_container mine_hunter_box ">
+			<div class="h">
+				<div class="t">机构名片</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="text">
+							<div class="c cname">机构性质：{#$train.nature_cn#}</div>
+							<div class="c">所在地区：{#$train.district_cn#}</div>
+							<div class="c">成立时间：{#$train.founddate|date_format:"%Y-%m-%d"#}</div>
+							{#if $train.website#}
+							<div class="c">机构网站：<a target="_blank" href="{#$train.website#}">{#$train.website#}</a></div>
+							{#/if#}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 机构名片 End-->
+		<!-- 联系方式 -->
+		<div class="hunterbox_container hunter_contact_box">
+			<div class="h">
+				<div class="t">联系方式</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content teacher_contact"></div>
+		</div>
+		<!-- 联系方式 End-->
+	</div>
+	<div class="clear"></div>
+</div>
+{#include file="footer.htm"#}
+</body>
+</html>

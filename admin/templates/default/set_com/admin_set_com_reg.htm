@@ -1,0 +1,38 @@
+{#include file="sys/admin_header.htm"#}
+		
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="set_com/admin_set_com_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p> 
+     选择后,在会员注册的时候需要用户填写，注意：选择联系电话仅在邮箱注册时生效，联系邮箱仅在手机注册时生效
+</p>
+</div>
+<div class="toptit">选择注册项</div>
+  <form action="?act=set_com_reg_save" method="post" name="form1" id="form1">
+    {#$inputtoken#}
+    <table width="100%" border="0" cellspacing="5" cellpadding="1" style=" margin-bottom:3px;">
+      <tr>
+        <td width="80" align="right">基本信息：</td>
+        <td><input type="checkbox" name="reg_set[]" value="companyname" {#if in_array("companyname",$config)#}checked{#/if#}> 公司名称&nbsp;&nbsp;<input type="checkbox" name="reg_set[]" value="nature" {#if in_array("nature",$config)#}checked{#/if#}> 企业性质&nbsp;&nbsp;<input type="checkbox" name="reg_set[]" value="trade" {#if in_array("trade",$config)#}checked{#/if#}> 所属行业&nbsp;&nbsp;<input type="checkbox" name="reg_set[]" value="district" {#if in_array("district",$config)#}checked{#/if#}> 所在地区
+        </td>
+      </tr>
+      <tr>
+        <td align="right">联系方式：</td>
+        <td><input type="checkbox" name="reg_set[]" value="contact" {#if in_array("contact",$config)#}checked{#/if#}> 联&nbsp;&nbsp;系&nbsp;&nbsp;人&nbsp;&nbsp;<input type="checkbox" name="reg_set[]" value="telephone" {#if in_array("telephone",$config)#}checked{#/if#}> 联系电话&nbsp;&nbsp;<input type="checkbox" name="reg_set[]" value="email" {#if in_array("email",$config)#}checked{#/if#}> 联系邮箱&nbsp;&nbsp;<input type="checkbox" name="reg_set[]" value="address" {#if in_array("address",$config)#}checked{#/if#}> 详细地址
+        </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">&nbsp;</td>
+        <td><input name="submit" type="submit" class="admin_submit"    value="保存修改"/></td>
+      </tr>
+    </table>
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

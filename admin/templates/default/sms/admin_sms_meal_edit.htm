@@ -1,0 +1,58 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="sms/admin_sms_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+套餐模式是指会员可以购买不同的短信数量
+</p>
+</div>
+<div class="toptit">设置服务套餐</div>
+
+   <form id="form1" name="form1" method="post" action="?act=set_meal_edit_save">
+	   {#$inputtoken#}
+	   <input name="id" type="hidden" value="{#$show.id#}" /> 
+    <table border="0" cellspacing="3" cellpadding="3">
+      <tr>
+        <td width="200" align="right">套餐名称：</td>
+        <td width="391"><input name="setmeal_name" type="text" class="input_text_200" id="setmeal_name" value="{#$show.setmeal_name#}"/></td>
+      </tr>
+	  <tr>
+        <td align="right">短信套餐价格：</td>
+        <td><input name="expense" type="text" class="input_text_200" id="expense" value="{#$show.expense#}"/> 元</td>
+      </tr> 
+	  <tr>
+        <td align="right">短信数量：</td>
+        <td><input name="num" type="text" class="input_text_200" id="num" value="{#$show.num#}"/> 条</td>
+      </tr> 
+      <tr>
+        <td align="right">显示顺序：</td>
+        <td><input name="show_order" value="{#$show.show_order#}" type="text" class="input_text_200" id="show_order" onkeyup="if(event.keyCode !=37 &amp;&amp; event.keyCode != 39) value=value.replace(/\D/g,'');" value="0" maxlength="3"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+          数字越大越靠前</td>
+      </tr> 
+	  <tr>
+      <td align="right">显示状态：</td>
+      <td><label>
+          <input name="display" type="radio" value="1"  {#if $show.display=="1"#}checked="checked"{#/if#}/>
+        正常</label> &nbsp;&nbsp;&nbsp;<label>
+        <input type="radio" name="display" value="0"  {#if $show.display=="0"#}checked="checked"{#/if#}/>
+        屏蔽</label>
+      </tr> 
+      <tr>
+        <td align="center">&nbsp;</td>
+        <td height="50" align="left"><input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+		</td>
+      </tr>
+    </table>
+   
+    </form>
+    </div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

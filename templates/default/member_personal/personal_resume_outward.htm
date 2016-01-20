@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_common.css" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_personal.css" />
+<script src="{#$QISHI.site_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_template#}js/jquery.validate.min.js" type='text/javascript' language="javascript"></script>
+<script>
+	$(document).ready(function() {
+		// 下拉
+		$('.send-down').on('click', function(e){
+			$(this).find('.send-list').stop().slideToggle('fast');
+			$(document).one("click",function(){
+				$('.send-list').slideUp('fast');
+			});
+			e.stopPropagation();
+		});
+		//简历 下拉
+		$(".send-list li").each(function() {
+			$(this).click(function(){
+				var resume_title= $(this).attr("r_title");
+				var resume_id= $(this).attr("resume_id");
+				$(".send-span .name").html(resume_title);
+				$("#resume_id").val(resume_id);
+				$("#resume_title").val(resume_title);
+			})
+		});
+		//验证码随机
+		$("#getcode").live('click',function(){
+			$(this).attr('src','{#$QISHI.site_dir#}include/imagecaptcha.php?t='+Math.random()+'');
+		});
+		//验证
+		$("#Form1").validate({
+			rules:{
+				resume_id:{
+					required: true
+				},
+				email:
+				{
+					required: true
+				},
+				companyname:{
+					required: true,
+					byteRangeLength:[1, 40]
+				},
+				jobs_name: {
+					required:true,
+					byteRangeLength:[1, 40]
+				},
+				postcaptcha: {
+					IScaptchastr:true,
+					required:true,
+					remote:{     
+						url:"{#$QISHI.site_dir#}include/imagecaptcha.php",     
+						type:"post",    
+						data:{"postcaptcha":function (){return $("#postcaptcha").val()},"act":"verify","time":function (){return new Date().getTime()}}     
+					}
+				}
+			},
+			messages: {
+				resume_id:{
+					required: "请选择发送简历"
+				},
+				email:
+				{
+					required: "请输入邮箱"	
+				},
+				companyname: {
+					required: "请输入企业名称"
+				},
+				jobs_name: {
+					required: "请输入职位名称"
+				},
+				postcaptcha: {
+					required: jQuery.format("请输入验证码"),
+					remote: jQuery.format("验证码错误")
+				}
+			},
+			errorPlacement: function(error, element) {
+				if ( element.is(":radio") )
+					error.appendTo( element.parent().next().next() );
+				else if ( element.is(":checkbox") )
+					error.appendTo ( element.next());
+				else
+					error.appendTo(element.parent());
+			}
+		});
+		//中文字两个字节
+		jQuery.validator.addMethod("byteRangeLength", function(value, element,  param) {
+			var length = value.length;
+			for (var i = 0; i < value.length; i++) {
+				if (value.charCodeAt(i) > 127) {
+					length++;
+				}
+			}
+			return this.optional(element) || (length >= param[0] && length <= param[1]);
+		}, "不能超过20字");
+
+		jQuery.validator.addMethod("IScaptchastr", function(value, element) {
+			var str="点击获取验证码";
+			var flag=true;
+			if (str==value)
+			{
+				flag=false;
+			}
+			return  flag || this.optional(element) ;
+		}, "请填写验证码");
+
+
+		function imgcaptcha(inputID,imgdiv)
+		{
+			$(inputID).focus(function(){
+				if ($(inputID).val()=="点击获取验证码")
+				{
+					$(inputID).val("");
+					$(inputID).css("color","#333333");
+				}
+				$(inputID).parent("div").css("position","relative");
+				//设置验证码DIV
+				$(imgdiv).css({ position: "absolute", left:  $(inputID).width(), "bottom": "0px" , "z-index": "10", "background-color": "#FFFFFF", "border": "1px #A3C8DC solid","display": "none","margin-left": "25px"});
+				$(imgdiv).show();
+				if ($(imgdiv).html()=='')
+				{
+					$(imgdiv).append("<img src=\"{#$QISHI.site_dir#}include/imagecaptcha.php?t={#$random#}\" id=\"getcode\" align=\"absmiddle\"  style=\"cursor:pointer; margin:3px;\" title=\"看不请验证码？点击更换一张\"  border=\"0\"/>");
+				}
+				$(imgdiv+" img").click(function()
+				{
+					$(imgdiv+" img").attr("src",$(imgdiv+" img").attr("src")+"1");		
+				});
+				$(document).unbind().click(function(event)
+				{
+					var clickid=$(event.target).attr("id");
+					if (clickid!="getcode" &&  clickid!="postcaptcha")
+					{
+						$(imgdiv).hide();
+						$(inputID).parent("div").css("position","");
+						$(document).unbind();
+					}			
+				});
+			});
+		}
+		imgcaptcha("#postcaptcha","#imgdiv");
+	});
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 外发简历</div>
+	<div class="usermain">
+		<div class="leftmenu link_bk">
+			{#include file="member_personal/left.htm"#}
+		</div>
+		<div class="rightmain">
+			<div class="bbox1">
+				<div class="resume-send-wrap">
+					<h1>简历外发</h1>
+					<div class="resume-send-form">
+					<form id="Form1" name="Form1" method="post" action="?act=outward_save">
+						<div class="r-send-item clearfix">
+							<div class="r-send-type f-left">将要发送的简历：</div>
+							<div class="r-send-content f-left">
+								<div class="send-down" style="float:left">
+									<span class="send-span"><font class="name">请选择发送简历</font><i class="send-icon"></i></span>
+									<ul class="send-list">
+										{#foreach from=$resume_list item=list#}
+										<li  resume_id="{#$list.id#}" r_title="{#$list.title#}"><a href="javascript:;">{#$list.title#}</a></li>
+										{#/foreach#}
+									</ul>
+								</div>
+								<input type="hidden" id="resume_id" name="resume_id" value="" />
+								<input type="hidden" id="resume_title" name="resume_title" value="" />
+							</div>
+						</div>
+						<div class="r-send-item clearfix">
+							<div class="r-send-type f-left">企业的邮箱地址：</div>
+							<div class="r-send-content f-left"><input type="text" id="email" name="email" class="input_text_200" /></div>
+							<div class="r-send-last f-left">（多个邮件地址请用“;”隔开）</div>
+						</div>
+						<div class="r-send-item clearfix">
+							<div class="r-send-type f-left">应聘的企业名称：</div>
+							<div class="r-send-content f-left"><input type="text" id="companyname" name="companyname" class="input_text_200" /></div>
+							<div class="r-send-last f-left">（限20字）</div>
+						</div>
+						<div class="r-send-item clearfix">
+							<div class="r-send-type f-left">应聘的职位名称：</div>
+							<div class="r-send-content f-left"><input type="text" id="jobs_name" name="jobs_name" class="input_text_200" /></div>
+							<div class="r-send-last f-left">（限20字）</div>
+						</div>
+						{#if $verify_resume_outward=="1"#}
+						<div class="r-send-item clearfix">
+							<div class="r-send-type f-left">验证码：</div>
+							<div class="r-send-content f-left"><input type="text" name="postcaptcha" id="postcaptcha" class="input_text_100" />&nbsp;&nbsp;&nbsp;&nbsp;<img src="{#$QISHI.site_dir#}include/imagecaptcha.php?t={#$random#}" id="getcode" align="absmiddle"  style="cursor:pointer;width:148px;height:36px;" title="看不请验证码？点击更换一张"  border="0" /></div>
+						</div>
+						{#/if#}
+						<div class="r-send-item clearfix">
+							<div class="r-send-type f-left">&nbsp;</div>
+							<div class="r-send-content f-left"><input type="submit" value="发送" class="but100_30lan btn-big-font" /></div>
+						</div>
+					</form>
+					</div>
+					<div class="send-tip-box">
+						<h3>小贴士</h3>
+						<p>1.外发简历是以本站简历风格，对您在网站、报刊、、杂志等媒体上筛选的招聘信息，统一进行求职申请！<br />
+							您的外发简历历史记录可以到“求职管理 > <a href="personal_apply.php?act=outward" class="underline">简历外发记录</a>”查看。</p>
+						<p>2 外发简历必须是审核通过的简历。</p>
+						<p>3 每次外发简历的企业邮件地址数量不能超过3个。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	{#include file="user/footer.htm"#}
+</body>
+</html>

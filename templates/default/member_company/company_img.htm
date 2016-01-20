@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_common.css" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_company.css" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/ui-dialog.css" />
+<link href="{#$QISHI.site_template#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min-common.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/ajaxfileupload.js" type='text/javascript' language="javascript"></script>
+<script>
+	$(document).ready(function() {
+		$('.company-img-block:nth-child(3n)').css({'margin-right':0});
+		// 弹出(备注)
+		$('.image-edit').die().live('click', function(){
+			var imgid =  $(this).attr('imgid');
+			var myDialog = dialog();
+			jQuery.ajax({
+			    url: "{#$QISHI.site_dir#}user/company/company_ajax.php?act=img_title&id="+imgid+" ",
+			    success: function (data) {
+			        myDialog.content(data);
+			        myDialog.title('企业风采');
+			        myDialog.width('500');
+			    	myDialog.showModal();
+			    	/* 点击取消 关闭弹出 */
+			    	$(".DialogClose").live('click',function() {
+			    		myDialog.close().remove();
+			    	});
+			    }
+			});
+		})
+		$("#img").die().live('change',function() {
+  			credent();
+		});
+		function credent() {
+			$("#img").prev().html("上传中...");
+			var filepath = $("input[name='img']").val();
+            var extStart = filepath.lastIndexOf(".");
+            var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+            if (ext != ".BMP" && ext != ".PNG" && ext != ".GIF" && ext != ".JPG" && ext != ".JPEG") {
+                alert("图片限于bmp,png,gif,jpeg,jpg格式");
+                return false;
+            }
+			$.ajaxFileUpload ({
+				url:'?act=company_img_save',
+				secureuri :false,
+				fileElementId :'img',
+				dataType : 'json',
+				success : function (data, status){
+					switch(data){
+						case -1 :alert("上传图片失败：上传目录不存在!");return false;break;
+						case -2 :alert("上传图片失败：上传目录无法写入!");return false;break;
+						case -3 :alert("上传图片失败：你选择的文件无法上传");return false;break;
+						case -4 :alert("上传图片失败：文件大小超过限制");return false;break;
+						case -5 :alert("上传图片失败：文件类型错误！");return false;break;
+						case -6 :alert("上传图片失败：文件上传出错！");return false;break;
+						case -7 :alert("上传图片失败：企业图片最多发布8张！");return false;break;
+						default:
+							
+							var imgblockHtm = '<div class="company-img-block f-left"><div class="image-box"><img src="'+data['url']+'" title="'+data['title']+'" width="244" height="148" border="0" /></div><div class="image-ctrl clearfix"><div class="up-time f-left">'+data['addtime']+'</div><div class="ctrl-op f-right"><a href="javascript:;" imgid="'+data['id']+'" class="underline image-edit">备注</a> | <a href="javascript:;" url="?act=company_img_del&id='+data['id']+'" class="underline ctrl-del">删除</a></div></div></div>';
+							if ($(".company-img-wrap .company-img-block").length > 0) {
+								$(".company-img-wrap .company-img-block").eq(0).before(imgblockHtm);
+							} else {
+								$(".company-img-wrap .company-img-upload").before(imgblockHtm);
+							}
+							$('.company-img-block').css({'margin-right':'20px'});
+							$('.company-img-block:nth-child(3n)').css({'margin-right':0});
+							$("#img").prev().html("添加照片");
+							delete_dialog('.ctrl-del','#form1');
+						break;
+					}
+				}
+			});
+		}
+		// 删除弹出
+		delete_dialog('.ctrl-del','#form1');
+	});
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+	{#include file="user/header.htm"#}
+	<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 企业风采</div>
+	<div class="usermain">
+		<div class="leftmenu com link_bk">
+			{#include file="member_company/left.htm"#}
+		</div>
+		<div class="rightmain">
+			<div class="bbox1 my_account">
+				<div class="topnav get_resume">
+					<div class="titleH1"><div class="h1-title">企业资料</div></div>
+					<div class="navs link_bk">
+						<a href="?act=company_profile">基本资料</a>
+						<a href="?act=company_logo">企业Logo</a>
+						<a href="?act=company_news">企业动态</a>
+						<a href="?act=company_img" class="se">企业风采</a>
+						<a href="?act=company_map_open">地图标注</a>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div class="company-img-wrap clearfix">
+					{#if $img#}
+					{#section name=li loop=$img#}
+					<div class="company-img-block f-left">
+						<div class="image-box"><img src="{#$QISHI.site_dir#}data/companyimg/thumb/{#$img[li].img#}" title="{#$img[li].title#}" width="293" height="178" /></div>
+						<div class="image-ctrl clearfix">
+							<div class="up-time f-left">{#$img[li].addtime|date_format:"%Y-%m-%d"#}</div>
+							<div class="ctrl-op f-right"><a href="javascript:;" imgid="{#$img[li].id#}" class="underline image-edit">备注</a> | <a href="javascript:;" url="?act=company_img_del&id={#$img[li].id#}" class="underline ctrl-del">删除</a></div>
+						</div>
+					</div>
+					{#/section#}
+					{#/if#}
+					<div class="company-img-upload f-left">
+						<div>
+							<div class="upload-btn">添加照片</div>
+							<input type="file" id="img" name="img" value="" class="filestyle">
+						</div>
+						<p class="upload-tips">图片大小不超过 800KB，最多上传 8 张，<br />允许格式：jpg/gif/bmp/png</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<!-- 风采备注弹出 -->
+	<div class="img-edit-dialog dialog-block" style="display:none">
+		<div class="dialog-item clearfix">
+			<div class="d-type f-left">上传日期：</div>
+			<div class="d-content f-left">2015-12-01</div>
+		</div>
+		<div class="dialog-item clearfix">
+			<div class="d-type f-left">照片描述：</div>
+			<div class="d-content f-left"><textarea name="title" id="title" cols="30" rows="10" class="dialog-textarea"></textarea></div>
+		</div>
+		<div class="center-btn-wrap">
+			<input type="button" value="保存" class="btn-65-30blue btn-big-font" /><input type="button" value="取消" class="btn-65-30grey btn-big-font" />
+		</div>
+	</div>
+	{#include file="user/footer.htm"#}
+</body>
+</html>

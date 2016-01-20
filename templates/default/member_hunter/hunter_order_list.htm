@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link href="{#$QISHI.site_template#}css/user_common.css" rel="stylesheet" type="text/css" />
+<link href="{#$QISHI.site_template#}css/user_hunter.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.vtip-min.js" type='text/javascript' language="javascript"></script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 充值订单</div>
+
+<div class="usermain">
+  <div class="leftmenu  hunter link_bk">
+  	 {#include file="member_hunter/left.htm"#}	
+  </div>
+  <div class="rightmain">
+  
+ 	<div class="bbox1 link_bk my_account intrgration" style="padding:0;padding-bottom:15px;">
+		<div class="topnav">
+			<div class="titleH1">
+				<div class="h1-title">充值/订单</div>
+			</div>
+
+			<div class="navs">
+				{#if $QISHI.operation_hunter_mode=="1"#}
+				<a href="?act=order_add">积分充值</a>
+				{#/if#}
+				{#if $QISHI.operation_hunter_mode=="2"#}
+		        <a href="?act=setmeal_list">申请服务</a>
+				{#/if#}
+				<a href="?act=order_list" class="se">我的订单</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+
+  		<!-- 新的订单页面 -->
+  		<div class="new_order_list">
+  			<table class="n_order_table" cellspacing="0">
+  				<tbody>
+  					<tr bgcolor="F5F5F5">
+  						<th class="n_order_first" align="left" width="510">订单号</th>
+  						<th align="center" width="150">金额</th>
+  						<th align="center" width="80">备注</th>
+  						<th align="center" width="110">操作</th>
+  					</tr>
+  					{#if $payment#}
+  					{#section name=payment loop=$payment#}
+  					<tr>
+  						<td align="left" class="n_order_first">
+  							{#$payment[payment].oid#}<br />
+  							<div class="n_order_span">创建时间：{#$payment[payment].addtime|date_format:"%Y-%m-%d %H:%M"#} | 支付方式：{#$payment[payment].payment_name#} | 支付状态：<span class="{#if $payment[payment].is_paid==1#}nopay{#/if#}{#if $payment[payment].is_paid==2#}pay{#/if#}">{#if $payment[payment].is_paid==1#}待付款{#/if#}{#if $payment[payment].is_paid==2#}已支付{#/if#}</span></div>
+  						</td>
+  						<td align="center">￥{#$payment[payment].amount#}</td>
+  						<td align="center"><a href="javascript:void(0);" class="reason vtip" title="{#$payment[payment].notes#}" id="{#$li.id#}" style="margin-top:0"></a></td>
+  						<td align="center">{#if $payment[payment].is_paid==1#}<a href="?act=payment&order_id={#$payment[payment].id#}" class="but_a">支付</a>&nbsp;&nbsp;&nbsp;<a href="?act=order_del&id={#$payment[payment].id#}" class="but_a">取消</a>{#/if#}</td>
+  					</tr>
+  					{#/section#}
+  					{#else#}
+					<tr><td colspan="4" style="border:0"><div class="emptytip">没有找到对应的订单信息！</div></td></tr>
+					{#/if#}
+  				</tbody>
+  			</table>
+  			{#if $page#}
+				<table border="0" align="center" cellpadding="0" cellspacing="0" class="link_bk">
+		          <tr>
+		            <td height="50" align="center"> <div class="page link_bk">{#$page#}</div></td>
+		          </tr>
+		      </table>
+		      {#/if#}
+  		</div>
+  		 
+ 
+	
+
+
+  	</div>
+  </div>
+  <div class="clear"></div>
+</div>
+{#include file="user/footer.htm"#}
+</body>
+</html>

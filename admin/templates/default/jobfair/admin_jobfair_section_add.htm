@@ -1,0 +1,101 @@
+{#include file="sys/admin_header.htm"#}
+<link href="css/date_input.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="js/jquery.iColorPicker.js"></script>
+<script src="js/jquery.date_input.js" type='text/javascript' language="javascript"></script>
+<script src="{#$QISHI.site_dir#}data/cache_classify.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery.jobfair_section.js" type='text/javascript' language="javascript"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	OpentradeLayer("#showtrade","#trade","#trade_cn","#trade_txt","#sel_trade",'');
+
+	$("#FormData").validate({
+		rules:
+		{
+			title:"required",
+		},
+		messages:
+		{
+			title: 
+			{
+				required: "请输入招聘会标题"
+			}
+		},
+		errorPlacement: function(error, element)
+		{
+			if ( element.is(":radio") )
+			error.appendTo( element.parent().next().next() );
+			else if ( element.is(":checkbox") )
+			error.appendTo ( element.next());
+			else
+			error.appendTo(element.parent());
+		}
+	});
+});
+</script>
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	<!-- {#include file="jobfair/admin_jobfair_nav.htm"#} -->
+  <div class="clear"></div>
+</div>
+  <form action="?act=addsave" method="post"   name="FormData" id="FormData" enctype="multipart/form-data" >
+<div class="toptit">基本信息</div>
+
+  {#$inputtoken#}
+    <table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+		<tr>
+			<td width="130" align="right"  ><span style="color:#FF3300; font-weight:bold">*</span>标题：</td>
+			<td align="left" ><input name="title" type="text" id="title" class="input_text_400" />
+			 <span class="admin_note">(例如：医药行业主题招聘会)</span>
+			</td>
+		</tr>
+		<tr>
+			<td  align="right"  >参会行业：</td>
+			<td>	
+				<input type="text" name="Submit23" value="请选择参会行业" class="input_text_400"  id="showtrade"/>
+				<input name="trade_cn" id="trade_cn" type="hidden" value="" />
+				<input name="trade" id="trade" type="hidden" value="" />
+				<div  style="display:none" id="sel_trade">
+					<div class="OpenFloatBoxBg" ></div>
+					<div class="OpenFloatBox">
+						<div class="title"><h4>请选择行业</h4><div class="DialogClose" title="关闭"></div></div>
+						<div class="tip">可多选，最多选择4项</div>
+						<div class="content link_lan">					
+							<div class="txt">							
+								{#qishi_get_classify set="列表名:c_trade,类型:QS_trade"#}{#foreach from=$c_trade item=list#}
+								<div class="item" id="{#$list.id#}">
+								<label title="{#$list.categoryname#}" class="titem" >
+								<input  type="checkbox" value="{#$list.id#}"  title="{#$list.categoryname#}" class="b" />{#$list.categoryname#}
+								</label>
+								</div>
+								{#/foreach#}
+								<div class="clear"></div>
+							</div>						
+							<div class="txt">
+								<div align="center"><input type="button"  class="but80 Set" value="确定" /></div>
+							</div>			
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>	   
+    </table>
+
+	<table width="100%" border="0" cellpadding="3" cellspacing="3"  class="admin_table">
+		<tr>
+			<td align="right"   >&nbsp;</td>
+			<td height="50" >
+				<input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+				<input name="submit222" type="button" class="admin_submit"    value="返回" onclick="Javascript:window.history.go(-1)"/>
+			</td>
+		</tr>
+	</table>
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

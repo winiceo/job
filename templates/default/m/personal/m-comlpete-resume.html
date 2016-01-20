@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-完善简历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">完善简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="infohead infoheadperfect flex-box">
+				<div class="flexinfoheadlogo"><div class="edit" id="resumenameEdit"><span class="icon-user-compile"></span><font class="txt">{#$resume_one.title#}</font></div></div>
+				<div class='flex2'><div class="infolistpf">等级：{#if $list.talent=="2"#}高级{#elseif $list.talent=="3"#}高级待审{#else#}普通{#/if#}</div></div>
+				<div class="resumeintegrityrungs flex-box">
+					<div class="left">简历完整度：</div>
+					<div class="center"><div class="barbg" style="width: {#$resume_one.complete_percent#}%;"></div></div>
+					<div class="right flex2">{#$resume_one.complete_percent#}%</div>
+				</div>
+			</article>
+			<div class="cline"></div>
+			<article class="formDiv comresume">
+				<div class="formChild thisurl" url="?act=resume_basic&pid={#$resume_one.id#}">
+					<div class="lt">基本信息<span>*</span></div>
+					<label class="mt check mbs">{#if $resume_basic#}<span class="cof90">完整</span>{#else#}未填写{#/if#}</label>
+				</div>
+				<div class="formChild thisurl" url="?act=resume_jobs&pid={#$resume_one.id#}">
+					<div class="lt">求职意向<span>*</span></div>
+					<label class="mt check mbs">{#if $resume_jobs#}<span class="cof90">完整</span>{#else#}未填写{#/if#}</label>
+				</div>
+				<div class="formChild thisurl" url="?act=resume_work_list&pid={#$resume_one.id#}">
+					<div class="lt">工作经历<span>*</span></div>
+					<label class="mt check mbs">{#if $resume_work#}<span class="cof90">完整</span>{#else#}未填写{#/if#}</label>
+				</div>
+				<div class="formChild thisurl" url="?act=resume_education&pid={#$resume_one.id#}">
+					<div class="lt">教育经历<span>*</span></div>
+					<label class="mt check mbs">{#if $resume_education#}<span class="cof90">完整</span>{#else#}未填写{#/if#}</label>
+				</div>
+				<div class="formChild thisurl" url="?act=resume_train&pid={#$resume_one.id#}">
+					<div class="lt">培训经历<span>*</span></div>
+					<label class="mt check mbs">{#if $resume_training#}<span class="cof90">完整</span>{#else#}未填写{#/if#}</label>
+				</div>
+				<div class="formChild thisurl" url="?act=resume_specialty&pid={#$resume_one.id#}">
+					<div class="lt">自我评价<span>*</span></div>
+					<label class="mt check mbs">{#if $resume_basic.specialty#}<span class="cof90">完整</span>{#else#}未填写{#/if#}</label>
+				</div>
+				<input type="hidden" value="{#$resume_one.id#}" name="resume_id" id="resume_id">
+			</article>
+			<article class="flex-box arlogout"><a class="logout" href="../resume-show.php?id={#$resume_one.id#}">预览简历</a></article>
+		</div>
+	</body>
+</html>

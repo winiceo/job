@@ -1,0 +1,87 @@
+/**
+**注册登录相关样式
+**/
+header.global-header .header-right-link{position: absolute;top:10px;right:15px;}
+header.global-header .header-right-link a{color:#fff;font-size: 16px;line-height: 30px;}
+.top-tab{text-align: center;background-color: #fff;width: 100%;height: 40px;border-bottom:1px solid #e2e2e2;margin-bottom: 20px;overflow: hidden;}
+.top-tab .tab-item{border-bottom: 2px solid transparent;line-height: 40px;box-sizing:border-box;position: relative;padding:0 1px;color:#333;}
+.top-tab .tab-item.active{border-bottom:2px solid #0180cf;color:#0180cf;}
+.top-tab .tab-item::after{content:'';position: absolute;top:8px;right:-1px;width: 1px;height: 24px;background-color: transparent;border-left:1px solid #e2e2e2;}
+.top-tab .tab-item:last-child::after{border:0;}
+
+.user-form-wrap{padding:0 15px;}
+.user-form-wrap .form-tab-item{display: none;}
+.user-form-wrap .user-form{background-color: #fff;}
+.user-form-wrap .user-form .form-row{border:1px solid #e2e2e2;border-bottom:0;position: relative;}
+.user-form-wrap .user-form .form-row:last-child{border-bottom:1px solid #e2e2e2;}
+.user-form-wrap .user-form .form-row .user-icon{width: 40px;height: 40px;background: url(../images/moblie-icon.png) no-repeat;}
+.user-form-wrap .user-form .form-row .user-icon.phone{background-position: 9px 12px;}
+.user-form-wrap .user-form .form-row .user-icon.number{background-position: 9px -27px;}
+.user-form-wrap .user-form .form-row .user-icon.user{background-position: 9px -68px;}
+.user-form-wrap .user-form .form-row .user-icon.pwd{background-position: 9px -108px;}
+.user-form-wrap .user-form .form-row .user-icon.mail{background-position: 9px -227px;}
+.user-form-wrap .user-form .form-row .input-area{padding-left: 40px;}
+.user-form-wrap .user-form .form-row .input-area input[type="text"],
+.user-form-wrap .user-form .form-row .input-area input[type="password"]{border:0;font-size: 14px;line-height: 18px;height: 18px;padding:11px 0;width: 100%;color:#666;}
+.user-form-wrap .user-form .form-row .code-box{position: absolute;top:50%;right:10px;-webkit-transform:translateY(-50%);transform:translateY(-50%);}
+.user-form-wrap .user-form .form-row .code-box .code-btn{height: 26px;width: 80px;border:0;font-size: 12px;color:#fff;border-radius: 3px;background-color: #0180cf;white-space: nowrap;z-index: 5;}
+.user-form-wrap .user-form .form-row .code-box .code-btn:active{background-color: #0070bd;}
+.form-tab-item .code-btn{height: 32px;line-height: 14px;width: 80px;border:0;font-size: 12px;color:#fff;border-radius: 3px;background-color: #0180cf;white-space: nowrap;z-index: 5;display: block;float: left;margin-top: 6%;text-align: center;padding-top: 5px;}
+.form-tab-item .right{float: right;}
+.form-tab-item .code-btn:active{background-color: #0070bd;}
+.user-form-wrap .user-form .form-row .code-box .code-btn[disabled]{background-color: #dedede;color:#666;}
+.user-form-wrap .user-form .form-row .user-eye{position: absolute;top:50%;right:15px;-webkit-transform:translateY(-50%);transform:translateY(-50%);width: 21px;height: 18px;background: url(../images/moblie-icon.png) no-repeat 0px -158px;}
+.user-form-wrap .user-form .form-row .user-eye.close{background-position: 0 -196px;}
+.user-form-wrap .user-submit{margin-top: 20px;}
+.user-form-wrap .user-submit .user-submit-btn{width: 100%;height: 40px;font-size: 14px;color:#fff;background-color: #0180cf;border-radius: 3px;border:0;}
+.user-form-wrap .user-submit .user-submit-btn:active{background-color: #0070bd;}
+.user-form-wrap .user-submit .user-submit-btn[disabled]{background-color: #63a9d4;}
+.third-login{margin-top: 35px;}
+.third-login h2{font-size: 14px;color:#999;text-align: center;border-top: 1px solid #cfcfcf;}
+.third-login h2>span{background-color: #f0f0f0;position: relative;top:-10px;padding:0 5px;}
+.third-login .third-way{padding:0 22px;margin-top:30px;}
+.third-login .third-way>div{text-align: center;}
+.third-login .third-way>div .third-login-link{display: inline-block;width: 44px;height: 44px;background: url(../images/moblie-icon.png) no-repeat;}
+.third-login .third-way>div .third-login-link.qq{background-position: -131px -256px;}
+.third-login .third-way>div .third-login-link.sina{background-position: -194px -256px;}
+.third-login .third-way>div .third-login-link.taobao{background-position: -256px -256px;}
+.forget-pwd{font-size: 14px;color:#0180cf;text-align: right;margin-top: 8px;line-height: 18px;}
+.forget-pwd a{color:#0180cf;}
+
+.user-form-error{position: absolute;top:50px;left:0;padding:12px 15px;box-sizing:border-box;width: 100%;height: 40px;background-color: #333333;font-size: 12px;color:#fff;vertical-align: middle;z-index: 50;display: none;}
+.user-form-error i.error-icon{display: inline-block;width: 16px;height: 16px;background: url(../images/moblie-icon.png) no-repeat -284px 0px;vertical-align: middle;margin-right: 5px;position: relative;top:-2px;}
+.pass-tip{margin-top:-20px;font-size: 12px;color:#666;line-height: 38px;}
+
+.protocol{position: relative;font-size: 14px;color:#999;display: inline-block;margin-top: 14px;}
+.protocol span{font-size: 14px;color:#999;display: inline-block;padding-left: 26px;line-height: 18px;}
+.protocol span a{color:#0180cf;}
+.protocol input[type="checkbox"]{position: absolute;top:0;left:-9999px;visibility: hidden;}
+.protocol input:not(:checked) + span::before{content:'';position: absolute;top:0;left:0;width: 14px;height: 14px;border:1px solid #63a9d4;border-radius: 2px;background-color: #fff;}
+.protocol input:not(:checked) + span::after{content:'';position: absolute;top:0;left:0;}
+.protocol input:checked + span::before{content:'';position: absolute;top:0;left:0;width: 14px;height: 14px;border:1px solid #63a9d4;border-radius: 2px;background-color: #63a9d4;}
+.protocol input:checked + span::after{content:'';position: absolute;top:3px;left:5px;width: 4px;height: 7px;border:1px solid #fff;border-top:0;border-left:0;-webkit-transform:rotateZ(37deg);transform:rotateZ(37deg);}
+
+.reg-index-wrap{width: 100%;height: 100%;position: absolute;padding-top: 50px;box-sizing:border-box;top:0;left:0;z-index: 2;}
+.reg-index-wrap .bg-wrap{background: url(../images/reg-bg.png) no-repeat #008fe1;width: 100%;height: 100%;-webkit-background-size: 100%;background-size: 100%;background-position: center 25%;position: relative;}
+.reg-index-wrap .bg-wrap .buttom-group{position: absolute;left:0;bottom:30px;width: 100%;padding:15px;box-sizing:border-box;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box{box-sizing:border-box;padding:0 15px;width: 50%;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box .reg-btn{display: block;width: 100%;height: 40px;border-radius: 5px;line-height: 40px;text-align: center;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box .reg-btn .reg-icon{display: inline-block;width: 25px;height: 40px;vertical-align: middle;background: url(../images/moblie-icon.png) no-repeat;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box .reg-btn.personal{background-color: #41b9f0;color:#fff;font-size: 16px;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box .reg-btn.personal .reg-icon{background-position: -279px -72px;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box .reg-btn.company{background-color: #8ae051;color:#fff;font-size: 16px;}
+.reg-index-wrap .bg-wrap .buttom-group .button-box .reg-btn.company .reg-icon{background-position: -279px -30px;}
+
+/*绑定帐号*/
+.binding-tips{font-size: 14px;padding-left: 15px;color:#0180cf;line-height: 40px;}
+.binding-label{font-size: 14px;color:#666;margin-right: 15px;line-height: 40px;}
+.binding-label input[type='radio']{position: relative;top:2px;margin-right: 2px;}
+
+/*绑定帐号错误提示*/
+.binding-error{font-size: 14px;padding-left: 15px;color:#ff0000;line-height: 40px;}
+
+/*绑定账号成功*/
+.bind-success{padding-top: 50px;width:189px;margin:0px auto;color: #333;}
+.bs-tip{font-size: 12px;color:#666;text-align: center;margin: 24px auto; width: 228px;}
+.user_login_getpws{text-align: center;font-size: 14px;}
+.user_login_getpws a{color:#0180cf;}

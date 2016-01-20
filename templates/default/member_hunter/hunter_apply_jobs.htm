@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link href="{#$QISHI.site_template#}css/user_common.css" rel="stylesheet" type="text/css" />
+<link href="{#$QISHI.site_template#}css/user_hunter.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.dialog.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.vtip-min.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#delete").click(function(){
+		$("#form1").attr("action","?act=apply_jobs_del");
+		if(confirm('您确定删除吗?')){
+			$("#form1").submit();
+		}
+	});
+	//答复 收到的简历
+	$(".is_reply").click(function(){
+		var resume_id = $(this).attr('resume_id'); 
+		var jobs_id = $(this).attr('jobs_id'); 
+		dialog("答复应聘简历","url:hunter_ajax.php?act=reply&resume_id="+resume_id+"&jobs_id="+jobs_id,"500px","auto","","");
+	});
+	$(function(){
+		$("input[type='button'],input[type='submit']").hover(function(){
+			$(this).addClass("hover");
+		},function(){
+			$(this).removeClass("hover");
+		})
+		$(".get_resume_input").click(function(){
+			$(".select_ul").slideToggle("fast").css('z-index', '30');
+			//生成背景
+			$(".get_resume_input").parents(".get_resume").before("<div class=\"menu_bg_layer\"></div>");
+			$(".menu_bg_layer").height($(document).height());
+			$(".menu_bg_layer").css({ width: $(document).width(), position: "absolute", left: "0", top: "0" , "z-index": "10", "background-color": "#ffffff"});
+			$(".menu_bg_layer").css("opacity","0");
+			$(".menu_bg_layer").click(function(){
+				$(".menu_bg_layer").remove();
+				$(".select_ul").slideUp("fast");
+				$(".get_resume_input").parent("div").css("position","");
+			});
+		});
+	$(".select_ul li").each(function() {
+		$(this).click(function(){
+			var liTxt = $(this).html();
+			var jobsid= $(this).attr("jobsid");
+			$(".get_resume_input").val(liTxt);
+			$(".select_ul").hide();
+			window.location.href="?act={#$act#}&look={#$smarty.get.look#}&jobsid="+jobsid+"";
+		})
+	});
+	$(".select_ul li").hover(function(){
+		$(this).addClass('hovers');
+	},function(){
+		$(this).removeClass('hovers');
+	})
+})
+});
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 收到的简历</div>
+
+<div class="usermain">
+  <div class="leftmenu  hunter link_bk">
+  	 {#include file="member_hunter/left.htm"#}	
+  </div>
+  <div class="rightmain">
+ 	<div class="bbox1 link_bk my_account intrgration">
+ 		<div class="topnav get_resume">
+			<div class="title_h1" style="padding-left:15px;">收到的简历</div>
+			<div class="navs">
+				<a href="?act={#$act#}&look=" {#if $smarty.get.look==""#}class="se"{#/if#}>所有简历<span class="check">({#$count#})</span></a>
+				<a href="?act={#$act#}&look=1" {#if $smarty.get.look=="1"#}class="se"{#/if#}>未查看<span class="no_hunter_check">({#$count1#})</span></a>
+				<a href="?act={#$act#}&look=2" {#if $smarty.get.look=="2"#}class="se"{#/if#}>已查看<span class="check">({#$count2#})</span></a>
+				<div class="clear"></div>
+			</div>
+			<div class="get_resume_box" styler="padding-top:20px;z-index:30">
+				按职位查看：
+				<span class="select_box">
+					<input type="text" class="get_resume_input" value="{#if $jobs_name#}{#$jobs_name#}{#else#}全部职位{#/if#}" readonly="readonly" UNSELECTABLE="on" />
+					<ul class="select_ul" style="display:none;">
+						<li jobsid="">全部职位</li>
+						{#foreach from=$jobs item=list#}
+						<li jobsid="{#$list.id#}">{#$list.jobs_name#}</li>
+						{#/foreach#}
+					</ul>
+				</span>
+			</div>
+		</div>
+		<div class="data resume">
+			{#if $jobs_apply#}
+			<form id="form1" name="form1" method="post" action="?act=set_apply_jobs">
+		  	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+		  		<tbody>
+		  			<tr bgcolor="#F5F5F5" align="left">
+		  				<th width="120" class="left" align="left"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" /> 姓名</th>
+		  				<th width="80" align="left">学历</th>
+		  				<th width="108" align="center">工作经验</th>
+		  				<th width="170" align="center">申请职位</th>
+		  				<th width="100" align="left">答复状态</th>
+		  				<th width="101" align="left">申请时间</th>
+		  				<th width="106" align="center">操作</th>
+		  			</tr>
+		  			{#foreach from=$jobs_apply item=list#}
+		  			{#if $list.sex_cn#}
+		  			<tr class="data_content" height="45">
+		  				<td width="120" class="left">
+		  					<input name="y_id[]" type="checkbox" id="y_id"   value="{#$list.did#}"/>&nbsp;
+		  					<a  title="{#$list.resume_name#}" href="{#$list.resume_url#}" target="_blank" {#if $list.personal_look=="1"#}class="nolook" style="color:#ff6600"{#/if#}>{#$list.resume_name_#}</a>
+		  				</td>
+		  				<td width="80" align="left">{#$list.education_cn#}</td>
+		  				<td width="108" align="center">{#$list.experience_cn#}</td>
+		  				<td title="{#$list.jobs_name#}" width="170" align="center">{#$list.jobs_name_#}</td>
+		  				<td width="100" >{#if $list.is_reply>'0'#}<span class="vtip" title="{#if $list.is_reply=='1'#}该简历符合要求.{#elseif $list.is_reply=='2'#}该简历不符合要求.{#else#}该简历不太符合该职位的要求，但我们会关注此简历，以后有合适的职位我们会联系他.{#/if#}">已答复</span>{#else#}<a style="color:#ff6600" jobs_id="{#$list.jobs_id#}" resume_id="{#$list.resume_id#}"  class="is_reply" href="javascript:;">未答复</a>{#/if#}</td>
+		  				<td width="101" align="left">{#$list.apply_addtime|date_format:"%Y-%m-%d"#}</td>
+		  				<td width="106" align="center"><a href="?act=apply_jobs_del&y_id={#$list.did#}" style="color:#0180CF;" onclick="return confirm('您确定删除吗?')">删除</a></td>
+		  			</tr>
+		  			{#else#}
+		  			<tr class="data_content" height="45">
+		  				<td colspan="7">
+		  					<input name="y_id[]" type="checkbox" id="y_id"   value="{#$list.did#}"/><strong style="color:#333333">{#$list.resume_name#}</strong>的简历可能已从网站中移除，您可以删除本条记录
+		  				</td>
+		  			</tr>
+		  			{#/if#}
+		  			{#/foreach#}
+		  		</tbody>
+		  	</table>
+		  	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+		  		<tbody>
+		  			<tr>
+						<td width="70">&nbsp;&nbsp;&nbsp;&nbsp; <label><input type="checkbox" name="chkAll"   id="chk2" title="全选/反选" /> <span> 全选 </span></label></td> 
+		  				<td width="500" style="padding-left:20px;">
+		  					<input type="submit" name="set" value="设为已查看" class="but95_35lan"/>
+		  					<input type="button" name="delete" id="delete"  value="删除记录" class="but95_35lan"/>
+		  				</td>
+		  			</tr>
+		  		</tbody>
+		  	</table>
+		  	</form>
+	  			{#if $page#}
+					<table border="0" align="center" cellpadding="0" cellspacing="0" class="link_bk">
+					          <tr>
+					            <td height="50" align="center"> <div class="page link_bk">{#$page#}</div></td>
+					          </tr>
+			      		</table>
+		     		{#/if#}
+		  	{#else#}
+		  	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+		  		<tbody>
+		  			<tr bgcolor="#F5F5F5" align="left">
+		  				<th width="120" class="left" align="left"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" /> 姓名</th>
+		  				<th width="80" align="left">学历</th>
+		  				<th width="108" align="center">工作经验</th>
+		  				<th width="170" align="center">申请职位</th>
+		  				<th width="100" align="left">答复状态</th>
+		  				<th width="101" align="left">申请时间</th>
+		  				<th width="106" align="center">操作</th>
+		  			</tr>
+		  		</tbody>
+		  	</table>
+		  	<div class="emptytip">没有找到对应的信息！</div>
+		  	{#/if#}
+		  </div>
+  	</div>
+  </div>
+  <div class="clear"></div>
+</div>
+{#include file="user/footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,50 @@
+<div class="refresh-resume-dialog">
+	<p>{#$name#}，您好！您的简历最近一次更新日期是：{#$refreshtime#}</p>
+	<p>下面是您这份简历的联系方式等信息，请确认！</p>
+	<div class="refresh-from">
+		<div class="refresh-item clearfix">
+			<div class="refresh-type f-left">求职状态：</div>
+			<div class="refresh-content f-left">
+				<div class="ref-drop">
+					<div class="ref-drop-control"><span>{#$current_cn#}</span><i class="red-drop-icon"></i></div>
+					<input type="hidden" name="current" id="current" value="{#$current#}"/>
+					<input type="hidden" name="current_cn" id="current_cn" value="{#$current_cn#}"/>
+					<ul class="ref-drop-list">
+						{#$current_str#}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="refresh-item clearfix">
+			<div class="refresh-type f-left">手机号码：</div>
+			<div class="refresh-content f-left"><div class="refresh-contact"><span>{#$phone#}</span><a href="personal_user.php?act=authenticate" class="underline">修改</a></div></div>
+		</div>
+		<div class="refresh-item clearfix">
+			<div class="refresh-type f-left">电子邮箱：</div>
+			<div class="refresh-content f-left"><div class="refresh-contact"><span>{#$email#}</span><a href="personal_user.php?act=authenticate" class="underline">修改</a></div></div>
+		</div>
+		<div class="refresh-btn"><input type="button" value="刷新简历" /></div>
+	</div>
+</div>
+	
+	<script>
+		$(function() {
+			// 下拉
+			$('.ref-drop').on('click', function(e) {
+				$(this).find('.ref-drop-list').slideToggle('fast');
+				$(document).one('click', function() {
+					$('.ref-drop-list').stop().slideUp('fast');
+				})
+				e.stopPropagation();
+			});
+			$('.ref-drop-list').on('click', function(e) {
+				e.stopPropagation();
+			})
+			$('.ref-drop-list a').on('click', function() {
+				$(this).parents('.ref-drop-list').prevUntil().find('span').css('color', '#666').text($(this).html());
+				$(this).parents('.ref-drop-list').hide().prev('input').val();
+				$("#current").val($(this).attr('id'));
+				$("#current_cn").val($(this).text());
+			})
+		});
+	</script>

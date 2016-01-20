@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-我的简历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script type="text/javascript">
+		$(document).ready(function()
+		{
+			// 刷新简历
+			$(".refresh").click(function(){
+				var id=$(this).attr("pid");
+				$.get("?act=resume_refresh&pid="+id+"", function(data){
+					if(data=="ok"){
+						layer.msg('刷新简历成功！', {icon: 1});
+						setTimeout(function () {
+						    window.location.reload();
+						}, 2000);
+					}else if(data="err"){
+						layer.msg('刷新简历失败！', {icon: 2});
+					}else{
+						layer.msg(data);
+						$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+					}
+				});
+			});
+		});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">我的简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			{#if $resume_list#}
+			{#foreach from=$resume_list item=list#}
+			<article class="classifylist resumelist">
+				<section class="title flex-box"><div class="name">{#$list.title#}</div></section>
+				<section class="txt flex-box"><div class="left">公开状态：{#if $list.display==1#}公开{#elseif $list.display==2#}保密{#else#}关闭{#/if#}</div><div class="right flex2">完整度：{#$list.complete_percent#}%（<span class="{#if $list.level!=1#}cof90{#else#}f815{#/if#}">{#if $list.level=="1"#} 差 {#elseif $list.level=="2"#}良{#else#}优{#/if#}</span>）</div></section>
+				<section class="txt flex-box"><div class="left">刷新时间：{#$list.refreshtime|date_format:"%Y-%m-%d"#}</div><div class="right flex2">下载/浏览：{#$list.countdown#}/{#$list.click#}</div></section>
+				<section class="linebar">
+					<div class="whole">
+						<div class="boxleft"></div>
+						<div class="boxline"></div>
+						<div class="boxright"></div>
+					</div>
+				</section>
+				<section class="compilehandle flex-box">
+					<div class="handle refresh" pid="{#$list.id#}"><div class="icon"><span class="icon-user-refresh"></span></div><div class="txt">刷新</div></div>
+					<div class="handle compile" onclick="window.location.href='?act=resume_one&pid={#$list.id#}'"><div class="icon"><span class="icon-user-compile"></span></div><div class="txt">编辑</div></div>
+					<div class="handle preview" onclick="window.location.href='../resume-show.php?id={#$list.id#}'"><div class="icon"><span class="icon-user-preview"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></span></div><div class="txt">预览</div></div>
+					<div class="handle privacy setPrivacy" data-pid="{#$list.id#}"><div class="icon"><span class="icon-user-lock"></span></div><div class="txt">隐私</div></div>
+					<div class="handle more setMore" data-pid="{#$list.id#}"><div class="icon"><span class="icon-user-more"></span></div><div class="txt">更多</div></div>
+				</section>
+				<section class="bottom"></section>
+			</article>
+			{#/foreach#}
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"></div>
+				<div class="txt flex-box">你还没有简历</div>
+				<div class="hint flex-box">找工作就从填简历开始吧！</div>
+			</article>
+			{#/if#}
+			<div class="select_bar_div"></div>
+			<article class="flex-box arlogout"><a class="logout" href="?act=make_resume">创建简历</a></article>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-已下载简历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<link rel="stylesheet" href="../css/search.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/filter.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.thisurl').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">已下载简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<div class="select_bar clear">
+				<ul class="clear">
+					<li class="col coltw s_state" data-go="statedownload"><div><span>{#if $smarty.get.state_cn#}{#$smarty.get.state_cn#}{#else#}简历标签{#/if#}</span></div></li>
+					<li class="col coltw s_settr" data-go="settrdownload"><div><span>{#if $smarty.get.settr_cn#}{#$smarty.get.settr_cn#}{#else#}下载时间{#/if#}</span></div></li>
+				</ul>
+				<div class="mark_bottom"><div class="mark_line coltw"></div></div>
+				<div class="lock"></div>
+				<div class="select_bar_div">
+					<div id="statedownloadList" class="sl_list"><div><ul></ul></div></div>
+					<div id="settrdownloadList" class="sl_list"><div><ul></ul></div></div>
+				</div>
+				<input type="hidden" id="hstate" value="{#$smarty.get.state#}">
+				<input type="hidden" id="hstate_cn" value="{#$smarty.get.state_cn#}">
+				<input type="hidden" id="hsettr" value="{#$smarty.get.settr#}">
+				<input type="hidden" id="hsettr_cn" value="{#$smarty.get.settr_cn#}">
+			</div>
+			{#if $down_resume#}
+			{#foreach from=$down_resume  item=list#}
+			<article class="classifylist interviewlist nomb thisurl" url="../{#$list.resume_url#}">
+				<section class="title flex-box">
+					<div class="name {#if $list.resume_state==1#}suitable{#elseif $list.resume_state==2#}nosuitable{#elseif $list.resume_state==3#}undetermined{#elseif $list.resume_state==4#}inappropriate{#/if#}">{#$list.fullname#}</div>
+					<div class="status flex2">{#$list.down_addtime|date_format:'%Y-%m-%d'#}</div>
+				</section>
+				<section class="content flex-box">{#$list.sex_cn#} | {#$list.age#}岁 | {#$list.education_cn#} | {#$list.experience_cn#} | {#$list.major_cn#}</section>
+				<section class="content flex-box">意向职位：{#$list.intention_jobs#}</section>
+			</article>
+			{#/foreach#}
+			<article class="listshowmore flex-box">查看更多</article>
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"></div>
+				<div class="txt flex-box">未匹配到相关下载的简历！</div>
+			</article>
+			{#/if#}
+		</div>
+	</body>
+</html>

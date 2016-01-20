@@ -1,0 +1,90 @@
+<!-- 头部 -->
+<div id="header">
+	<div class="top-nav-wrap">
+		<div class="top-nav clearfix">
+			<ul class="f-left">
+				{#qishi_nav set="调用名称:QS_top,列表名:list,分割:5"#}
+				{#foreach from=$list item=list#}
+				<li><a href="{#$list.url#}" target="{#$list.target#}" class="nav-li {#if $list.tag==$page_select && $list.tag!=""#}active{#/if#}">{#$list.title#}</a></li>
+			    {#/foreach#}
+				<li class="nav-list">
+					<a href="javascript:;" class="nav-li">更多<i class="nav-more"></i></a>
+					<div class="nav-more-drop">
+						<ul class="nav-detail clearfix">
+							{#foreach from=$list_more item=li#}
+							<li><a href="{#$li.url#}" target="{#$li.target#}" class="underline f-left">{#$li.title#}</a></li>
+						    {#/foreach#}
+							<li><a href="{#"QS_map,id:1"|qishi_url#}" class="underline f-left" target="_blank">地图搜索</a></li>
+							<li><a href="{#"QS_explainshow,id:7"|qishi_url#}" class="underline f-left" target="_blank">VIP服务</a></li>
+							<li><a href="{#"QS_suggest"|qishi_url#}" class="underline f-left" target="_blank">意见建议</a></li>
+							<li><a href="{#"QS_simplelist"|qishi_url#}" class="underline f-left" target="_blank">微招聘</a></li>
+							<li><a href="{#"QS_helplist"|qishi_url#}" class="underline f-left">使用帮助</a></li>
+						</ul>
+						<div class="mob-list">
+							<h4>移动互联</h4>
+							<div class="mob-list-box clearfix">
+								<a href="{#$QISHI.site_dir#}mobile/?type=touch" class="mob-link wap-link f-left" target="_balnk">触屏版</a>
+								<a href="{#$QISHI.site_dir#}mobile/?type=android" class="mob-link android-link f-left" target="_balnk">安卓版</a>
+								<a href="{#$QISHI.site_dir#}mobile/?type=ios" class="mob-link ios-link f-left" target="_balnk">苹果版</a>
+								<a href="{#$QISHI.site_dir#}mobile/?type=weixin" class="mob-link wechat-link f-left" target="_balnk">微信版</a>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<div class="nav-right f-right">
+				{#if $smarty.session.username#}
+				<span class="login-reg"><a href="{#"QS_login"|qishi_url#}" class="underline">{#$smarty.session.username#}</a>&nbsp;&nbsp;&nbsp;<a href="{#"QS_login,act:logout"|qishi_url#}" class="underline">[退出]</a></span>
+				{#else#}
+				<span class="login-reg"><a href="{#"QS_login"|qishi_url#}" class="underline">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{#$QISHI.site_dir#}user/user_reg.php" class="underline">注册</a></span>
+				{#/if#}
+				<span class="nav-items"><a href="{#"QS_shop_index"|qishi_url#}" class="underline">积分商城</a></span>
+				<span class="nav-items"><a href="{#$QISHI.site_dir#}salary" class="underline">薪酬统计</a></span>
+				<span class="nav-items"><a href="{#$QISHI.site_dir#}plus/shortcut.php" class="underline">保存到桌面</a></span>
+			</div>
+		</div>
+	</div>
+	<div class="container-index header-main clearfix">
+		<div class="logo-box f-left"><a href="{#$QISHI.site_dir#}"><img src="{#$QISHI.upfiles_dir#}{#$QISHI.web_logo#}" alt="{#$QISHI.site_name#}" border="0" align="absmiddle" width="260" height="70"/></a></div>
+		<div class="mobile-block f-right">
+			<div class="mob-btn-box f-left">
+				<a href="javascript:;" class="mob-btn phone webApp">手机招聘</a>
+				<div class="mob-dialog-box weMinBoxApp">
+					<div class="mob-dialog">
+						<i class="mob-arrow"><em></em></i>
+						<div class="mob-d-wrap clearfix">
+							<div class="mob-d-block f-left">
+								<p>安卓版APP</p>
+								<div><img src="{#$QISHI.site_dir#}plus/url_qrcode.php?url={#$QISHI.site_domain#}{#$QISHI.site_dir#}m/download.php?downtype=android" alt="二维码" width="145" height="145" border="0" /></div>
+							</div>
+							<div class="mob-d-block f-left nm">
+								<p>iOS版APP</p>
+								<div><img src="{#$QISHI.site_dir#}plus/url_qrcode.php?url={#$QISHI.site_domain#}{#$QISHI.site_dir#}m/download.php?downtype=ios" alt="二维码" width="145" height="145" border="0" /></div>
+							</div>
+						</div>
+						<div class="mob-d-wap">触屏版：<span><a href="{#$QISHI.wap_domain#}" target="_blank">{#$QISHI.wap_domain#}</a></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="mob-btn-box f-left">
+				<a href="javascript:;" class="mob-btn wechat weChat">微信招聘</a>
+				<div class="mob-dialog-box-w weMinBoxWx">
+					<div class="mob-dialog">
+						<i class="mob-arrow"><em></em></i>
+						<div class="mob-d-block f-left nm">
+							<p>官方微信</p>
+							<div><img src="{#$QISHI.upfiles_dir#}{#$QISHI.weixin_img#}" alt="" width="145" height="145" border="0" /></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 头部结束 -->
+<script src="{#$QISHI.site_template#}js/jquery.header.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		header();
+	});
+</script>

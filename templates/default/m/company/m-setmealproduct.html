@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-套餐产品</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev"  id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">套餐产品</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="conforsatabwidget">
+				<section class="con"><div class="reminder creatjobrem flex-box">开通套餐会员请咨询客服</div></section>
+			</article>
+			
+			<article class="optionlist optionlisteditworkexp personalinfo companyinfo" style="border-bottom: none;">
+				<section class="flex-box list" url=""><div class="right flex2">{#if $consultant#}{#$consultant.name#}{#else#}您还没有专属客服,请联系管理员为您分配专属客服！{#/if#}</div></section>
+				<section class="flex-box list creatjoblist" url="">
+					<div class="right flex2">{#$QISHI.top_tel#}</div>
+					<!-- <div class="call"></div> -->
+					<a class="call" href="tel:{#$QISHI.top_tel#}"></a>
+				</section>
+				{#if $consultant.qq#}
+				<section class="flex-box list" url=""><div class="right qq flex2">{#$consultant.qq#}</div></section>
+				{#/if#}
+			</article>
+			<article class="conforsatabwidget">
+				<section class="con"><div class="reminder creatjobrem flex-box">成为套餐会员后有以下特权</div></section>
+			</article>
+
+			<article class="privilegebox flex-box">
+				<div class="list identifier">
+					<div class="title">尊贵套餐会员身份标识</div>
+					<div class="txt">开通套餐会员服务，立即尊享会员身份标识</div>
+				</div>
+				<div class="list makejob">
+					<div class="title">职位发布特权</div>
+					<div class="txt">加入套餐会员，大幅提高职位发布数</div>
+				</div>
+				<div class="list downresume">
+					<div class="title">简历下载特权</div>
+					<div class="txt">简历下载数大幅提升，扩充您的人才库</div>
+				</div>
+				<div class="list jobpromotion">
+					<div class="title">职位推广特权</div>
+					<div class="txt">四种推广方式任您选，提升招聘效率</div>
+				</div>
+				<div class="list moreinvite">
+					<div class="title">更多招聘特权等您体验</div>
+					<div class="txt">了解更多特权请联系属于您的专属客服</div>
+				</div>
+			</article>
+		</div>
+	</body>
+</html>

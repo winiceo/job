@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>人才测评-测评结果</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_evaluation_template#}css/review.css" />
+<script src="{#$QISHI.site_evaluation_template#}js/jquery.js"></script>
+<link href="{#$QISHI.site_evaluation_template#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_evaluation_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_evaluation_template#}js/dialog-min-common.js" type="text/javascript" language="javascript"></script>
+<script>
+	$(function() {
+		$('.sub-review-item:last').css({'border-bottom': 0});
+		// 点击测评
+		is_answer_dialog(".start-review");
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_evaluation/default/header.htm"#}
+	<div class="review-main container">
+		<div class="review-wrap">
+			<div class="g-top-box">
+				<h1><span>{#$paper_info.title#}</span></h1>
+				<div class="result clearfix">
+					<div class="result-info f-left">
+						<div class="info-row">
+							<span>题量：{#$paper_info.question_num#}题</span>
+							<span>测评时间：{#$paper_info.timelimit#}分钟</span>
+							<span>价格：<em>{#if $paper_info.price==0#}免费{#else#}{#$paper_info.price#}{#/if#}</em></span>
+						</div>
+						<p>关键词：{#$paper_info.keywords#}</p>
+						<p>{#$paper_info.description#}</p>
+					</div>
+					<div class="result-card">
+						<i class="result-arrow"></i>
+						<h4>测评得分：<span>{#$paper_info.score#}分</span></h4>
+						<div class="result-content clearfix">
+							<div class="result-icon f-left"></div>
+							<div class="result-text">
+								<span>测评分析</span>
+								<p>{#$paper_info.explain#}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="g-main-box">
+				<h1><span>测评推荐</span></h1>
+				{#if $paper_list#}
+				{#foreach from=$paper_list item=list#}
+				<div class="sub-review-item clearfix">
+					<div class="sub-type f-left"><img src="{#if $list.img#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}/data/eval/img/{#$list.img#}{#else#}{#$QISHI.site_evaluation_template#}images/review-type2.jpg{#/if#}" alt="" width="130" /></div>
+					<div class="sub-info f-left">
+						<h4>{#$list.title#}</h4>
+						<div class="hot-key">关键词：{#$list.keywords#}</div>
+						<p>{#$list.description#}</p>
+					</div>
+					<div class="sub-control f-left">
+						<div class="sub-ctrl-item">适用人群：{#$list.suitable_crowd#}</div>
+						<div class="sub-ctrl-item">题目时长：{#$list.question_num#}/{#$list.timelimit#}分钟</div>
+						<div class="sub-ctrl-item">已有{#$list.join_num#}人参与</div>
+						<div class="sub-ctrl-item">价格：<span>{#if $list.price==0#}免费{#else#}{#$list.price#}{#/if#}</span></div>
+						<a href="javascript:;" data-id="{#$list.id#}" data-url="{#"QS_paper_answer,id:$list.id"|qishi_url#}" class="start-review"></a>
+					</div>
+				</div>
+				{#/foreach#}
+				{#else#}
+				<div class="no-data">
+					<i class="no-data-icon"></i><span>没有相关测评推荐！</span>
+				</div>
+				{#/if#}
+			</div>
+		</div>
+	</div>
+	{#include file="../tpl_evaluation/default/footer.htm"#}
+</body>
+</html>

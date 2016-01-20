@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-简历管理</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/wapcheckall.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// 添加链接
+				$('.optionlist .list').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">简历管理</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="optionlist accountmanager">
+				<section class="flex-box list" url="company_get_reusme.php">
+					<div class="left resume"><div class="icon receivedresume"><span class="icon-user-apply"></span></div></div>
+					<div class="right flex2">收到简历{#if $count#}<div class="circle">{#$count#}</div>{#/if#}</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="company_interview_list.php">
+					<div class="left resume"><div class="icon makeinvited"><span class="icon-user-interview"></span></div></div>
+					<div class="right flex2">发起的面试邀请</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="company_download_reusme.php">
+					<div class="left resume"><div class="icon downloadresume"><span class="icon-user-down"></span></div></div>
+					<div class="right flex2">已下载简历</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="company_view_jobs.php">
+					<div class="left resume"><div class="icon seenaposition"><span class="icon-user-attentionme"></span></div></div>
+					<div class="right flex2">谁看过我的职位</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="company_collect_reusme.php">
+					<div class="left resume"><div class="icon myfavorite"><span class="icon-user-favorites"></span></div></div>
+					<div class="right flex2">我的收藏</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="company_view_resume.php">
+					<div class="left resume"><div class="icon readtheresume"><span class="icon-user-eye"></span></div></div>
+					<div class="right flex2 nobm">浏览过的简历</div>
+					<div class="arrow nobm"></div>
+				</section>
+			</article>
+		</div>
+	</body>
+</html>

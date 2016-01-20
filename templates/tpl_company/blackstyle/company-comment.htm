@@ -1,0 +1,142 @@
+{#qishi_company_show set="列表名:company,企业ID:GET[id]"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$company.companyname#} - 公司评论 - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$company.contents#}">
+<meta name="keywords" content="{#$company.companyname#}">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/css.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/ui-dialog.css" rel="stylesheet" type="text/css" />	
+<script src="{#$user_tpl#}js/jquery.js"></script>
+<script src="{#$user_tpl#}js/dialog-min.js"></script>
+<script src="{#$user_tpl#}js/simplefoucs.js" type="text/javascript"></script>
+<SCRIPT TYPE="text/javascript">
+$(document).ready(function(){
+	var company_id="{#$company.id#}";
+	var tsTimeStamp= new Date().getTime();
+	{#if $QISHI.open_comment=='1'#}
+		$.get("{#$QISHI.site_dir#}plus/ajax_comment.php", { "companyid": company_id,"time":tsTimeStamp},
+			function (data,textStatus)
+			 {	
+				$("#pl").html(data);
+				/*添加 回复按钮 */
+				if({#$smarty.session.uid#}=={#$company.uid#})
+				{
+					$(".comment-control").append('<a href="javascript:;" class="control-item f-left talk">回复</a>')
+				}	
+			 }
+		);
+	{#/if#}
+	// 用户登录
+	$(".ajax_user_login").live('click',function(){
+		var myDialog = dialog();// 初始化一个带有loading图标的空对话框
+		jQuery.ajax({
+		    url: '{#$QISHI.site_dir#}user/user_ajax_login.php',
+		    success: function (data) {
+		    	myDialog.width(475);
+		        myDialog.content(data);// 填充对话框内容
+		        myDialog.title('用户登录');// 填充对话框内容
+		    	myDialog.showModal();
+		    }
+		});
+	});
+	// 点击查看大图
+	$("#img_show").click(function() {
+		dialog({
+			title: '企业风采',
+		    content: $("#focus"),
+		}).showModal();
+	});
+	// 企业 回复内容 表单
+	$('.talk').unbind().live('click', function(){
+		$(this).parent().next('.talk-block').stop().slideToggle('fast');
+	});
+	// 企业回复 
+	$(".reply_submit").live('click',function(){
+		var company_id= $(this).attr('company_id');
+		var comment_id= $(this).attr('id');
+		var reply=$(this).parents(".textarea-control").prev().find('.reply').val();
+		$.post('{#$QISHI.site_dir#}plus/ajax_comment.php',{"act":"company_reply","comment_id":comment_id,"company_id":company_id,"reply":reply}, function(data) {
+			if(data=="ok")
+			{
+				alert("回复成功！");
+			}
+			else
+			{
+				alert(data);
+			}
+		});
+	})
+});
+</SCRIPT>
+<style>{}</style>
+</head>
+<body>
+{#include file="../tpl_company/blackstyle/header-black.htm"#}
+<!-- 导航 -->
+<div class="com_top_nav">
+	<a href="{#"QS_companyshow,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">企业主页</a>
+	<a href="{#"QS_companyinfo,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">公司介绍</a>
+	<a href="{#"QS_companyjobs,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">招聘职位</a>
+	<a href="{#"QS_companynews,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">新闻动态</a>
+	{#if $QISHI.open_commentaudit=="1"#}
+	<a href="{#"QS_companycomment,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}" class="active">评论</a>
+	{#/if#}
+</div>
+<!-- 导航 End-->
+<!-- 主体内容 -->
+<div class="talents_information">
+	<div class="f-left">
+		<!-- 评论内容 -->
+		<div class="hunterbox_container hunter_news_list">
+			<div class="box_content comment-wrap
+			" id="pl">
+				
+			</div>
+		</div>
+		<!-- 评论内容 End-->
+	</div>
+	<div class="f-left">
+		<div class="hunterbox_container hunter_contact_box">
+			<div class="box_content hunter_contact" style="margin-top:15px;">
+				<div class="ring-item f-left">
+					<h4 class="resumes">{#$company.resume_processing#}%</h4>
+					<p>简历处理率</p>
+				</div>
+				<div class="ring-item f-left">
+					<h4 class="jobs">{#$company.jobs_num#}</h4>
+					<p>在招职位</p>
+				</div>
+				<div class="ring-item f-left nori">
+					<h4 class="interest">{#$company.resume_num#}</h4>
+					<p>感兴趣简历</p>
+				</div>
+			</div>
+		</div>
+		{#qishi_company_news_list set="列表名:news,分页显示:1,显示数目:5,标题长度:35,企业ID:GET[id],标题长度:35,摘要长度:50,填补字符:...,风格模板:$smarty.get.style,排序:order>desc"#}
+		{#if $news#}
+		<!-- 新闻动态 -->
+		<div class="hunterbox_container recommended_reading">
+			<div class="h">
+				<div class="t">新闻动态</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				{#foreach from=$news item=list#}
+				<div class="c"><a href="{#$list.url#}" target="_blank">{#$list.title#}</a></div>
+				{#/foreach#}
+			</div>
+		</div>
+		<!-- 新闻动态 End-->
+		{#/if#}
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 主体内容 End-->
+{#include file="footer.htm"#}
+</body>
+</html>

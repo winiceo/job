@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">{#qishi_pageinfo set="列表名:page,调用:QS_shop_index"#}
+<title>{#$page.title#}</title>
+<meta name="description" content="{#$page.description#}">
+<meta name="keywords" content="{#$page.keywords#}">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" /> 
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/shop.css" />
+<script src="{#$QISHI.site_shop_template#}js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.like-item:last').css({'border-bottom':0});
+		$('.commodity-list .commodity-item:nth-child(4n)').css({'margin-right':0});
+		$('.s-control-li:last').css({'margin-bottom':0});
+
+		$(".big-show .show-li:not(:first-child)").hide();
+		$(".small-control .s-control-li").each(function(){
+			$(this).hover(function(){
+				var index = $(this).index();
+				$(this).siblings(".s-control-li").removeClass('side-select');
+				$(this).addClass('side-select');
+				$(".big-show .show-li").eq(index).show().siblings().hide();
+			})
+		});
+		// 新闻滚动
+		var AutoScroll = function(){
+		        $('.exchange-notice').find("ul:first").animate({
+		                marginTop:"-32px"
+		        },500,function(){
+		        	console.log('1');
+		                $(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+		        });
+		}
+		setInterval(AutoScroll,3000);
+		$(".small-control .s-control-li").eq(0).addClass('side-select');
+		// 鼠标移动到目标区域，该区域边框变色
+		$(".commodity-item").hover(function() {
+			$(this).addClass('bdcolor01');
+		}, function() {
+			$(this).removeClass('bdcolor01');
+		});
+	});
+	
+</script>
+</head>
+<body>
+	{#include file="../tpl_shop/default/header.htm"#}
+	<div class=" container shop-main clearfix">
+		<!-- left -->
+		<div class="fourthree-left">
+			<div class="pic-swipe clearfix">
+				{#qishi_ad set="显示数目:3,调用名称:QS_shop_index ,列表名:ad,文字长度:12"#}
+				<div class="big-show f-left">
+					{#if $ad#}
+					{#foreach from=$ad item=list#}
+					<div class="show-li"><a href="{#$list.img_url#}" target="_blank"><img src="{#$list.img_path#}" alt="{#$list.img_explain#}" width="540" height="260" border="0" /></a></div>
+					{#/foreach#}
+					{#/if#}
+				</div>
+				
+				<div class="small-control f-left">
+					{#if $ad#}
+					{#foreach from=$ad item=list#}
+					<div class="s-control-li">
+						<a href="javascript:;"><img src="{#$list.img_path#}" alt="预览图" width="176" height="76" border="0" /></a>
+						<i class="s-control-arrow"></i>
+					</div>
+					{#/foreach#}
+					{#/if#}
+				</div>
+			</div>
+			<!-- 滚动新闻 -->
+			{#if $exchange_list#}
+			<div class="exchange-notice">
+				<ul>
+					{#foreach from=$exchange_list item=li#}
+					<li><a href="{#"QS_companyshow,id:$li.company_id"|qishi_url#}" target="_blank">{#$li.company_name#}</a>兑换了<a href="{#"QS_shop_show,id:$li.shop_id"|qishi_url#}" target="_blank">{#$li.shop_title#}</a><span>{#$li.addtime_cn#}</span></li>
+					{#/foreach#}
+				</ul>
+			</div>
+			{#/if#}
+			<!-- 热门推荐 -->
+			<div class="recommend-box">
+				<h2 class="recommend-title clearfix"><span>热门推荐</span></h2>
+				<div class="commodity-list clearfix">
+					{#qishi_shop_list set="列表名:shop_tj,显示数目:8,标题长度:20,填补字符:...,推荐:1,排序:addtime>desc"#}
+					{#foreach from=$shop_tj item=list#}
+					<div class="commodity-item f-left">
+						<div class="comm-img"><a href="{#$list.shop_url#}"><img src="{#if $list.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$list.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品照片" width="175" height="175" /></a></div>
+						<div class="comm-link"><a href="{#$list.shop_url#}" title="{#$list.shop_title#}">{#$list.shop_title_#}</a></div>
+						<div class="comm-price">积分：<span>{#$list.shop_points#}</span></div>
+						<a href="{#$list.shop_url#}" class="exchange-btn">兑换</a>
+					</div>
+					{#/foreach#}
+				</div>
+			</div>
+			<!-- 最新商品 -->
+			<div class="recommend-box mt10">
+				<h2 class="recommend-title clearfix"><span>最新商品</span></h2>
+				<div class="commodity-list clearfix">
+					{#qishi_shop_list set="列表名:shop_tj,显示数目:8,标题长度:20,填补字符:...,排序:addtime>desc"#}
+					{#foreach from=$shop_tj item=list#}
+					<div class="commodity-item f-left">
+						<div class="comm-img"><a href="{#$list.shop_url#}"><img src="{#if $list.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$list.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品照片" width="175" height="175" /></a></div>
+						<div class="comm-link"><a href="{#$list.shop_url#}" title="{#$list.shop_title#}">{#$list.shop_title_#}</a></div>
+						<div class="comm-price">积分：<span>{#$list.shop_points#}</span></div>
+						<a href="{#$list.shop_url#}" class="exchange-btn">兑换</a>
+					</div>
+					{#/foreach#}
+				</div>
+			</div>
+		</div>
+		<!-- right -->
+		<div class="fourthree-right">
+			<div class="count-box">
+				{#if empty($smarty.session.username)#}
+				<a href="javascript:;" class="account-login" style="display: block;">我的积分</a>
+				{#else#}
+				<div class="count-info">
+					<h4>{#if $com_info.companyname#}{#$com_info.companyname#}{#else#}{#$smarty.session.username#}{#/if#}</h4>
+					<p>账户积分：<span>{#$com_point#}</span> 分</p>
+				</div>
+				{#/if#}
+			</div>
+			<a class="shop-asd"><img src="{#$QISHI.site_shop_template#}images/shop-asd1.jpg" width="250" height="150" border="0" /></a>
+			<div class="your-like">
+				<h3 class="like-title">猜你喜欢</h3>
+				<div class="like-list">
+					{#qishi_shop_list set="列表名:list,分页显示:1,显示数目:10,标题长度:10,填补字符:...,排序:click>desc"#}
+					{#foreach from=$list item=li#}
+					<div class="like-item clearfix">
+						<div class="like-pic f-left"><a href="{#$li.shop_url#}"><img src="{#if $li.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$li.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品图片" width="53" height="53" /></a></div>
+						<div class="like-detail f-left">
+							<p><a href="{#$li.shop_url#}" title="{#$li.shop_title#}">{#$li.shop_title_#}</a></p>
+							<div class="price">积分：<span>{#$li.shop_points#}</span></div>
+						</div>
+					</div>
+					{#/foreach#}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{#include file="footer.htm"#}
+</body>
+</html>

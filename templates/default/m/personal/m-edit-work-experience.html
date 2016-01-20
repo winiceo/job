@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-添加工作经历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script type="text/javascript" src="../js/popWin.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function()
+			{
+				// 提交 表单
+				var isPost = true;
+				$("#work_submit").click(function(){
+					var resume_work="{#$resume_work#}";
+					if(resume_work){
+					var id = "{#$resume_work.id#}";
+					}
+					var pid = {#$smarty.get.pid#};
+					var companyname =$("input[name='companyname']").val();
+					var jobs =$("input[name='jobs']").val();
+					var startyear =$("#startDate_dummy").val().split(".")[0];
+					var startmonth =$("#startDate_dummy").val().split(".")[1];
+					var endyear =$("#endDate_dummy").val().split(".")[0];
+					var endmonth =$("#endDate_dummy").val().split(".")[1];
+					var achievements =$("#achievements").val();
+					if (isPost) {
+						isPost = false;
+						$.post("?act=resume_work_save",{id:id,pid:pid,companyname:companyname,jobs:jobs,startyear:startyear,startmonth:startmonth,endyear:endyear,endmonth:endmonth,achievements:achievements},function(data){
+							if(data=="ok"){
+								layer.msg('添加成功！', {icon: 1});
+								setTimeout(function () {
+								    window.location.href="?act=resume_work_list&pid="+pid+"";
+								}, 2000);
+							}else if(data=="err"){
+								layer.msg('添加失败！', {icon: 2});
+							}else{
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+							}
+							isPost = true;
+						})
+					};
+				});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">工作经历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="formDiv comresume">
+				<div class="formChild">
+					<div class="lt">公司名称<span>*</span></div>
+					<div class="mt"><input id="companyname" name="companyname" value="{#$resume_work.companyname#}"></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">职位名称<span>*</span></div>
+					<div class="mt"><input id="jobs" name="jobs" value="{#$resume_work.jobs#}"></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">入职时间<span>*</span></div>
+					<label id="startDateTxt" data-type="yearStart" data-text="选择入职时间" class="mt check mbs">{#$resume_work.startyear#}年{#$resume_work.startmonth#}月</label>
+					<input type="hidden" id="startDate_dummy" name="startDate" value="{#$resume_work.startyear#}.{#$resume_work.startmonth#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">离职时间<span>*</span></div>
+					<label id="endDateTxt" data-type="yearEnd" data-text="选择离职时间" class="mt check mbs">{#$resume_work.endyear#}年{#$resume_work.endmonth#}月</label>
+					<input type="hidden" id="endDate_dummy" name="endDate" value="{#$resume_work.endyear#}.{#$resume_work.endmonth#}">
+				</div>
+				<div class="formChild">
+					<div class="lt">工作职责</div>
+					<label id="achievementTxt" class="mt check">{#$resume_work.achievements#}</label>
+					<input type="hidden" id="achievements" name="achievements" value="{#$resume_work.achievements#}" readonly="">
+				</div>
+			</article>
+			<article class="flex-box arlogout"><a id="work_submit" class="logout" href="javascript:;">保存</a></article>
+		</div>
+	</body>
+</html>

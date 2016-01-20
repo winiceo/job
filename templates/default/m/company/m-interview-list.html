@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-发起的面试邀请</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<link rel="stylesheet" href="../css/search.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/filter.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.thisurl').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">发起的面试邀请</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<div class="select_bar clear">
+				<ul class="clear">
+					<li class="col colt s_job" data-go="jobinterview"><div><span>{#if $smarty.get.jobname#}{#$smarty.get.jobname#}{#else#}面试职位{#/if#}</span></div></li>
+					<li class="col colt s_look" data-go="lookinterview"><div><span>{#if $smarty.get.look_cn#}{#$smarty.get.look_cn#}{#else#}对方查看{#/if#}</span></div></li>
+					<li class="col colt s_settr" data-go="settrinterview"><div><span>{#if $smarty.get.settr_cn#}{#$smarty.get.settr_cn#}{#else#}邀请时间{#/if#}</span></div></li>
+				</ul>
+				<div class="mark_bottom"><div class="mark_line colt"></div></div>
+				<div class="lock"></div>
+				<div class="select_bar_div">
+					<div id="jobinterviewList" class="sl_list">
+						<ul id="tag_level">
+							<li data-val="0">全部职位</li>
+							{#if $interview#}
+								{#foreach from=$interview  item=list#}
+								<li data-val="{#$list.id#}">{#$list.jobs_name#}</li>
+								{#/foreach#}
+							{#/if#}
+						</ul>
+					<div><ul></ul></div></div>
+					<div id="lookinterviewList" class="sl_list"><div><ul></ul></div></div>
+					<div id="settrinterviewList" class="sl_list"><div><ul></ul></div></div>
+				</div>
+				<input type="hidden" id="hjobsid" value="{#$smarty.get.jobsid#}">
+				<input type="hidden" id="hjobname" value="{#$smarty.get.jobname#}">
+				<input type="hidden" id="hlook" value="{#$smarty.get.look#}">
+				<input type="hidden" id="hlook_cn" value="{#$smarty.get.look_cn#}">
+				<input type="hidden" id="hsettr" value="{#$smarty.get.settr#}">
+				<input type="hidden" id="hsettr_cn" value="{#$smarty.get.settr_cn#}">
+			</div>
+			{#if $interview#}
+			{#foreach from=$interview  item=list#}			
+			<article class="classifylist interviewlist nomb thisurl" url="../{#$list.resume_url#}">
+				<section class="title flex-box">
+					<div class="name">{#$list.fullname#}</div>
+					<div class="status flex2">{#$list.interview_addtime|date_format:'%Y-%m-%d'#}</div>
+				</section>
+				<section class="content flex-box">{#$list.sex_cn#} | {#$list.age#}岁 | {#$list.education_cn#} | {#$list.experience_cn#} | {#$list.major_cn#}</section>
+				<section class="content flex-box">面试职位：{#$list.jobs_name#}</section>
+			</article>
+			{#/foreach#}
+			<article class="listshowmore flex-box">查看更多</article>
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"></div>
+				<div class="txt flex-box">未匹配到相关的面试邀请！</div>
+			</article>
+			{#/if#}
+		</div>
+	</body>
+</html>

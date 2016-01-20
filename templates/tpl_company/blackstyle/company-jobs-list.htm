@@ -1,0 +1,108 @@
+{#qishi_company_show set="列表名:company,企业ID:GET[id]"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$company.companyname#} - 职位列表 - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$company.contents#},职位列表">
+<meta name="keywords" content="{#$company.companyname#},职位列表">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/css.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/ui-dialog.css" rel="stylesheet" type="text/css" />	
+<script src="{#$user_tpl#}js/jquery.js"></script>
+<script src="{#$user_tpl#}js/dialog-min.js"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min-common.js"></script>
+<script src="{#$user_tpl#}js/simplefoucs.js" type="text/javascript"></script>
+<SCRIPT TYPE="text/javascript">
+$(document).ready(function(){
+	// 点击查看大图
+	$("#img_show").click(function() {
+		dialog({
+			title: '企业风采',
+		    content: $("#focus"),
+		}).showModal();
+	});
+	//申请职位
+	applyJob_dialog(".app_jobs","{#$QISHI.site_dir#}user/user_apply_jobs.php");
+});
+</SCRIPT>
+</head>
+<body>
+{#include file="../tpl_company/blackstyle/header-black.htm"#}
+<!-- 导航 -->
+<div class="com_top_nav">
+	<a href="{#"QS_companyshow,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">企业主页</a>
+	<a href="{#"QS_companyinfo,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">公司介绍</a>
+	<a href="{#"QS_companyjobs,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}" class="active">招聘职位</a>
+	<a href="{#"QS_companynews,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">新闻动态</a>
+	{#if $QISHI.open_commentaudit=="1"#}
+	<a href="{#"QS_companycomment,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">评论</a>
+	{#/if#}
+</div>
+<!-- 导航 End-->
+<!-- 主体内容 -->
+<div class="talents_information">
+	<div class="f-left">
+		<!-- 职位列表 -->
+		<div class="hunterbox_container hunter_news_list">
+			{#qishi_jobs_list set="列表名:jobs,填补字符:...,职位名长度:10,分页显示:1,显示数目:5,列表页:QS_companyjobs,描述长度:68,风格模板:$smarty.get.style,会员UID:"|cat:$company.uid#}
+			{#if $jobs#}
+			<div class="box_content">
+				{#foreach from=$jobs item=list#}
+				<div class="cell">
+					<div class="ctitle"><div class="title"><a href="{#$list.jobs_url#}" title="{#$list.jobs_name_#}" target="_blank">{#$list.jobs_name#}</a></div>{#$list.refreshtime|date:"Y-m-d"#}</div>
+					<div class="c">{#$list.wage_cn#}&nbsp;&nbsp;{#$list.education_cn#}/{#$list.experience_cn#}&nbsp;&nbsp;{#$list.district_cn#}</div>
+					<div class="jitem-app-job app_jobs" jobs_id="{#$list.id#}">申请职位</div>
+				</div>
+				{#/foreach#}
+			</div>
+			{#else#}
+			<div class="cell">
+				<div class="emptytip">没有职位信息！</div>
+			</div>
+			{#/if#}
+		</div>
+		<!-- 职位列表 End-->
+	</div>
+	<div class="f-left">
+		<div class="hunterbox_container hunter_contact_box">
+			<div class="box_content hunter_contact" style="margin-top:15px;">
+				<div class="ring-item f-left">
+					<h4 class="resumes">{#$company.resume_processing#}%</h4>
+					<p>简历处理率</p>
+				</div>
+				<div class="ring-item f-left">
+					<h4 class="jobs">{#$company.jobs_num#}</h4>
+					<p>在招职位</p>
+				</div>
+				<div class="ring-item f-left nori">
+					<h4 class="interest">{#$company.resume_num#}</h4>
+					<p>感兴趣简历</p>
+				</div>
+			</div>
+		</div>
+		{#qishi_company_news_list set="列表名:news,分页显示:1,显示数目:5,标题长度:35,企业ID:GET[id],标题长度:35,摘要长度:50,填补字符:...,排序:order>desc"#}
+		{#if $news#}
+		<!-- 新闻动态 -->
+		<div class="hunterbox_container recommended_reading">
+			<div class="h">
+				<div class="t">新闻动态</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				{#foreach from=$news item=list#}
+				<div class="c"><a href="{#$list.url#}" target="_blank">{#$list.title#}</a></div>
+				{#/foreach#}
+			</div>
+		</div>
+		<!-- 新闻动态 End-->
+		{#/if#}
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- 主体内容 End-->
+{#include file="footer.htm"#}
+</body>
+</html>

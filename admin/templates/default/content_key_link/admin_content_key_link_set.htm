@@ -1,0 +1,28 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="content_key_link/admin_content_key_link_nav.htm"#}
+  <div class="clear"></div>
+</div>
+ <div class="toptit">内容聚合链接设置</div>
+
+    <form id="form1" name="form1" method="post"   action="?act=setsave" >
+	{#$inputtoken#}
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+        <td align="right">内容聚合替换链接数：</td>
+        <td><input name="content_key_link" type="text"  class="input_text_200" id="content_key_link" value="{#$config.content_key_link#}" maxlength="30"  /><span class="admin_note" style="color: rgb(153, 153, 153);">一篇文章中同一个关键字最多出现多少次描文本,建议不超过2次</span></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="50"  > 
+            <input name="submit3" type="submit" class="admin_submit"    value="保存修改"/>
+       </td>
+    </tr>
+  </table>
+    </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

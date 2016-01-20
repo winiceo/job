@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+{#qishi_pageinfo set="列表名:page,调用:QS_evaluation_index"#}
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$page.title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_evaluation_template#}css/review.css" />
+<script src="{#$QISHI.site_evaluation_template#}js/jquery.js"></script>
+<link href="{#$QISHI.site_evaluation_template#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_evaluation_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_evaluation_template#}js/dialog-min-common.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	//登录
+	$.get('{#$QISHI.site_dir#}plus/ajax_user.php?act=test_loginform', function(data) {
+		$("#ajax_login").html(data);
+	});
+	// 点击测评
+	is_answer_dialog(".is_answer");
+});
+</script>
+</head>
+<body>
+	{#include file="../tpl_evaluation/default/header.htm"#}
+	<div class="review-main container clearfix">
+		<div class="review-left f-left">
+			<div class="banner-block"><img src="{#$QISHI.site_evaluation_template#}images/review-banner.jpg" alt="" /></div>
+			<div class="review-index-list clearfix">
+				<div class="review-item">
+					<div class="review-title">
+						<h1><span class="title-arrow left-arrow"></span>{#$type_info.0.name#}<span class="title-arrow right-arrow"></span></h1>
+					</div>
+					<div class="item-content clearfix">
+						<div class="review-type f-left"><img src="{#if $type_info.0.logo#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}/data/eval/logo/{#$type_info.0.logo#}{#else#}{#$QISHI.site_evaluation_template#}images/review-type1.jpg{#/if#}" alt="" width="130" height="130" /></div>
+						<div class="review-text">
+							<h3>{#$type_info.0.name#}<span>已有{#$type_info.0.join_num#}人参与</span></h3>
+							<p>{#$type_info.0.description#}</p>
+							<div class="join-review"><input type="button" value="点击测评" class="join-review-btn" onclick="window.location='{#$QISHI.site_domain#}{#$QISHI.site_dir#}/evaluation/selfcognition.php'"/></div>
+						</div>
+					</div>
+				</div>
+				<div class="review-item">
+					<div class="review-title">
+						<h1><span class="title-arrow left-arrow"></span>{#$type_info.1.name#}<span class="title-arrow right-arrow"></span></h1>
+					</div>
+					<div class="item-content clearfix">
+						<div class="review-type f-left"><img src="{#if $type_info.1.logo#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}/data/eval/logo/{#$type_info.1.logo#}{#else#}{#$QISHI.site_evaluation_template#}images/review-type2.jpg{#/if#}" alt="" width="130" height="130" /></div>
+						<div class="review-text">
+							<h3>{#$type_info.1.name#}<span>已有{#$type_info.1.join_num#}人参与</span></h3>
+							<p>{#$type_info.1.description#}</p>
+							<div class="join-review"><input type="button" value="点击测评" class="join-review-btn" onclick="window.location='{#$QISHI.site_domain#}{#$QISHI.site_dir#}/evaluation/occupation.php'"/></div>
+						</div>
+					</div>
+				</div>
+				<div class="review-item">
+					<div class="review-title">
+						<h1><span class="title-arrow left-arrow"></span>{#$type_info.2.name#}<span class="title-arrow right-arrow"></span></h1>
+					</div>
+					<div class="item-content clearfix">
+						<div class="review-type f-left"><img src="{#if $type_info.2.logo#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}/data/eval/logo/{#$type_info.2.logo#}{#else#}{#$QISHI.site_evaluation_template#}images/review-type3.jpg{#/if#}" alt="" width="130" height="130" /></div>
+						<div class="review-text">
+							<h3>{#$type_info.2.name#}<span>已有{#$type_info.2.join_num#}人参与</span></h3>
+							<p>{#$type_info.2.description#}</p>
+							<div class="join-review"><input type="button" value="点击测评" class="join-review-btn" onclick="window.location='{#$QISHI.site_domain#}{#$QISHI.site_dir#}/evaluation/talents.php'"/></div>
+						</div>
+					</div>
+				</div>
+				<div class="review-item">
+					<div class="review-title">
+						<h1><span class="title-arrow left-arrow"></span>{#$type_info.3.name#}<span class="title-arrow right-arrow"></span></h1>
+					</div>
+					<div class="item-content clearfix">
+						<div class="review-type f-left"><img src="{#if $type_info.3.logo#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}/data/eval/logo/{#$type_info.3.logo#}{#else#}{#$QISHI.site_evaluation_template#}images/review-type4.jpg{#/if#}" alt="" width="130" height="130" /></div>
+						<div class="review-text">
+							<h3>{#$type_info.3.name#}<span>已有{#$type_info.3.join_num#}人参与</span></h3>
+							<p>{#$type_info.3.description#}</p>
+							<div class="join-review"><input type="button" value="点击测评" class="join-review-btn" onclick="window.location='{#$QISHI.site_domain#}{#$QISHI.site_dir#}/evaluation/management.php'"/></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="review-right f-left">
+			<div class="log-area" id="ajax_login">
+				<!-- 已登录 -->
+				<!-- <div class="loged">
+					<div class="user-box clearfix">
+						<div class="user-avater f-left"><a href=""><img src="http://lorempixel.com/64/64/people" alt="" width="64" height="64" /></a></div>
+						<div class="user-info">
+							<h3><a href="">乔大庆</a></h3>
+							<p class="integral">我的积分：<span>1999</span></p>
+							<div class="auth-box">
+								<div class="auth-item mail">784512369@qq.com</div>
+								<div class="auth-item phone-noauth">未认证</div>
+							</div>
+						</div>
+					</div>
+					<div class="user-control">
+						<div class="menu clearfix">
+							<a href="" class="menu-item f-left rank">测评排名</a>
+							<a href="" class="menu-item f-left book">测评宝典</a>
+							<a href="" class="menu-item f-left my">我的测评</a>
+						</div>
+						<a href="" class="user-control-btn">进入个人会员中心</a>
+					</div>
+				</div> -->
+				<!-- 未登录 -->
+				<div class="r-login">
+					<h2>个人登录</h2>
+					<div class="log-form">
+						<div class="input-box"><input type="text" id="userName" placeholder="请输入用户名" /></div>
+						<div class="input-box"><input type="password" id="passWord" placeholder="请输入密码" /></div>
+						<div class="auto-forget clearfix">
+							<label class="f-left"><input type="checkbox" name="" id="" class="checkbox" />自动登录</label>
+							<a href="" class="f-right underline">忘记密码？</a>
+						</div>
+						<div class="log-btn-group clearfix">
+							<div class="f-left"><input type="button" value="立即登录" class="r-btn login-btn" /></div>
+							<div class="f-right"><input type="button" value="免费注册" class="r-btn regin-btn" /></div>
+						</div>
+						<div class="other-login clearfix">
+							<span class="f-left">其他账户登录：</span>
+							<a href="" class="other-icon qq f-left" title="qq"></a>
+							<a href="" class="other-icon sina f-left" title="新浪微博"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="side-ad-area"><a href=""><img src="{#$QISHI.site_evaluation_template#}images/side-ad.jpg" alt="" width="240" /></a></div>
+			<div class="index-right-area">
+				<h4>热门测评</h4>
+				<ul class="hot-list">
+					{#foreach from=$paper_info item=list#}
+					<li class="clearfix"><i class="rank-icon {#if $list.key<4#}top3{#/if#} f-left">{#$list.key#}</i><a href="javascript:;" data-id="{#$list.id#}" data-url="{#"QS_paper_answer,id:$list.id"|qishi_url#}" class="underline is_answer">{#$list.title#}</a></li>
+					{#/foreach#}
+				</ul>
+			</div>
+			<div class="index-right-area">
+				<div class="code-box"><img src="{#$QISHI.site_evaluation_template#}images/code.jpg" alt="" width="144" height="144" /></div>
+				<p class="code-tip">快乐测评，轻松求职</p>
+			</div>
+		</div>
+	</div>
+	{#include file="../tpl_evaluation/default/footer.htm"#}
+</body>
+</html>

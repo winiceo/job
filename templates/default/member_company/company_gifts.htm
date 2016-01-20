@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_common.css" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_company.css" />
+<script src="{#$QISHI.site_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_template#}js/jquery.validate.min.js" type='text/javascript' language="javascript"></script>
+<script>
+$(document).ready(function()
+{
+	//验证码随机
+	$("#getcode").live('click',function(){
+		$(this).attr('src','{#$QISHI.site_dir#}include/imagecaptcha.php?t='+Math.random()+'');
+	});
+	$("#Form1").validate({
+		// debug: true,
+		// onsubmit:false,
+		//onfocusout :true,
+		rules:{
+			account:{
+				required: true
+			},
+			pwd: {
+				required:true
+			}
+			{#if $verify_gifts=="1"#}
+			,
+			postcaptcha: {
+				IScaptchastr:true,
+				required:true,
+				remote:{     
+					url:"{#$QISHI.site_dir#}include/imagecaptcha.php",     
+					type:"post",    
+					data:{"postcaptcha":function (){return $("#postcaptcha").val()},"act":"verify","time":function (){return new Date().getTime()}}     
+				}
+			}
+			{#/if#} 
+		},
+		messages: {
+			account: {
+				required: "请输入卡号"
+			},
+			pwd: {
+				required: "请输入密码"
+			}
+			{#if $verify_gifts=="1"#}
+			,
+			postcaptcha: {
+				required: jQuery.format("请输入验证码"),
+				remote: jQuery.format("验证码错误")
+			}
+			{#/if#}
+		},
+		errorPlacement: function(error, element) {
+			if ( element.is(":radio") )
+				error.appendTo( element.parent().next().next() );
+			else if ( element.is(":checkbox") )
+				error.appendTo ( element.next());
+			else
+				error.appendTo(element.parent());
+		}
+	});
+	jQuery.validator.addMethod("IScaptchastr", function(value, element) {
+		var str="点击获取验证码";
+		var flag=true;
+		if (str==value)
+		{
+			flag=false;
+		}
+		return  flag || this.optional(element) ;
+	}, "请填写验证码");
+
+
+	function imgcaptcha(inputID,imgdiv)
+	{
+		$(inputID).focus(function(){
+			if ($(inputID).val()=="点击获取验证码")
+			{
+				$(inputID).val("");
+				$(inputID).css("color","#333333");
+			}
+			$(inputID).parent("div").css("position","relative");
+			//设置验证码DIV
+			$(imgdiv).css({ position: "absolute", left:  $(inputID).width(), "bottom": "0px" , "z-index": "10", "background-color": "#FFFFFF", "border": "1px #A3C8DC solid","display": "none","margin-left": "25px"});
+			$(imgdiv).show();
+			if ($(imgdiv).html()=='')
+			{
+				$(imgdiv).append("<img src=\"{#$QISHI.site_dir#}include/imagecaptcha.php?t={#$random#}\" id=\"getcode\" align=\"absmiddle\"  style=\"cursor:pointer; margin:3px;\" title=\"看不请验证码？点击更换一张\"  border=\"0\"/>");
+			}
+			$(imgdiv+" img").click(function()
+			{
+				$(imgdiv+" img").attr("src",$(imgdiv+" img").attr("src")+"1");		
+			});
+			$(document).unbind().click(function(event)
+			{
+				var clickid=$(event.target).attr("id");
+				if (clickid!="getcode" &&  clickid!="postcaptcha")
+				{
+					$(imgdiv).hide();
+					$(inputID).parent("div").css("position","");
+					$(document).unbind();
+				}			
+			});
+		});
+	}
+	imgcaptcha("#postcaptcha","#imgdiv");
+});
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+	{#include file="user/header.htm"#}
+	<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 充值订单</div>
+	<div class="usermain">
+		<div class="leftmenu com link_bk">
+			{#include file="member_company/left.htm"#}
+		</div>
+		<div class="rightmain">
+			<div class="bbox1 my_account">
+				<div class="topnav get_resume">
+					<div class="titleH1"><div class="h1-title">充值/订单</div></div>
+					<div class="navs link_bk">
+						{#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
+						<a href="?act=order_add">积分充值</a>
+						{#/if#}
+						{#if $QISHI.operation_mode=="2" || $QISHI.operation_mode=="3"#}
+				        <a href="?act=setmeal_list">申请VIP套餐</a>
+						{#/if#}
+						<a href="?act=order_list">我的订单</a>
+				        {#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
+				        <a href="?act=gifts" class="se">礼品卡</a>
+				        {#/if#}
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div class="gifts-wrap">
+					<div class="gifts-top-block clearfix">
+						<div class="gifts-form f-left">
+							<h3>使用礼品卡</h3>
+							<form action="?act=gifts_apy" method="post" id="Form1" >
+								<div class="g-form">
+									<div class="g-form-item clearfix">
+										<div class="g-form-type f-left">卡号：</div>
+										<div class="g-form-content f-left"><input type="text" name="account" id="account" class="gift-text" /></div>
+									</div>
+									<div class="g-form-item clearfix">
+										<div class="g-form-type f-left">密码：</div>
+										<div class="g-form-content f-left"><input type="text" name="pwd" id="pwd" class="gift-text" /></div>
+									</div>
+									{#if $verify_gifts=="1"#}
+									<div class="g-form-item clearfix">
+										<div class="g-form-type f-left">验证码：</div>
+										<div class="g-form-content f-left">
+											<input type="text" name="postcaptcha" id="postcaptcha" class="gift-text short" />
+										</div>
+
+										<div class="g-form-content f-left" style="margin-left:10px;"><img src="{#$QISHI.site_dir#}include/imagecaptcha.php?t={#$random#}" id="getcode" align="absmiddle"  style="cursor:pointer;width: 110px;height: 30px;" title="看不请验证码？点击更换一张"  border="0" /></div>
+									</div>
+									{#/if#}
+									<div class="g-form-item clearfix">
+										<div class="g-form-type f-left">&nbsp;</div>
+										<div class="g-form-content f-left"><input type="submit" value="立即充值" class="gift-btn" /></div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="gifts-tip f-left">
+							<div class="g-tip-block">
+								<p>1.在左侧输入礼品卡卡号密码进行积分充值</p>
+								<p>2.使用后您可以在下方记录中查看相关的使用情况。</p>
+							</div>
+						</div>
+						<div class="gift-shop-enter f-left">
+							<div class="shop-up-block"><img src="{#$QISHI.site_template#}images/gift-img.jpg" alt="" width="138" height="70" /></div>
+							<div class="shop-down-block">
+								<a href="{#"QS_shop_index"|qishi_url#}" target="_black">积分商城<br /><span>立即前往</span></a>
+							</div>
+						</div>
+					</div>
+					<div class="gift-data">
+						<table>
+							<thead>
+								<tr>
+									<th class="align-left" width="250">礼品卡卡号</th>
+									<th class="align-left" width="195">类型</th>
+									<th width="155">使用时间</th>
+									<th width="135">面值（积分）</th>
+								</tr>
+							</thead>
+							<tbody>
+								{#if $gifts#}
+								{#foreach from=$gifts item=list#}
+								<tr>
+									<td class="align-left">{#$list.account#}</td>
+									<td class="align-left">{#$list.giftsname#}</td>
+									<td><span class="data-time">{#$list.usetime|date_format:"%Y-%m-%d"#}</span></td>
+									<td>{#$list.giftsamount#}</td>
+								</tr>
+								{#/foreach#}
+								{#else#}
+								<tr>
+									<td colspan="4" class="emptytip">您没有使用过礼品卡</td>
+								</tr>
+								{#/if#}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	{#include file="user/footer.htm"#}
+</body>
+</html>

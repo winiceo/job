@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>{#$QISHI.site_name#}-修改微简历</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/simple.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type="text/javascript" src="./js/layer/layer.js" ></script>
+	<script type="text/javascript" src="./js/jquery.editCM.js" ></script>
+	<script type="text/javascript" src="./js/popWin.js" ></script>
+	<script type="text/javascript" src="./js/iscroll.js" ></script>
+	<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.thisurl').click( function () {window.location.href =  $(this).attr('url');});
+		});
+	</script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center">
+				<div class="header-tab clearfix">
+					<div class="h-tab-item thisurl" url="simple-list.php">微招聘</div>
+					<div class="h-tab-item active thisurl" url="simple-resume-list.php">微简历</div>
+				</div>
+			</div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="simple-deit-tip">无需注册，十秒填简历</div>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt">姓名</div>
+					<div class="mt"><input id="uname" name="uname" value="{#$show.uname#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">年龄</div>
+					<div class="mt"><input id="age" name="age" value="{#$show.age#}" /></div>
+				</div>
+			</article>
+			<div class="edit-wrap">
+				<div class="edit-item clearfix">
+					<div class="edit-type f-left"><span>性别</span></div>
+					<div class="edit-content">
+						<div class="edit-radio-box">
+							<label class="radio-label"><input type="radio" name="sex" id="" value="1" {#if $show.sex==1#}checked{#/if#}><span class="radio-txt">男</span></label>
+							<label class="radio-label"><input type="radio" name="sex" id="" value="2" {#if $show.sex==2#}checked{#/if#}><span class="radio-txt">女</span></label>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="id" id="id" value="{#$show.id#}">
+			</div>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt">工种</div>
+					<div class="mt"><input id="category" name="category" value="{#$show.category#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">工作经验</div>
+					<label id="experienceTxt" data-type="experience" data-text="选择工作经验" class="mt check mbs">{#$show.experience_cn#}</label>
+					<input type="hidden" id="experience" name="experience" value="{#$show.experience#}" />
+					<input type="hidden" id="experience_cn" name="experience_cn" value="{#$show.experience_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">工作地区</div>
+					<label id="citysimpleTxt" data-type="city" data-go="city" data-text="选择工作地区" class="mt check mbs">{#$show.district_cn#} - {#$show.sdistrict_cn#}</label>
+					<input type="hidden" name="district" id="district" value="{#$show.district#}">
+					<input type="hidden" name="sdistrict" id="sdistrict" value="{#$show.sdistrict#}">
+					<input type="hidden" name="district_cn" id="district_cn" value="{#$show.district_cn#}">
+					<input type="hidden" name="sdistrict_cn" id="sdistrict_cn" value="{#$show.sdistrict_cn#}">
+				</div>
+				<div class="formChild">
+					<div class="lt">联系电话</div>
+					<div class="mt"><input id="tel" name="tel" value="{#$show.tel#}" {#if $QISHI.simple_tel_edit=="0"#}disabled{#/if#} /></div>
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">延长有效期</div>
+					<div class="mt"><input id="days" name="days" value="" placeholder="0为不延长" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">个人简介</div>
+					<label id="detailedPersonalTxt" class="mt check">{#$show.detailed#}</label>
+					<input type="hidden" id="detailed" name="detailed" value="{#$show.detailed#}" />
+				</div>
+				<div class="formChild notRformChild">
+					<div class="lt">管理密码</div>
+					<div class="mt"><input id="password" name="password" value="" placeholder="请牢记管理密码！" /></div>
+				</div>
+			</article>
+			<div class="edit-wrap">
+				<div class="edit-bottom-submit"><a href="javascript:;"><button class="button blue hundred-percent">修改微简历</button></a></div>
+			</div>
+		</div>
+		{#include file="m/footer.htm"#}
+	</div>
+	<div class="back-to-top"><i class="w-icon w-icon-up"></i></div>
+	<div class="select_bar_div"></div>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script src="js/mb.js" ></script>
+	<script>
+		$(function() {
+			$('.select-componment').on('change', function() {
+				changeVal();
+			});
+			function changeVal(){
+				$('.select-componment').each(function() {
+					var optionVal = $(this).find('option:selected').text();
+					var thisVal = $(this).attr('value', $(this).val());
+					$(this).parent().find('.select-txt').html(optionVal);
+				})
+			}
+			changeVal();
+			//ajax修改微简历
+			$(".blue").click(function(){
+				var id =$("input[name=id]").val();
+				var uname =$("input[name=uname]").val();
+				var age =$("input[name=age]").val();
+				var sex =$("input[name=sex]:checked").val();
+				var category =$("input[name=category]").val();
+				var experience =$("#experience").val();
+				var district =$("input[name=district]").val();
+				var sdistrict =$("input[name=sdistrict]").val();
+				var district_cn =$("input[name=district_cn]").val();
+				var sdistrict_cn =$("input[name=sdistrict_cn]").val();
+				var tel =$("input[name=tel]").val();
+				var days =$("input[name=days]").val();
+				var detailed =$("input[name=detailed]").val();
+				var pwd =$("input[name=password]").val();
+				$.post("?act=edit_save",{id:id,uname:uname,age:age,sex:sex,category:category,experience:experience,tel:tel,district:district,sdistrict:sdistrict,district_cn:district_cn,sdistrict_cn:sdistrict_cn,days:days,pwd:pwd,detailed:detailed},function(data){
+					if(data=="ok")
+					{
+						layer.msg('修改微简历成功！', {icon: 1});
+						setTimeout(function () {
+		                    window.location.href='simple-resume-list.php';
+		                }, 2000);
+					}else{
+						layer.msg(data);
+						$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+					}
+				})
+			});
+		});
+	</script>
+</body>
+</html>

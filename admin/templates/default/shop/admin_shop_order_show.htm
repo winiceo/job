@@ -1,0 +1,113 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$(":radio[name='regpoints']").click(function(){
+	ck_regpoints()
+	});	
+	ck_regpoints();
+	function ck_regpoints()
+	{
+		if ($(":radio[name='regpoints'][checked]").val()=="y")
+		{
+		$("#regpointsshow").show();
+		}
+		else
+		{
+		$("#regpointsshow").hide();
+		}
+	}
+	$(".no_money3").click(function(){
+		$(".log_amount3").hide();
+	});
+	$(".yes_money3").click(function(){
+		$(".log_amount3").show();
+	});
+  $(".admin_submit").click(function() {
+    return confirm("是否确定要修改订单状态，此操作不可逆！");
+  });
+});
+</script>
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptit">订单详情</div>
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td colspan=2 style="color:#006699;border-bottom:1px #CCCCCC dashed">基本信息</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">订单ID：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed">{#$show.id#}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品名称：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.shop_title#}</td>
+    </tr>
+     <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品单价：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.shop_points#} 积分</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">兑换数量：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.shop_num#}</td>
+    </tr>
+
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">订单积分：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.order_points#} 积分</td>
+    </tr>
+    <tr>
+      <td colspan=2 style="color:#006699;border-bottom:1px #CCCCCC dashed">用户信息</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">企业名称：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.company_name#} <span>UID：{#$show.uid#}</span></td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">联系人：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.contact#}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">联系电话：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.mobile#}</td>
+    </tr>
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">联系地址：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> {#$show.address#}</td>
+    </tr>
+    <tr>
+      <td colspan=2 style="color:#006699;border-bottom:1px #CCCCCC dashed">订单状态</td>
+    </tr>
+    
+    {#if $show.state==0#}
+    <form action="" mehod="get">
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">将订单状态修改为：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <label><input name="state" type="radio" value="1" checked/>审核通过</label>
+        <label><input type="radio" name="state" value="2" />审核不通过</label>
+      </td>
+    </tr>
+    <tr>
+      <input type="hidden" name="act" value="set_order">
+      <input type="hidden" name="id" value="{#$show.id#}">
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed"> </td>
+      <td style=" border-bottom:1px #CCCCCC dashed"><input name="submit3" type="submit" class="admin_submit"    value="确认修改订单"/></td>
+    </tr>
+    </form>
+    {#else#}
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">订单状态：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed">{#if $show.state==1#}审核通过{#else#}审核未通过{#/if#}</td>
+    </tr>
+    {#/if#}
+    
+  </table>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

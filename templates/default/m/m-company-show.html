@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>{#$show.companyname#} - {#$QISHI.site_name#}</title>
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<meta name="description" content="{#$page.description#},{#$show.companyname#}" id="description">
+	<meta name="keywords" content="{#$QISHI.site_name#},{#$show.companyname#},{#$show.trade_cn#},{#$show.nature_cn#},{#$show.district_cn#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/company.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+		var id="{#$show.id#}";
+		var tsTimeStamp= new Date().getTime();
+		$.get("{#$QISHI.wap_domain#}/plus/ajax.php", { "id": id,"time":tsTimeStamp,"act":"company_contact"},
+			function (data,textStatus)
+			{      
+				$(".telbox").html(data);
+			}
+		);
+		$('.thisurl').click( function () {window.location.href =  $(this).attr('data-url');});
+
+		/* 公司介绍隐藏显示 */
+		var companyInfoHeight = $(".company-info").height();
+		if (companyInfoHeight > 96) {
+			$("#companyContent .info-more").show();
+			$("#companyContent .company-info").addClass('havemore');
+			$("#companyContent .w-icon").on('click', function(event) {
+				if($(this).hasClass('w-icon-up')) {
+					$(this).addClass('w-icon-down').removeClass('w-icon-up');
+					$("#companyContent .company-info").addClass('havemore');
+				} else {
+					$(this).addClass('w-icon-up').removeClass('w-icon-down');
+					$("#companyContent .company-info").removeClass('havemore');
+				}
+			});
+		} else {
+			$("#companyContent .info-more").hide();
+		};
+		/* 公司信息页在招职位下拉 */
+		var jobItemLength = $("#companyJobList .job-item").length;
+		if (jobItemLength < 5) {
+			$("#companyJobList .info-more").hide();
+		} else {
+			hiddenFievOut();
+		};
+		// 在招职位更多点击隐藏和显示
+		$("#companyJobList .w-icon").on('click', function(event) {
+			if($(this).hasClass('w-icon-up')) {
+				$(this).addClass('w-icon-down').removeClass('w-icon-up');
+				hiddenFievOut();
+			} else {
+				$(this).addClass('w-icon-up').removeClass('w-icon-down');
+				$("#companyJobList .job-item").show();
+			}
+		});
+		// 在招职位大于5个隐藏
+		function hiddenFievOut() {
+			$("#companyJobList .job-item").each(function(index, el) {
+				if (index > 4) {
+					$(this).hide();
+				};
+			});
+		}
+	});
+	</script>
+
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center">
+				<div class="header-tab clearfix">
+					{#if $jobsid#}
+					<a href="jobs-show.php?id={#$jobsid#}"><div class="h-tab-item">职位详情</div></a>
+					{#else#}
+					{#if $show.jobslist#}
+					<a href="{#$show.jobslist.0.url#}"><div class="h-tab-item">职位详情</div></a>
+					{#/if#}
+					{#/if#}
+					<div class="h-tab-item active">公司信息</div>
+				</div>
+			</div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="company-show">
+				<div class="company-top">
+					<h1 class="c-name">{#$show.companyname#}{#if $show.audit==1#}<img src="./images/company-auth.png" alt="">{#/if#}</h1>
+					<p>{#$show.trade_cn#}</p>
+					<p>{#$show.nature_cn#} | {#$show.scale_cn#} | {#$show.district_cn#}</p>
+				</div>
+				<section class="company-content" id="companyContent">
+					<h2 class="company-title">公司介绍</h2>
+					<div class="company-info">
+						{#$show.contents|nl2br#}
+					</div>
+					<a href="javascript:;" class="info-more"><i class="w-icon w-icon-down"></i></a>
+				</section>
+				{#if $show.jobslist#}
+				<section class="company-content" id="companyJobList">
+					<h2 class="company-title">在招职位</h2>
+					<div class="company-job-list">
+						{#foreach from=$show.jobslist item=li#}
+						<div class="job-item thisurl" data-url="{#$li.url#}">
+							<h3 class="job-title"><a href="{#$li.url#}">{#$li.jobs_name#}</a></h3>
+							<p>{#$li.district_cn#} | {#$li.experience_cn#}</p>
+							<div class="job-pay clearfix"><span class="f-left">{#$li.wage_cn#}</span><em class="f-right">{#$li.r_time#}</em></div>
+						</div>
+						{#/foreach#}
+					</div>
+					<a href="javascript:;" class="info-more"><i class="w-icon w-icon-down"></i></a>
+				</section>
+				{#/if#}
+				<div class="telbox"></div>
+			</div>
+		</div>
+		{#include file="m/footer.htm"#}
+	</div>
+	<div class="back-to-top"><i class="w-icon w-icon-up"></i></div>
+	
+
+	<script src="js/jquery.min.js"></script>
+</body>
+</html>

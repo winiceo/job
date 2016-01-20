@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>公告详细 - {#$QISHI.site_name#}</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/news.css">
+	<link rel="stylesheet" href="css/nativeShare.css" />
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type="text/javascript" src="./js/layer/layer.js" ></script>
+	<script type="text/javascript" src="./js/jquery.editCM.js" ></script>
+	<script type="text/javascript" src="./js/iscroll.js" ></script>
+	<script type="text/javascript" src="./js/mb.js" ></script>
+	<script type="text/javascript" src="./js/nativeShare.js" ></script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center"><span class="title-only">公告详情</span></div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="news-detail-wrap">
+				<h2>{#$show.title#}</h2>
+				<div class="title-bar clearfix">
+					<span class="f-left">{#$show.addtime#}</span>
+					<em class="f-right"><i class="w-icon w-icon-eye"></i>{#$show.click#}</em>
+				</div>
+				<div class="news-main">
+					<div class="news-main-text">
+						<p>{#$show.content#}</p>
+					</div>
+				</div>
+			</div>
+			<section class="news-share clearfix newshare" data-url="{#$QISHI.site_domain#}{#$QISHI.site_dir#}m/notice-show.php?id={#$show.id#}" data-title="【{#$show.title#}】" data-img="{#$show.bimg#}" data-from="{#$QISHI.site_name#}" data-imgtitle="{#$show.title#}">
+				<p class="f-left">文章挺不错，分享给朋友们！</p>
+				<a href="javascript:;" class="f-right">立即分享</a>
+			</section>
+		</div>
+		{#include file="m/footer.htm"#}
+	</div>
+	<div class="select_bar_div"></div>
+	<div class="back-to-top"><i class="w-icon w-icon-up"></i></div>
+	
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script src="js/search.js"></script>
+</body>
+</html>

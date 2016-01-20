@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-创建简历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/wapcheckall.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				wapcheckall();
+				$(".radio-btn").on('click', function () {
+				    var _this = $(this),
+				    block = _this.parent().parent();
+				    block.find('input:radio').attr('checked', false);
+				    block.find(".radio-btn").removeClass('checkedRadio');
+				    _this.addClass('checkedRadio');
+				    _this.find('input:radio').attr('checked', true);
+				    $("#sex").val(_this.find('input:radio').val());
+				    $("#sex_cn").val(_this.find('input:radio').attr("title"));
+				});
+				$("#unfoldoptionalinfo").on('click', function(event) {
+					$(this).remove();
+					$(".optionalinfo").show();
+				});
+				// ajax提交保存简历
+				$("#resume_save").click(function(event) {
+					var fullname = $("input[name=fullname]").val();
+					var sex = $("input[name=sex]").val();
+					var sex_cn = $("input[name='sex_cn']").val();
+					var birthdate = $("input[name='birthdate']").val();
+					var education = $("input[name='education']").val();
+					var education_cn = $("input[name='education_cn']").val();
+					var experience = $("input[name='experience']").val();
+					var experience_cn = $("input[name='experience_cn']").val();
+					var telephone = $("input[name='telephone']").val();
+					var email = $("input[name='email']").val();
+					var intention_jobs = $("input[name='intention_jobs']").val();
+					var intention_jobs_id = $("input[name='intention_jobs_id']").val();
+					var wage = $("input[name='wage']").val();
+					var wage_cn = $("input[name='wage_cn']").val();
+					var district_cn=$("input[name=district_cn]").val();
+					var district=$("input[name=district]").val();
+					var sdistrict=$("input[name=sdistrict]").val();
+					var trade_cn=$("input[name=trade_cn]").val();
+					var trade=$("input[name=trade]").val();
+					var current_cn=$("input[name=current_cn]").val();
+					var current=$("input[name=current]").val();
+					var specialty =$("#specialty").val();
+					var auto_refresh=$("input[name=auto_refresh]").val();
+					var auto_apply=$("input[name=auto_apply]").val();
+
+					$.post('?act=make_resume_save', {"fullname":fullname,"sex":sex,"sex_cn":sex_cn,"birthdate":birthdate,"education":education,"education_cn":education_cn,"experience":experience,"experience_cn":experience_cn,"telephone":telephone,"email":email,"intention_jobs":intention_jobs,"intention_jobs_id":intention_jobs_id,"wage":wage,"wage_cn":wage_cn,"trade":trade,"trade_cn":trade_cn,"district_cn":district_cn,"district":district,"sdistrict":sdistrict,"specialty":specialty,"auto_refresh":auto_refresh,"auto_apply":auto_apply,"current_cn":current_cn,"current":current}, 
+						function(data) {
+							$("#resume_save").hide();
+							$("#resume_save_no").show();
+							var   type="^[0-9]*[1-9][0-9]*$";
+							var   re = new RegExp(type); 
+							if (data.match(re)!=null) {
+								layer.msg('创建简历成功！', {icon: 1});
+		                        setTimeout(function () {
+		                            window.location.href='?act=resume_success&pid='+data+'';
+		                        }, 2000);
+							} else if(data == "err") {
+								layer.msg('创建简历失败！', {icon: 2});
+							} else {
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+								$("#resume_save").show();
+								$("#resume_save_no").hide();
+								console.log(data);
+							}
+						}
+					);
+				});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev"  id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">创建简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="makeresumetitbox flex-box">
+				<div class="left"><span class="icon-user-smile"></span></div>
+				<div class="right">
+					{#if $userprofile.realname#}
+					<div class="txt center">花30秒轻松填写简历搞定工作！</div>
+					{#else#}
+					<div class="txt">没简历怎么投职位？</div>
+					<div class="txt down">花30秒轻松填写简历搞定工作！</div>
+					{#/if#}
+				</div>
+			</article>
+			<article class="optionlist optionlisteditworkexp personalinfo formDiv" style="border-bottom: none;">
+				<div class="formChild">
+					<div class="lt">姓名</div>
+					<div class="mt"><input id="fullname" name="fullname" placeholder="请填写" value="{#$userprofile.realname#}" /></div>
+				</div>
+				<section class="flex-box list" url="">
+					<div class="right twoword flex2">性别</div>
+					<div class="inptxt radio">
+         					{#if $userprofile.sex==1 || $userprofile.sex==""#}
+						<li><div class="radio-btn"><i><input type="radio" name="radio-btn" title="女"></i></div>女</li>
+						<li><div class="radio-btn checkedRadio"><i><input type="radio" checked="checked" name="radio-btn" title="男"></i></div>男</li>
+						{#else#}
+						<li><div class="radio-btn"><i><input type="radio" checked="checked" name="radio-btn" title="女"></i></div>女</li>
+						<li><div class="radio-btn checkedRadio"><i><input type="radio" name="radio-btn" title="男"></i></div>男</li>
+						{#/if#}
+      					<input type="hidden" name="sex" id="sex" value="1"/>
+      					<input type="hidden" name="sex_cn" id="sex_cn" value="男"/>
+					</div>
+				</section>
+				<div class="formChild">
+					<div class="lt">出生年份</div>
+					<label id="brithdayTxt" data-type="birthday" data-text="选择出生年月" class="mt check mbs">{#if $userprofile.birthdate#}{#$userprofile.birthdate#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="birthdate" name="birthdate" value="{#$userprofile.birthday#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">最高学历</div>
+					<label id="educationTxt" data-type="education" data-text="选择最高学历" class="mt check mbs">{#if $userprofile.education_cn#}{#$userprofile.education_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="education" name="education" value="{#$userprofile.education#}" />
+					<input type="hidden" id="education_cn" name="education_cn" value="{#$userprofile.education_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">工作经验</div>
+					<label id="experienceTxt" data-type="experience" data-text="选择工作经验" class="mt check mbs">{#if $userprofile.experience_cn#}{#$userprofile.experience_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="experience" name="experience" value="{#$userprofile.experience#}" />
+					<input type="hidden" id="experience_cn" name="experience_cn" value="{#$userprofile.experience_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">手机号码</div>
+					<div class="mt"><input id="telephone" name="telephone" placeholder="请填写" value="{#$userprofile.telephone#}" /></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">邮箱</div>
+					<div class="mt"><input id="email" name="email" placeholder="请填写" value="{#$userprofile.email#}" /></div>
+				</div>
+			</article>
+			<div class="cline"></div>
+			<article class="formDiv">
+				<div class="formChild">
+					<div class="lt ltsmall">目前状态</div>
+					<label id="currentTxt" data-type="current" data-text="选择目前状态" class="mt check mbs">{#if $userprofile.current_cn#}{#$userprofile.current_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="current" name="current" value="{#$userprofile.current#}" />
+					<input type="hidden" id="current_cn" name="current_cn" value="{#$userprofile.current_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望职位</div>
+					<label id="jobTxt" data-type="jobs" data-go="job" data-text="选择期望职位" class="mt check mbs">{#if $userprofile.intention_jobs#}{#$userprofile.intention_jobs#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="intention_jobs_id" name="intention_jobs_id" value="{#$userprofile.topclass#}.{#$userprofile.category#}.{#$userprofile.subclass#}" />
+					<input type="hidden" id="intention_jobs" name="intention_jobs" value="{#$userprofile.intention_jobs#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望薪资</div>
+					<label id="wageTxt" data-type="wage" data-text="选择期望薪资" class="mt check mbs">{#if $userprofile.wage_cn#}{#$userprofile.wage_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="wage" name="wage" value="{#$userprofile.wage#}" />
+					<input type="hidden" id="wage_cn" name="wage_cn" value="{#$userprofile.wage_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望地区</div>
+					<label id="cityTxt" data-type="city" data-go="city" data-text="选择期望地区" class="mt check mbs">{#if $userprofile.district_cn#}{#$userprofile.district_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="district" name="district" value="{#$userprofile.district#}" />
+					<input type="hidden" id="sdistrict" name="sdistrict" value="{#$userprofile.sdistrict#}" />
+					<input type="hidden" id="district_cn" name="district_cn" value="{#$userprofile.district_cn#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">期望行业</div>
+					<label id="tradeTxt" data-type="trade" data-text="选择期望行业" class="mt check mbs">{#if $userprofile.trade_cn#}{#$userprofile.trade_cn#}{#else#}请选择{#/if#}</label>
+					<input type="hidden" id="trade" name="trade" value="{#$userprofile.trade#}" />
+					<input type="hidden" id="trade_cn" name="trade_cn" value="{#$userprofile.trade_cn#}" />
+				</div>
+			</article>
+			<div class="select_bar_div"></div>
+			<article class="classifylist nomb makeresumecf">
+				<section class="title flex-box">
+					<div class="chk">
+						<input type="checkbox" id="" />
+						<label for="" class="check-box"></label>
+					</div>
+					<input type="hidden" id="auto_refresh" name="auto_refresh" value="" />
+					<div class="name perc">3天内帮我自动刷新简历</div>
+				</section>
+				<section class="title flex-box">
+					<div class="chk">
+						<input type="checkbox" id="" />
+						<label for="" class="check-box"></label>
+					</div>
+					<input type="hidden" id="auto_apply" name="auto_apply" value="" />
+					<div class="name perc">3天内有好工作帮我自动投递</div>
+				</section>
+			</article>
+			<article class="flex-box arlogout"><a id="resume_save" class="logout" href="javascript:;">保存</a></article>
+		</div>
+	</body>
+</html>

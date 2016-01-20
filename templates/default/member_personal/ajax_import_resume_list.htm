@@ -1,0 +1,35 @@
+<div class="previewbox">
+	<table width="90%" border="0" cellspacing="0" cellpadding="5" style="margin: 0 auto;padding-bottom: 10px;">
+	<tr>
+	<td width="140" bgcolor="#F3F7FC"><strong>简历名称</strong></td>
+	<td width="130" align="center" bgcolor="#F3F7FC"><strong>操作</strong></td>
+	</tr>
+	{#foreach from=$return_data item=list#}
+	<tr>
+	<td class="us_list" title="{#$list.title#}">{#$list.title#}</td>
+	<td align="center" class="us_list"><a class="r_one co01" href="javascript:;" rid="{#$list.id#}">导入</a></td>
+	</tr>
+	{#/foreach#}
+	</table>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".r_one").click(function(){
+		var myDialog = dialog();
+		myDialog.content("正在导入...");
+	    myDialog.title('请稍候...');
+	    myDialog.width('200');
+	    myDialog.showModal();
+		var rid = $(this).attr("rid");
+		$.get('personal_resume.php?act=do_import_resume',{id:rid},function(data){
+			if(data=='-1'){
+				myDialog.content('已经超出了最大简历数限制！');
+			}else if(data=='-2'){
+				myDialog.content('导入失败，请重新尝试！');
+			}else{
+				myDialog.content('导入成功！');
+			}
+		});
+	});
+});
+</script>	

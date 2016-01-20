@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-浏览过的简历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<link rel="stylesheet" href="../css/search.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/filter.js" ></script>
+		<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.thisurl').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">浏览过的简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<div class="select_bar clear">
+				<ul class="clear">
+					<li class="col s_education" data-go="educationmt"><div><span>{#if $smarty.get.education_cn#}{#$smarty.get.education_cn#}{#else#}学历{#/if#}</span></div></li>
+					<li class="col s_experience" data-go="experiencemt"><div><span>{#if $smarty.get.experience_cn#}{#$smarty.get.experience_cn#}{#else#}经验{#/if#}</span></div></li>
+					<li class="col s_category" data-go="jobmyattention"><div><span>{#if $smarty.get.category_cn#}{#$smarty.get.category_cn#}{#else#}职能{#/if#}</span></div></li>
+					<li class="col s_settr" data-go="settrmyattention"><div><span>{#if $smarty.get.settr_cn#}{#$smarty.get.settr_cn#}{#else#}时间{#/if#}</span></div></li>
+				</ul>
+				<div class="mark_bottom"><div class="mark_line"></div></div>
+				<div class="lock"></div>
+				<div class="select_bar_div">
+					<div id="educationmtList" class="sl_list"><div><ul></ul></div></div>
+					<div id="experiencemtList" class="sl_list"><div><ul></ul></div></div>
+					<div id="jobmyattentionList" class="sl_list"><div><ul></ul></div></div>
+					<div id="settrmyattentionList" class="sl_list"><div><ul></ul></div></div>
+				</div>
+				<input type="hidden" id="heducation" value="{#$smarty.get.education#}">
+				<input type="hidden" id="heducation_cn" value="{#$smarty.get.education_cn#}">
+				<input type="hidden" id="hexperience" value="{#$smarty.get.experience#}">
+				<input type="hidden" id="hexperience_cn" value="{#$smarty.get.experience_cn#}">
+				<input type="hidden" id="hcategory" value="{#$smarty.get.category#}">
+				<input type="hidden" id="hsubclass" value="{#$smarty.get.subclass#}">
+				<input type="hidden" id="hcategory_cn" value="{#$smarty.get.category_cn#}">
+				<input type="hidden" id="hsettr" value="{#$smarty.get.settr#}">
+				<input type="hidden" id="hsettr_cn" value="{#$smarty.get.settr_cn#}">
+			</div>
+			{#if $view_resumes#}
+			{#foreach from=$view_resumes  item=list#}
+			<article class="classifylist interviewlist nomb thisurl" url="../{#$list.resume_url#}">
+				<section class="title flex-box">
+					<div class="name {#if $list.resume_state==1#}suitable{#elseif $list.resume_state==2#}nosuitable{#elseif $list.resume_state==3#}undetermined{#elseif $list.resume_state==4#}inappropriate{#/if#}">{#$list.fullname#}</div>
+					<div class="status flex2">{#$list.addtime#}</div>
+				</section>
+				<section class="content flex-box">{#$list.sex_cn#} | {#$list.age#}岁 | {#$list.education_cn#} | {#$list.experience_cn#} | {#$list.major_cn#}</section>
+				<section class="content flex-box">意向职位：{#$list.intention_jobs#}</section>
+			</article>
+			{#/foreach#}
+			<article class="listshowmore flex-box">查看更多</article>
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"></div>
+				<div class="txt flex-box">未匹配到相关的简历！</div>
+			</article>
+			{#/if#}
+		</div>
+	</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<title>积分商城-搜索结果</title>
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/shop.css" />
+<script src="{#$QISHI.site_shop_template#}js/jquery.js"></script>
+<script>
+$(document).ready(function() {
+	$('.commodity-list .commodity-item:nth-child(4n)').css({'margin-right':0});
+	//勾选  我能兑换
+	$("#merge_com_btn").click(function(){
+		if($(this).is(':checked')){
+			var user_points = $("#user_points").val();
+			//如果有值 说明是登录状态
+			if(user_points)
+			{
+				window.location.href='shop_list.php?user_points='+user_points+'';
+			}
+			else
+			{
+				var myDialog = dialog();// 初始化一个带有loading图标的空对话框
+				jQuery.ajax({
+				    url: '{#$QISHI.site_dir#}user/user_ajax_login.php',
+				    success: function (data) {
+				        myDialog.content(data);// 填充对话框内容
+				        myDialog.title('用户登录');// 填充对话框内容
+				    	myDialog.showModal();
+				    }
+				});
+			}
+		} else {
+			window.location.href='shop_list.php';
+		}
+	});
+	// 鼠标移动到目标区域，该区域边框变色
+	$(".commodity-item").hover(function() {
+		$(this).addClass('bdcolor01');
+	}, function() {
+		$(this).removeClass('bdcolor01');
+	});
+});	
+</script>
+</head>
+<body>
+	{#include file="../tpl_shop/default/header.htm"#}
+	<div class=" container shop-main clearfix">
+		<!-- left -->
+		<div class="threefour-left">
+			<div class="item-nav">
+				<h2 class="i-nav-title">全部商品分类</h2>
+				<ul class="big-type">
+					{#qishi_get_classify set="列表名:c_province,类型:QS_shop_category,id:0"#}
+          			{#foreach from=$c_province item=clist#}
+					<li class="b-type-li">
+						{#if $clist.parentid==0#}<h3>{#$clist.categoryname#}</h3>
+						{#qishi_get_classify set="列表名:scategory,类型:QS_shop_category,id:$clist.id"#}
+						{#/if#}
+						<ul class="small-type">
+							{#if $scategory#}
+							{#foreach from=$scategory item=slist#}
+							<li {#if $smarty.get.scategory==$slist.id#}style="font-weight:bold;"{#/if#}><a href="{#"scategory:$slist.id"|qishi_parse_url#}">{#$slist.categoryname#}</a></li>
+							{#/foreach#}
+							{#/if#}
+						</ul>
+					</li>
+					{#/foreach#}
+				</ul>
+			</div>
+		</div>
+		<!-- right -->
+		<div class="threefour-right">
+			{#if $smarty.get.shop_nav!='ican'#}
+			<div class="shop-filter">
+				<span>按分值浏览：</span>
+				<a href="{#"points_interval:"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval==''#}style="color: #0180cf;"{#/if#}>全部</a>
+				<a href="{#"points_interval:0-1000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='0-1000'#}style="color: #0180cf;"{#/if#}>0-1000</a>
+				<a href="{#"points_interval:1000-3000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='1000-3000'#}style="color: #0180cf;"{#/if#}>1000-3000</a>
+				<a href="{#"points_interval:3000-5000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='3000-5000'#}style="color: #0180cf;"{#/if#}>3000-5000</a>
+				<a href="{#"points_interval:5000-7000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='5000-7000'#}style="color: #0180cf;"{#/if#}>5000-7000</a>
+				<a href="{#"points_interval:7000-9000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='7000-9000'#}style="color: #0180cf;"{#/if#}>7000-9000</a>
+				<a href="{#"points_interval:9000-12000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='9000-12000'#}style="color: #0180cf;"{#/if#}>9000-12000</a>
+				<a href="{#"points_interval:12000-15000"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='12000-15000'#}style="color: #0180cf;"{#/if#}>12000-15000</a>
+				<a href="{#"points_interval:15000-99999"|qishi_parse_url#}" class="filter-item" {#if $smarty.get.points_interval=='15000-99999'#}style="color: #0180cf;"{#/if#}>15000以上</a>
+			</div>
+			{#/if#}
+			<div class="right-common-box">
+				{#qishi_shop_list set="列表名:list,分页显示:1,分类ID:GET[scategory],关键字:GET[key],显示数目:8,标题长度:10,填补字符:...,积分区间:GET[points_interval],会员积分:GET[user_points],排序:GET[displayorder]"#}
+				<div class="r-com-top clearfix">
+					<div class="items-filter f-left">
+						<span>筛选：</span>
+						<a href="{#"displayorder:"|qishi_parse_url#}" class="filter-control {#if $smarty.get.displayorder==''#}active{#/if#}">添加时间</a>
+						<a href="{#"displayorder:shop_points"|qishi_parse_url#}" class="filter-control {#if $smarty.get.displayorder=='shop_points'#}active{#/if#}">分值排序</a>
+						<a href="{#"displayorder:click"|qishi_parse_url#}" class="filter-control {#if $smarty.get.displayorder=='click'#}active{#/if#}">商品销量</a>
+						<label><input type="checkbox" class="inpmidd" name="merge_com_btn" id="merge_com_btn" {#if $smarty.get.user_points#}checked{#/if#}/> 我能兑换</label>
+						<input type="hidden"  name="user_points" id="user_points" value="{#$com_point#}"/>
+					</div>
+					<div class="small-page f-right">
+						<div class="pageminnav">{#if $pagemin#}{#$pagemin#}{#/if#}</div>
+					</div>
+				</div>
+				<div class="commodity-list clearfix">
+					{#if empty($list)#}
+					<div class="data-empty"><img src="{#$QISHI.site_shop_template#}images/empty-box.png" alt="">没有您要找的商品！</div>
+					{#else#}
+					{#foreach from=$list item=li#}
+					<div class="commodity-item f-left">
+						<div class="comm-img"><a href="{#$li.shop_url#}"><img src="{#if $li.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$li.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品照片" width="175" height="175" /></a></div>
+						<div class="comm-link"><a href="{#$li.shop_url#}" title="{#$li.shop_title#}">{#$li.shop_title#}</a></div>
+						<div class="comm-price">积分：<span>{#$li.shop_points#}</span></div>
+						<a href="{#$li.shop_url#}" class="exchange-btn">兑换</a>
+					</div>
+					{#/foreach#}
+					{#/if#}
+				</div>
+			</div>
+
+			<div class="page clearfix">
+				{#if $page#}
+				{#$page#}
+				{#/if#}
+			</div>
+			
+		</div>
+	</div>
+
+	{#include file="footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<title>积分商城-我的订单</title>
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/shop.css" />
+<script src="{#$QISHI.site_shop_template#}js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.like-item:last').css({'border-bottom':0});
+		// 下拉
+		$(".drop-control").live('click', function(e){
+			$(this).find('.drop-list').stop().slideToggle("fast");
+			// 动态设置下拉列表宽度
+			var fWidth = $(this).width() - 2;
+			$(this).find(".drop-list").width(fWidth);
+			// 点击其他位置收起下拉
+			$(document).one("click",function(){
+				$('.drop-list').stop().slideUp("fast");
+			});
+			e.stopPropagation();
+			//点击下拉时收起其他下拉
+			$(".drop-control").not($(this)).find('.drop-list').slideUp("fast");
+		});
+
+		// 阻止默认事件
+		$('.drop-list').on('click',function(e){
+			e.stopPropagation();
+		});
+		//下拉选项点击事件
+		$('.drop-list a').on('click', function(){
+			$(this).parents(".drop-list").prevUntil().find(".drop-txt").html($(this).html());
+			$(this).parents(".drop-list").prev("input").val($(this).attr("id"));
+			$(this).parents(".drop-list").slideUp("fast");
+		});
+		$('.order-d').on('click', function(){
+			var id=$(this).attr("id");
+			$.get('shop_ajax.php',{"act":"order_show","id":id}, function(data) {
+				dialog({
+					title: '订单详情',
+					content: data
+				}).showModal();
+			});
+		})
+		// 查询
+		$(".sreach-btn").click(function() {
+			$("#Form1").submit();
+		});
+	});
+	
+</script>
+</head>
+<body>
+	{#include file="../tpl_shop/default/header.htm"#}
+	<div class=" container shop-main clearfix">
+		<!-- left -->
+		<div class="fourthree-left">
+			<div id="my-order">
+				<div class="morder-top"><p>我的订单</p></div>
+				<div class="morder-filter clearfix">
+					<form action="" method="get" id="Form1">
+					<div class="filter-item f-left">
+						<div class="drop-control">
+							<span class="drop-box"><span class="drop-txt">全部状态</span><i class="drop-icon"></i></span>
+							<input type="hidden" name="state" value="0"/>
+							<ul class="drop-list">
+								<li><a href="javascript:void(0);" id="1">待审核</a></li>
+								<li><a href="javascript:void(0);" id="2">审核通过</a></li>
+								<li><a href="javascript:void(0);" id="3">审核未通过</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="filter-item f-left">
+						<div class="drop-control">
+							<span class="drop-box"><span class="drop-txt">近期订单</span><i class="drop-icon"></i></span>
+							<input type="hidden" name="settr" value='0'/>
+							<ul class="drop-list">
+								<li><a href="javascript:void(0);" id="3">三天内</a></li>
+								<li><a href="javascript:void(0);" id="7">一周内</a></li>
+								<li><a href="javascript:void(0);" id="30">一月内</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="search-item f-right">
+						<input type="text" placeholder="订单搜索" name="key"/>
+						<a href="javascript:void(0)" class="sreach-btn"></a>
+					</div>
+					</form>
+				</div>
+				<div class="shop-data">
+					<table class="table">
+						<thead>
+							<tr>
+								<th width="160">礼品名称</th>
+								<th width="70">礼品单价</th>
+								<th width="70">兑换数量</th>
+								<th width="70">订单状态</th>
+								<th width="80">订单时间</th>
+								<th width="100">订单详情</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#if $list#}
+							{#foreach from=$list item=li#}
+							<tr>
+								<td class="align-left">{#$li.shop_title#}</td>
+								<td>{#$li.shop_points#}积分</td>
+								<td>{#$li.shop_num#} 件</td>
+								<td>{#if $li.state==0#} <span class="coff9125">待审核</span>{#elseif $li.state==1#}<span class="co5dbc47">审核通过</span>{#else#}<span class="cofe4848">审核未通过</span>{#/if#}</td>
+								<td>{#$li.addtime|date:"Y-m-d H:i:s"#}</td>
+								<td><a href="javascript:;" class="order-d" id="{#$li.id#}">查看详情</a></td>
+							</tr>
+							{#/foreach#}
+							{#else#}
+							<tr>
+								<td colspan=6><div class="data-empty"><img src="{#$QISHI.site_shop_template#}images/empty-box.png" alt="">没有订单！</div></td>
+							</tr>
+							{#/if#}
+						</tbody>
+					</table>
+				</div>
+				<div class="page">{#$page#}</div>
+			</div>
+		</div>
+		<!-- right -->
+		<div class="fourthree-right">
+			<div class="count-box">
+				{#if empty($smarty.session.username)#}
+				<a href="javascript:;" class="account-login" style="display: block;">我的积分</a>
+				{#else#}
+				<div class="count-info">
+					<h4>{#$com_info.companyname#}</h4>
+					<p>账户积分：<span>{#$com_point#}</span> 分</p>
+				</div>
+				{#/if#}
+			</div>
+			<div class="your-like">
+				<h3 class="like-title">猜你喜欢</h3>
+				<div class="like-list">
+					{#qishi_shop_list set="列表名:list,分页显示:1,显示数目:5,标题长度:10,填补字符:...,排序:click>desc"#}
+					{#foreach from=$list item=li#}
+					<div class="like-item clearfix">
+						<div class="like-pic f-left"><a href="{#$li.shop_url#}"><img src="{#if $li.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$li.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品图片" width="53" height="53" /></a></div>
+						<div class="like-detail f-left">
+							<p><a href="{#$li.shop_url#}" title="{#$li.shop_title#}">{#$li.shop_title_#}</a></p>
+							<div class="price">积分：<span>{#$li.shop_points#}</span></div>
+						</div>
+					</div>
+					{#/foreach#}
+				</div>
+			</div>
+		</div>
+	</div>
+	{#include file="footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,87 @@
+{#qishi_jobfair_section_show set="列表名:show,招聘会ID:GET[id]"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$show.title#} - 专场招聘会 - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$QISHI.site_name#}{#$show.trade_cn#},行业专场招聘会">
+<meta name="keywords" content="{#$QISHI.site_name#},{#$show.trade_cn#}">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/special-jobfair.css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	//选项卡切换
+	$(".nav_tit li").each(function(){
+		$(this).hover(function(){
+			$(this).addClass("active"); 
+			$(this).siblings("li").removeClass("active");
+			var bull_index = $(".nav_tit>li").index(this);
+			$(".nav_box>div").eq(bull_index).show().siblings().hide();
+		})
+	});
+})
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+	<div class="container header-logo"><a href="{#$QISHI.site_dir#}"><img src="{#$QISHI.site_template#}images/jobfair-logo.png" alt="" width="176" height="60" /></a></div>
+	<div class="banner-wrap"></div>
+	<div class="nav-wrap">
+		<div class="container clearfix">
+			<ul class="f-left nav_tit" >
+				{#foreach from=$trade_arr key=key item=list#}
+				<li class="f-left {#if $key==0 #}active{#/if#}"><a href="javascript:;">{#$list#}</a></li>
+				{#/foreach#}
+			</ul>
+			<div class="share f-right">
+				<span class="f-left">分享好机会</span>
+				<div class="bdsharebuttonbox"><a title="分享到QQ好友" href="#" class="bds_sqq" data-cmd="sqq"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{},"image":{"viewList":["sqq","tsina","weixin"],"viewText":"分享到：","viewSize":"32"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["sqq","tsina","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+			</div>
+		</div>
+	</div>
+	<div class='nav_box' style="min-height:600px">
+	{#foreach from=$trade_arr_com key=k item=com#}
+	<div class="container jobfair-container" {#if $k!=0#}style="display:none;"{#/if#}>
+		{#if $com#}
+		<div class="participate-industry">
+			<h1 class="title clearfix">
+				<span class="decoration left f-left"></span>
+				<div class="title-block f-left">{#$com.0.trade_cn#}</div>
+				<span class="decoration right f-left"></span>
+			</h1>
+			<ul class="participate-list clearfix">
+				{#foreach from=$com item=comlist#}
+				<li class="participate-item f-left">
+					<div class="local"><i class="local-icon"></i>{#$comlist.district_cn#}</div>
+					<div class="com-logo"><a href="{#$comlist.company_url#}"><img src="{#if $comlist.logo#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}data/logo/{#$comlist.logo#}{#else#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}data/logo/no_logo.gif{#/if#}" alt="" width="176" height="82" /></a></div>
+					<div class="com-info">{#$comlist.companyname#}</div>
+					{#if $comlist.jobs#}
+					<ul class="com-job-list">
+						
+						{#foreach from=$comlist.jobs item=li#}
+						<li class="job-item clearfix">
+							<div class="f-left"><a href="{#$li.jobs_url#}" class="underline">{#$li.jobs_name#}</a></div>
+							<span class="f-right">{#$li.wage_cn#}</span>
+						</li>
+						{#/foreach#}			
+					</ul>
+					<a href="{#$comlist.company_url#}" class="more-job-btn">更多职位>></a>
+					{#else#}
+						企业没有发布职位
+					{#/if#}	
+				</li>
+				{#/foreach#}
+			</ul>
+		</div>
+		{#else#}
+		<div class="participate-industry" style="text-align: center;">
+		该行业没有选择参会企业
+		</div>
+		{#/if#}
+	</div>
+	{#/foreach#}
+	</div>
+</body>
+</html>

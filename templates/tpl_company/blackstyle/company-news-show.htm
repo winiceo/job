@@ -1,0 +1,80 @@
+{#qishi_company_news_show set="列表名:show,新闻ID:GET[id]"#}{#qishi_company_show set="列表名:company,企业ID:"|cat:$show.company_id#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$show.title#} - {#$company.companyname#} - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$company.contents#},新闻动态">
+<meta name="keywords" content="{#$company.companyname#},新闻动态">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/css.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/ui-dialog.css" rel="stylesheet" type="text/css" />	
+<script src="{#$user_tpl#}js/jquery.js"></script>
+<script src="{#$user_tpl#}js/dialog-min.js"></script>
+<script src="{#$user_tpl#}js/simplefoucs.js" type="text/javascript"></script>
+<SCRIPT TYPE="text/javascript">
+$(document).ready(function(){
+	// 点击查看大图
+	$("#img_show").click(function() {
+		dialog({
+			title: '企业风采',
+		    content: $("#focus"),
+		}).showModal();
+	});
+	var id="{#$smarty.get.id#}";
+	var tsTimeStamp= new Date().getTime();
+	$.get("{#$QISHI.site_dir#}plus/ajax_click.php", { "id": id,"time":tsTimeStamp,"act":"company_news_click"},
+		function (data,textStatus)
+		 {			
+			$("#click").html(data);
+		 }
+	);
+});
+</SCRIPT>
+</head>
+<body>
+{#include file="../tpl_company/blackstyle/header-black.htm"#}
+<!-- 导航 -->
+<div class="com_top_nav">
+	<a href="{#"QS_companyshow,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">企业主页</a>
+	<a href="{#"QS_companyinfo,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">公司介绍</a>
+	<a href="{#"QS_companyjobs,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">招聘职位</a>
+	<a href="{#"QS_companynews,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}" class="active">新闻动态</a>
+	{#if $QISHI.open_commentaudit=="1"#}
+	<a href="{#"QS_companycomment,id:"|cat:$company.id|cat:"-style:"|cat:$smarty.get.style|qishi_url#}">评论</a>
+	{#/if#}
+</div>
+<!-- 导航 End-->
+<div class="news_show">
+	<div class="h">
+		<p>{#$show.title#}</p>
+		<div class="nc">
+			<div class="share-box">
+				<div class="share-item clearfix">
+					<span class="time f-left">{#$show.addtime|date_format:"%Y-%m-%d %H:%M:%S"#}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cont f-left">浏览<b id="click"></b>次</span>
+					<span class="f-left" style="margin-left:30px;">分享到</span>
+					<div class="bdsharebuttonbox f-left">
+						<a href="#" class="bds_more" data-cmd="more"></a>
+						<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+						<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+						<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+						<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+						<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+					</div>
+					<script>
+						window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+					</script>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="cte">
+		&nbsp;&nbsp;&nbsp;&nbsp;{#$show.content|nl2br#}
+	</div>
+</div>
+{#include file="footer.htm"#}
+</body>
+</html>

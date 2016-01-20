@@ -1,0 +1,45 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="weixin/admin_weixin_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptit">发送微信消息</div>
+<form action="?act=send_weixin_msg_save" method="post"   name="FormData" id="FormData" >
+  {#$inputtoken#}
+    <table width="100%" border="0" cellpadding="5" cellspacing="0"  class="admin_table">
+      <tr>
+        <td width="100" align="right" >接收会员：</td>
+        <td >{#$userinfo.username#}(uid:{#$userinfo.uid#})
+        <input type="hidden" name="username" value="{#$userinfo.username#}">
+        <input type="hidden" name="uid" value="{#$userinfo.uid#}">
+        </td>
+      </tr>
+      <tr>
+        <td align="right" >会员类型：</td>
+        <td >{#if $userinfo.utype=="1"#}企业会员{#elseif $userinfo.utype=="2"#}个人会员{#elseif $userinfo.utype=="3"#}猎头会员{#else#}培训会员{#/if#}
+        <input type="hidden" name="utype" value="{#$userinfo.utype#}">
+      </td>
+      </tr>
+      <tr>
+        <td width="100" align="right" >openid：</td>
+        <td >{#$userinfo.weixin_openid#}
+        <input type="hidden" name="weixin_openid" value="{#$userinfo.weixin_openid#}">
+      </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top" >消息内容：</td>
+        <td > <textarea name="content" id="content" style="width:400px; height:150px; font-size:12px; line-height:180%"></textarea></td>
+      </tr>
+      <tr>
+        <td align="right" >&nbsp;</td>
+        <td height="60" valign="top" ><input type="submit" name="Submit" value="发送" class="admin_submit"   /></td>
+      </tr>
+    </table>
+   
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,92 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="app/admin_set_app_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+APP设置主要是设置移动端的关于我们或者是版本号等部分的信息。<br />
+</p>
+</div>
+<div class="toptit">关于我们</div>
+  <form action="admin_app.php?act=set_save" method="post" name="form1" id="form1">
+ {#$inputtoken#}
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <td align="right" valign="top" style="padding-left:16px;height:50px;width:90px;">网站介绍：</td>
+      <td><textarea name="site_introduce" class="input_text_400" id="site_introduce" style="height:100px;">{#$config.site_introduce#}</textarea></td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td height="50"> 
+        <input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+  <div class="toptit">摇一摇设置</div>
+  <form action="admin_app.php?act=set_save" method="post" name="form2" id="form2">
+ {#$inputtoken#}
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <td align="right" valign="center" style="padding-left:16px;height:40px;width:90px;">搜索范围距离：</td>
+      <td><input class="input_text_200" name="shake_range" type="text" id="shake_range" value="{#$config.shake_range#}" style="width:50px;"/>
+      千米 &nbsp;&nbsp;(以千米为计量单位,若不设置默认为0.5千米)
+      </td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td height="50"> 
+        <input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+  <div class="toptit">版本信息</div>
+  <form action="admin_app.php?act=set_save" method="post" name="form3" id="form3">
+    {#$inputtoken#}
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <td align="right" valign="center" style="padding-left:16px;height:40px;width:90px;">android版本号：</td>
+      <td><input class="input_text_200" name="app_version" type="text" id="app_version" value="{#$config.app_version#}"/></td>
+    </tr>
+    <tr>
+      <td align="right" valign="center" style="padding-left:16px;height:40px;width:90px;">ios版本号：</td>
+      <td><input class="input_text_200" name="ios_version" type="text" id="ios_version" value="{#$config.ios_version#}"/></td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td height="50"> 
+        <input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+
+  <div class="toptit">下载链接</div>
+  <form action="admin_app.php?act=set_save" method="post" name="form4" id="form4">
+    {#$inputtoken#}
+    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <td align="right" valign="center" style="padding-left:16px;height:40px;width:90px;">android：</td>
+      <td><input class="input_text_200" name="android_download" type="text" id="android_download" value="{#$config.android_download#}"/></td>
+    </tr>
+    <tr>
+      <td align="right" valign="center" style="padding-left:16px;height:40px;width:90px;">ios：</td>
+      <td><input class="input_text_200" name="ios_download" type="text" id="ios_download" value="{#$config.ios_download#}"/></td>
+    </tr>
+    <tr>
+      <td align="left">&nbsp;</td>
+      <td height="50"> 
+        <input name="submit" type="submit" class="admin_submit"    value="保存修改"/>
+      </td>
+    </tr>
+  </table>
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

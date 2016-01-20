@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="gb2312">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>下载APP</title>
+  <link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+  <div class="download-app">
+    <div class="down-logo"><img src="{#$QISHI.upfiles_dir#}{#$QISHI.web_logo#}" alt="" width="244"></div>
+    <p class="down-tip">骑士人才网 — 值得信赖的招聘网站</p>
+    <div class="down-block"></div>
+    <a href="{#$QISHI.site_domain#}{#$QISHI.site_dir#}{#if $downtype=='android'#}{#$QISHI.android_download#}{#else#}{#$QISHI.ios_download#}{#/if#}" class="download-btn">立即下载</a>
+  </div>
+  <script src="js/jquery.min.js"></script>
+</body>
+</html>

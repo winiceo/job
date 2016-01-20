@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>{#$QISHI.site_name#}-微简历列表</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/simple.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type='text/javascript' src="./js/jquery.pinterest.js" ></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.thisurl').click( function () {window.location.href =  $(this).attr('url');});
+			var	key = '{#$smarty.get.key#}';
+			pinterest("{#$QISHI.wap_domain#}/plus/ajax.php?act=ajaxsimpleresumelist&key=" + encodeURIComponent(key));
+		});
+	</script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left"  id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center">
+				<div class="header-tab clearfix">
+					<div class="h-tab-item thisurl" url="simple-list.php">微招聘</div>
+					<div class="h-tab-item active thisurl" url="simple-resume-list.php">微简历</div>
+				</div>
+			</div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="top-search">
+				<div class="search-block">
+					<i class="w-icon w-icon-search"></i>
+					<input type="text" name="key" id="key" class="search-text" placeholder="请输入关键字" value="{#$smarty.get.key#}">
+				</div>
+			</div>
+			<div class="simple-data-list">
+				{#if $simple_resume#}
+					<div id="container">
+					{#foreach from=$simple_resume item=list#}
+					<section class="simple-data-item thisurl box" url="{#$list.simple_resume_url#}">
+						<div class="data-main">
+							<div class="data-txt">
+								<div class="top-info clearfix"><h4 class="f-left"><a href="{#$list.simple_resume_url#}">{#$list.uname#}<i class="w-icon {#if $list.sex==1#}w-icon-male{#else#}w-icon-female{#/if#}"></i></a></h4><span class="f-right">{#$list.refreshtime_cn#}</span></div>
+								<p class="simple-data-detail">{#$list.age#}岁 | {#$list.experience_cn#}  | {#$list.category#}</p>
+								<p class="simple-data-detail">{#$list.detailed#}</p>
+							</div>
+							<div class="data-contact layout-box box-center-v">
+								<div class="box-col contact-local"><i class="w-icon w-icon-phone"></i>{#$list.tel#}</div>
+								<div class="box-col contact-phone s-resume"><i class="w-icon w-icon-local"></i>{#$list.district_cn#}{#if $list.sdistrict_cn!=''#}-{#$list.sdistrict_cn#}{#/if#}</div>
+							</div>
+						</div>
+						<div class="bottom"></div>
+					</section>
+					{#/foreach#}
+					</div>
+					<!-- 正在加载 -->
+					<article class="loadinglist flex-box">
+						<div class="spinner">
+							<div class="spinner-container container1"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div>
+							<div class="spinner-container container2"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div>
+							<div class="spinner-container container3"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div>
+						</div>
+					</article>
+					<!-- 没有相关微简历信息 -->
+					<article class="optionlist optionlisteditworkexp personalinfo remindnoinfo">
+						<section class="flex-box list" url="">
+							<div class="right cof90 flex2 nobm">没有相关微简历信息！</div>
+						</section>
+					</article>
+				{#else#}
+				<article class="nodata">
+					<div class="cryimg flex-box"></div>
+					<div class="txt flex-box">没有相关微简历信息！</div>
+				</article>
+				{#/if#}
+			</div>
+			<a href="simple-resume-operation.php?act=add" class="simple-release"><i class="release-icon"></i>发布微简历</a>
+		</div>
+	</div>
+	<div class="back-to-top"><i class="w-icon w-icon-up"></i></div>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/fastclick.js"></script>
+	<script src="js/search.js"></script>
+</body>
+</html>

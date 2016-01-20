@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>{#$page.title#}</title>
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="css/search.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type="text/javascript" src="./js/filter.js" ></script>
+	<script type="text/javascript" src="./js/jquery.common.js" ></script>
+	<script type="text/javascript" src="./js/iscroll.js" ></script>
+	<script type="text/javascript" src="./js/searchBar.js" ></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#recommend").hide();
+			$("#emergency").show();
+			$("#emer").addClass('curr');
+			$("#emer").on('click', function(){
+				$(this).addClass('curr');
+				$("#recom").removeClass('curr');
+				$("#recommend").hide();
+				$("#emergency").show();
+			});
+			$("#recom").on('click', function(){
+				$(this).addClass('curr');
+				$("#emer").removeClass('curr');
+				$("#recommend").show();
+				$("#emergency").hide();
+			});
+			$('.thisurl').click( function () {window.location.href =  $(this).attr('data-url');});
+			$(".search-block input").on("focus",function(e){
+				if($("body").has("#search_div").length){
+					searchBar.show();
+				}else{
+					searchBar.init();
+				}
+				$("#search_div .search input").focus();
+			})
+		});
+	</script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left">
+				<!-- <div class="station-choose">
+					<span class="station-span">太原<i class="w-icon w-icon-down"></i></span>
+					<ul class="station-list"></ul>
+				</div> -->
+			</div>
+			<div class="header-center"><span class="title-only">{#$QISHI.site_name#}</span></div>
+			{#if $smarty.session.utype!=1 && $smarty.session.utype!=2#}
+			<div class="header-user"><a href="login.php"><i class="w-icon w-icon-user"></i></a></div>
+			{#else#}
+			<div class="header-user">
+				<a href="{#$QISHI.wap_domain#}/{#if $smarty.session.utype==1#}company/user.php{#else if $smarty.session.utype==2#}personal/user.php{#/if#}">
+					{#if $smarty.session.avatars!=''#}
+					<img src="{#$smarty.session.avatars#}" alt="" width="24" height="24">
+					{#else#}
+					<i class="w-icon w-icon-user"></i>
+					{#/if#}
+				</a>
+			</div>
+			{#/if#}
+		</header>
+		<div class="content-wrap">
+			<div class="top-search">
+				<div class="search-block">
+					<i class="w-icon w-icon-search"></i>
+					<input type="text" name="key" id="key" class="search-text" placeholder="搜索职位或公司">
+				</div>
+				<div id="hiddenHotWords" style="display:none">
+					{#foreach from=$hotword item=list#}
+					<li data-self="{#$list.w_hot#}">{#$list.w_word#}</li>
+					{#/foreach#}
+				</div>
+			</div>
+			<div class="index-wrap">
+				<div class="index-top-bar layout-box box-center-v">
+					<a href="{#$QISHI.wap_domain#}/jobs-list.php" class="box-col bar-item">找工作</a>
+					<i class="line-gradient"></i>
+					<a href="{#$QISHI.wap_domain#}/resume-list.php" class="box-col bar-item">找人才</a>
+				</div>
+				{#if $smarty.session.utype==1#}
+				<!-- 企业登录菜单 -->
+				<nav class="index-menu">
+					<div class="menu-row layout-box">
+						<a href="{#$QISHI.wap_domain#}/company/company_jobs.php" class="box-col index-menu-item"><div class="menu-icon color1"><i class="w-icon w-icon-board-two"></i></div>管理职位</a>
+						<a href="{#$QISHI.wap_domain#}/resume-list.php" class="box-col index-menu-item"><div class="menu-icon color10"><i class="w-icon w-icon-like"></i></div>推荐简历</a>
+						<a href="{#$QISHI.wap_domain#}/jobfair-list.php" class="box-col index-menu-item"><div class="menu-icon color9"><i class="w-icon w-icon-people"></i></div>招聘会</a>
+						<a href="{#$QISHI.wap_domain#}/news-list.php" class="box-col index-menu-item"><div class="menu-icon color4"><i class="w-icon w-icon-book"></i></div>最新资讯</a>
+					</div>
+					<div class="menu-row layout-box">
+						<a href="{#$QISHI.wap_domain#}/company/company_interview_list.php" class="box-col index-menu-item"><div class="menu-icon color5"><i class="w-icon w-icon-tree"></i></div>面试邀请</a>
+						<a href="{#$QISHI.wap_domain#}/company/company_collect_reusme.php" class="box-col index-menu-item"><div class="menu-icon color7"><i class="w-icon w-icon-collect"></i></div>我的收藏</a>
+						<a href="{#$QISHI.wap_domain#}/company/company_get_reusme.php" class="box-col index-menu-item"><div class="menu-icon color8"><i class="w-icon w-icon-board-two"></i></div>收到简历</a>
+						<a href="{#$QISHI.wap_domain#}/simple-list.php" class="box-col index-menu-item"><div class="menu-icon color3"><i class="w-icon w-icon-ring"></i></div>微商圈</a>
+					</div>
+				</nav>
+				{#else#}
+				<!-- 专业版菜单 (未登录或者是个人登录状态) -->
+				<nav class="index-menu">
+					<div class="menu-row layout-box">
+						<a href="{#if $smarty.session.utype==2#}{#$QISHI.wap_domain#}/personal/user.php?act=resume_list{#else#}{#$QISHI.wap_domain#}/login.php{#/if#}" class="box-col index-menu-item"><div class="menu-icon color1"><i class="w-icon w-icon-pic"></i></div>我的简历</a>
+						<a href="{#$QISHI.wap_domain#}/simple-list.php" class="box-col index-menu-item"><div class="menu-icon color3"><i class="w-icon w-icon-ring"></i></div>微商圈</a>
+						<a href="{#$QISHI.wap_domain#}/jobfair-list.php" class="box-col index-menu-item"><div class="menu-icon color9"><i class="w-icon w-icon-people"></i></div>招聘会</a>
+						<a href="{#$QISHI.wap_domain#}/news-list.php" class="box-col index-menu-item"><div class="menu-icon color4"><i class="w-icon w-icon-book"></i></div>最新资讯</a>
+					</div>
+					<div class="menu-row layout-box">
+						<a href="{#if $smarty.session.utype==2#}{#$QISHI.wap_domain#}/personal/interview.php{#else#}{#$QISHI.wap_domain#}/login.php{#/if#}" class="box-col index-menu-item"><div class="menu-icon color5"><i class="w-icon w-icon-tree"></i></div>职位邀请</a>
+						<a href="{#if $smarty.session.utype==2#}{#$QISHI.wap_domain#}/personal/user.php?act=favorites{#else#}{#$QISHI.wap_domain#}/login.php{#/if#}" class="box-col index-menu-item"><div class="menu-icon color7"><i class="w-icon w-icon-collect"></i></div>我的收藏</a>
+						<a href="{#if $smarty.session.utype==2#}{#$QISHI.wap_domain#}/personal/apply.php{#else#}{#$QISHI.wap_domain#}/login.php{#/if#}" class="box-col index-menu-item"><div class="menu-icon color8"><i class="w-icon w-icon-board-two"></i></div>职位申请</a>
+						<a href="{#$QISHI.wap_domain#}/salary.php" class="box-col index-menu-item"><div class="menu-icon color10"><i class="w-icon w-icon-money"></i></div>查工资</a>
+						<!-- <a href="{#$QISHI.wap_domain#}/personal/salary.php" class="box-col index-menu-item"><div class="menu-icon color10"><i class="w-icon w-icon-money"></i></div>查工资</a> -->
+					</div>
+				</nav>
+				{#/if#}
+
+				<!-- 菜单类别结束 -->
+				<div class="index-broadcast clearfix">
+					<i class="w-icon w-icon-speaker"></i>
+					<ul>
+						{#foreach from=$notice_list item=list#}
+						<li><a href="{#$QISHI.wap_domain#}/notice-show.php?id={#$list.id#}">{#$list.title#}</a></li>
+						{#/foreach#}
+					</ul>
+				</div>
+				<div class="index-list-block">
+					<div class="index-list-content">
+						<nav class="i-list-menu layout-box">
+							<a href="javascript:;" class="box-col list-menu-item" id="emer"><i class="w-icon w-icon-board"></i>紧急</a>
+							<a href="javascript:;" class="box-col list-menu-item" id="recom"><i class="w-icon w-icon-like"></i>推荐</a>
+							<a href="jobs-near-list.php" class="box-col list-menu-item"><i class="w-icon w-icon-local"></i>附近</a>
+						</nav>
+						<!-- 紧急 -->
+						<div class="index-data-list" id="emergency">
+							{#foreach from=$emergency_jobs item=list#}
+							<div class="data-item thisurl" data-url="{#$list.url#}">
+								<h3 class="job-title"><a href="{#$list.url#}">{#$list.jobs_name#}</a></h3>
+								<p>{#$list.district_cn#} | {#$list.companyname#}</p>
+								<div class="job-pay clearfix"><span class="f-left">{#$list.wage_cn#}</span><em class="f-right">{#$list.r_time#}</em></div>
+							</div>
+							{#/foreach#}
+							<a href="{#$QISHI.wap_domain#}/jobs-list.php" class="data-item-more">查看更多职位</a>
+						</div>
+						<!-- 推荐 -->
+						<div class="index-data-list" id="recommend">
+							{#foreach from=$recommend_jobs item=list#}
+							<div class="data-item thisurl" data-url="{#$list.url#}">
+								<h3 class="job-title"><a href="{#$list.url#}">{#$list.jobs_name#}</a></h3>
+								<p>{#$list.district_cn#} | {#$list.companyname#}</p>
+								<div class="job-pay clearfix"><span class="f-left">{#$list.wage_cn#}</span><em class="f-right">{#$list.r_time#}</em></div>
+							</div>
+							{#/foreach#}
+							<a href="{#$QISHI.wap_domain#}/jobs-list.php" class="data-item-more">查看更多职位</a>
+						</div>
+					</div>
+				</div>
+				<div class="index-list-block">
+					<div class="index-list-content">
+						<nav class="index-title clearfix">
+							<div class="title f-left"><i class="w-icon w-icon-clock"></i>最新职位</div>
+							<a href="{#$QISHI.wap_domain#}/jobs-list.php" class="title-more f-right">更多</a>
+						</nav>
+						<div class="index-data-list">
+							{#foreach from=$new_jobs item=list#}
+							<div class="data-item thisurl" data-url="{#$list.url#}">
+								<h3 class="job-title"><a href="{#$list.url#}">{#$list.jobs_name#}</a></h3>
+								<p>{#$list.district_cn#} | {#$list.companyname#}</p>
+								<div class="job-pay clearfix"><span class="f-left">{#$list.wage_cn#}</span><em class="f-right">{#$list.r_time#}</em></div>
+							</div>
+							{#/foreach#}
+						</div>
+					</div>
+				</div>
+				<div class="index-list-block">
+					<div class="index-list-content">
+						<nav class="index-title clearfix">
+							<div class="title f-left"><i class="w-icon w-icon-sign"></i>名企推荐</div>
+						</nav>
+						<div class="index-company-list clearfix">
+							{#foreach from=$ad_list item=list#}
+							<div class="company-block f-left"><a href="{#$list.img_url#}"><img src="{#$list.img_path#}" alt="" width="180" height="60"></a></div>
+							{#/foreach#}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{#include file="m/footer.htm"#}
+	</div>
+	<div class="back-to-top"><i class="w-icon w-icon-up"></i></div>
+	
+
+	<script src="js/jquery.min.js"></script>
+	<script>
+		$(function() {
+			var AutoScroll = function(){
+			$('.index-broadcast').find("ul:first").animate({
+				marginTop:"-40px"
+				},500,function(){
+			                $(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+			        });
+			}
+			setInterval(AutoScroll,3000);
+		});
+	</script>
+</body>
+</html>

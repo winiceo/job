@@ -1,0 +1,181 @@
+{#include file="sys/admin_header.htm"#}
+<link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="kindeditor/lang/zh_CN.js"></script>
+<div class="admin_main_nr_dbox">
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$(":radio[name='regpoints']").click(function(){
+	ck_regpoints()
+	});	
+	ck_regpoints();
+	function ck_regpoints()
+	{
+		if ($(":radio[name='regpoints'][checked]").val()=="y")
+		{
+		$("#regpointsshow").show();
+		}
+		else
+		{
+		$("#regpointsshow").hide();
+		}
+	}
+	$(".no_money3").click(function(){
+		$(".log_amount3").hide();
+	});
+	$(".yes_money3").click(function(){
+		$(".log_amount3").show();
+	});
+
+  $("#form1").validate({
+    rules:{
+      shop_title:{
+        required: true
+      },
+      shop_brand:{
+        required: true
+      },
+      scategory:{
+        required: true
+      },
+      shop_stock:{
+        required: true
+      },
+      shop_customer:{
+        required: true
+      },
+      shop_points:{
+        required: true
+      },
+      editor:{
+        required: true
+      }
+    },
+    messages: {
+      shop_title: {
+        required: "请输入商品标题"
+      },
+      shop_brand: {
+        required: "请输入商品品牌"
+      },
+      scategory: {
+        required: "请选择所属分类"
+      },
+      shop_stock: {
+        required: "请填写库存"
+      },
+      shop_customer:{
+        required: "请填写每人限兑数"
+      },
+      shop_points:{
+        required: "请填写兑换所需积分"
+      },
+      editor:{
+        required: "请输入商品描述"
+      }
+     },
+     errorPlacement: function(error, element) {
+      if ( element.is(":radio") )
+          error.appendTo( element.parent().next().next() );
+      else if ( element.is(":checkbox") )
+          error.appendTo ( element.next());
+      else
+          error.appendTo(element.next());
+    }
+  });
+});
+</script>
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptit">添加商品</div>
+  <form id="form1" name="form1" method="post" action="?act=shop_save" ENCTYPE="multipart/form-data">
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品名称：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> <input name="shop_title" type="text" class="input_text_200" id="shop_title" maxlength="25" value="{#$show.shop_title#}"/> <label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">品牌：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="shop_brand" type="text" class="input_text_200" id="shop_brand" maxlength="25" value="{#$show.shop_brand#}"/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">所属分类：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <select id="scategory" name="scategory" style="width: 205px;height: 25px;">
+          <option value="">请选择所属分类</option>
+          {#qishi_get_classify set="列表名:c_province,类型:QS_shop_category"#}
+          {#foreach from=$c_province item=clist#}
+          {#if $clist.parentid!=0#}
+          <option value="{#$clist.parentid#},{#$clist.id#},{#$clist.categoryname#}" {#if $show.scategory==$clist.id#}selected{#/if#}>&nbsp;&nbsp;{#$clist.categoryname#}</option>
+          {#else#}
+          <option disabled>{#$clist.categoryname#}</option>
+          {#/if#}
+          {#/foreach#}
+        </select>
+        <label></label>
+      </td>
+    </tr>
+	
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">库存：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="shop_stock" type="text" class="input_text_200" id="shop_stock" maxlength="25" value="{#$show.shop_stock#}"/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">每人限制兑换数：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="shop_customer" type="text" class="input_text_200" id="shop_customer" maxlength="25" value="{#$show.shop_customer#}"/>(0,为不限制)<label></label></td>
+    </tr>
+     <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">兑换所需积分：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="shop_points" type="text" class="input_text_200" id="shop_points" maxlength="25" value="{#$show.shop_points#}"/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品缩略图：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        {#if $show.shop_img#}<img src="{#$QISHI.site_dir#}data/shop/thumb/{#$show.shop_img#}" width="175" height="175" border="0" style="margin-right:20px;">{#/if#}
+        <input name="shop_img" type="file" id="shop_img"/><label></label>
+      </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">商品描述：</td>
+    <td ><textarea id="content" name="content" style="width:700px;height:300px;visibility:hidden;">{#$show.content#}</textarea>
+    <script>
+      var editor;
+      KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="content"]', {
+          allowFileManager : true,
+          afterBlur: function(){this.sync();}
+        });
+        K('input[name=Submit2]').click(function(e) {
+          editor.html('');
+        });
+      });
+    </script></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">首页推广：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <!-- <label><input name="recommend" type="radio" value="1" {#if $show.recommend==1#}checked{#/if#}/>推荐</label>
+        <label><input type="radio" name="recommend" value="0" {#if $show.recommend==0#}checked{#/if#}/> 不推荐</label> -->
+        <label><input type="checkbox" name="recommend" value="1" {#if $show.recommend==1#}checked{#/if#}/>推广</label>
+        <label></label>
+      </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="60"  ><span style="font-size:14px;">
+        <input type="hidden" name="id"  value="{#$show.id#}" />
+        <input name="submit3" type="submit" class="admin_submit"    value="添加"/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location.href='?act=members_list'"/>
+      </span></td>
+    </tr>
+  </table>
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

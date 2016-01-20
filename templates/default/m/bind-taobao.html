@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>{#$QISHI.site_name#}-绑定账号</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/login-reg.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type="text/javascript" src="./js/layer/layer.js" ></script>
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+		// 第三方绑定
+		 $("#bind_but").click(function(){
+		 	var username=$("input[name=username]").val();
+		 	var member_type=$("input[name=member_type]:checked").val();
+		 	var password=$("input[name=password]").val();
+		 	var rpassword=$("input[name=rpassword]").val();
+		 	var email=$("input[name=email]").val();
+		 	$.post("connect_taobao.php?act=reg_save",{username:username,member_type:member_type,password:password,rpassword:rpassword,email:email},function(data){
+		 		if(data=="reg_err"){
+		 			layer.msg('注册失败！', {icon: 2});
+		 			window.location.reload();
+		 		}else if(data=="ok"){
+		 			window.location.href='login.php';
+		 		}
+		 		else
+		 		{
+		 			layer.msg(data);
+		 			$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+		 		}
+		 	});
+		 });
+	});
+	</script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center"><span class="title-only">绑定账号</span></div>
+		</header>
+		<div class="content-wrap">
+			<div id="err"></div>
+			<nav class="top-tab layout-box"><div class="binding-tips">只差一步，即可完成登录设置</div></nav>
+			<section class="user-form-wrap">
+				<div class="form-tab-item" style="display:block;">
+					<div class="user-form">
+						<div class="form-row clearfix">
+							<i class="user-icon user f-left"></i>
+							<div class="input-area"><input type="text" name="username" id="username" placeholder="请输入用户名"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon user f-left"></i>
+							<label for="qy" class="binding-label"><input type="radio" name="member_type" value="1" id="qy" checked/>企业会员</label>
+							<label for="gr" class="binding-label"><input type="radio" name="member_type" value="2" id="gr"/>个人会员</label>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon pwd f-left"></i>
+							<div class="input-area"><input type="password" name="password" id="password" placeholder="请输入6-16位密码"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon pwd f-left"></i>
+							<div class="input-area"><input type="password" name="rpassword" id="rpassword" placeholder="请输入确认密码密码"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon mail f-left"></i>
+							<div class="input-area"><input type="text" name="email" id="email" placeholder="请输入邮箱"></div>
+						</div>
+					</div>
+					<div class="user-submit"><button id="bind_but" class="user-submit-btn phone mobile_reg" type="submit">提交</button></div>
+				</div>
+			</section>
+		</div>
+	</div>
+	{#include file="m/footer.htm"#}
+</body>
+</html>
+

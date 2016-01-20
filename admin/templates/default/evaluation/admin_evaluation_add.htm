@@ -1,0 +1,170 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$(":radio[name='regpoints']").click(function(){
+	ck_regpoints()
+	});	
+	ck_regpoints();
+	function ck_regpoints()
+	{
+		if ($(":radio[name='regpoints'][checked]").val()=="y")
+		{
+		$("#regpointsshow").show();
+		}
+		else
+		{
+		$("#regpointsshow").hide();
+		}
+	}
+	$(".no_money3").click(function(){
+		$(".log_amount3").hide();
+	});
+	$(".yes_money3").click(function(){
+		$(".log_amount3").show();
+	});
+
+  $("#form1").validate({
+    rules:{
+      title:{
+        required: true
+      },
+      type_id:{
+        required: true
+      },
+      timelimit:{
+        required: true,
+        range:[0,9999]
+      },
+      price:{
+        required: true,
+        range:[0,9999]
+      },
+      keywords:{
+        required: true
+      },
+      suitable_crowd:{
+        required: true
+      },
+      description:{
+        required: true
+      },
+      explain:{
+        required: true
+      }
+    },
+    messages: {
+      title: {
+        required: "请输入试卷标题"
+      },
+      type_id: {
+        required: "请选择所属分类"
+      },
+      timelimit:{
+        required: "请填写每人答题时长",
+        range: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值")
+      },
+      price:{
+        required: "请填写所需积分",
+        range: jQuery.format("请输入一个介于 {0} 和 {1} 之间的值")
+      },
+      keywords:{
+        required: "请填写关键词"
+      },
+      suitable_crowd:{
+        required: "请填写使用人群"
+      },
+      description:{
+        required: "请输入试卷描述"
+      },
+      explain:{
+        required: "请输入得分说明"
+      }
+     },
+     errorPlacement: function(error, element) {
+      if ( element.is(":radio") )
+          error.appendTo( element.parent().next().next() );
+      else if ( element.is(":checkbox") )
+          error.appendTo ( element.next());
+      else
+          error.appendTo(element.next());
+    }
+  });
+});
+</script>
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptit">添加试卷</div>
+  <form id="form1" name="form1" method="post" action="?act=paper_save" ENCTYPE="multipart/form-data">
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">试卷标题：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> <input name="title" type="text" class="input_text_200" id="title" maxlength="25" value="{#$show.title#}"/> <label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">所属测评类型：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" >
+        <select id="type_id" name="type_id" style="width: 205px;height: 25px;">
+          <option value="">&nbsp;请选择测评类型</option>
+          {#if $evaluat_type#}
+          {#foreach from=$evaluat_type item=li#}
+          <option value="{#$li.id#}" {#if $show.type_id==$li.id#}selected{#/if#}>&nbsp;{#$li.name#}</option>
+          {#/foreach#}
+          {#/if#}
+        </select>
+        <label></label>
+      </td>
+    </tr>
+	<tr>
+      <td align="right"  style=" border-bottom:1px #CCCCCC dashed">试卷图片： </td>
+      <td style=" border-bottom:1px #CCCCCC dashed">
+        <input name="img" type="file" id="img" style="width:200px; font-size:12px; padding:3px; border:1px #7797A8 solid;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>
+         {#if $show.img#} <input type="button" name="Submit" value="查看img" class="vtip" title="<img src={#$eval_dir#}{#$show.img#}  border=0  align=absmiddle>"  style=" font-size:12px;"/>{#/if#} 
+      </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">答题时长：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="timelimit" type="text" class="input_text_200" id="timelimit" maxlength="25" value="{#$show.timelimit#}" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>&nbsp;分钟<label></label></td>
+    </tr>
+     <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">价格：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="price" type="text" class="input_text_200" id="price" maxlength="25" value="{#$show.price#}" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>&nbsp;(0,为免费)<label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">关键词：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="keywords" type="text" class="input_text_200" id="keywords" maxlength="25" value="{#$show.keywords#}"/>&nbsp;(以空格分隔)<label></label></td>
+    </tr>
+    <tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">适用人群：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="suitable_crowd" type="text" class="input_text_200" id="suitable_crowd" maxlength="25" value="{#$show.suitable_crowd#}"/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">试卷描述：</td>
+    <td style=" border-bottom:1px #CCCCCC dashed"><textarea id="description" name="description" style="width:400px;height:150px;">{#$show.description#}</textarea><label></label>
+  </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">得分说明：</td>
+    <td style=" border-bottom:1px #CCCCCC dashed"><textarea id="explain" name="explain" style="width:400px;height:150px;">{#$show.explain#}</textarea><label></label>
+  </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="60"  ><span style="font-size:14px;">
+        <input type="hidden" name="id"  value="{#$show.id#}" />
+        <input name="submit3" type="submit" class="admin_submit"    value="{#if $show.id#}修改{#else#}添加{#/if#}"/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location.href='?act=list'"/>
+      </span></td>
+    </tr>
+  </table>
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

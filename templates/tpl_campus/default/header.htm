@@ -1,0 +1,20 @@
+<div id="school-header" class="{#if $campus_nav=='index'#}index{#/if#}">
+	<div class="header-top claerfix">
+		<div class="container clearfix">
+			<div class="header-title f-left">您好{#if $smarty.session.username#} <a href="{#"QS_login"|qishi_url#}">{#$smarty.session.username#}</a>{#/if#}，欢迎访问{#$QISHI.site_name#}校园招聘！{#if !$smarty.session.username#}<a href="{#"QS_login"|qishi_url#}">[登录]</a>{#else#}<a href="{#"QS_login,act:logout"|qishi_url#}" >[退出]</a>{#/if#}</div>
+			<div class="top-contact f-right"><span>服务热线：{#$QISHI.top_tel#}</span> | <a href="{#$QISHI.site_dir#}">返回人才网</a></div>
+		</div>
+	</div>
+	<div class="header-logo-nav">
+		<div class="container clearfix">
+			<div class="school-logo f-left"><a href="{#$QISHI.site_dir#}"><img src="{#$QISHI.upfiles_dir#}{#$QISHI.web_logo#}" alt="logo" height="50" /></a></div>
+			<div class="logo-side-title f-left">校园招聘</div>
+			<div class="school-nav f-right">
+				{#qishi_nav set="调用名称:QS_campus_top,列表名:list"#}
+				{#foreach from=$list item=list#}
+				<a href="{#$list.url#}" target="{#$list.target#}" class="s-nav-item f-left {#if $list.tag==$page_select && $list.tag!=""#} active{#/if#}">{#$list.title#}</a>
+				{#/foreach#}
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,55 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#add_form").click(function()
+	{
+	$("#html").append($("#html_tpl").html());
+	});
+	
+});
+</script>
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+	点击“继续添加”按钮，可同时添加多个选项！<br />
+</p>
+</div>
+<div class="toptit">新增选项</div>
+<form id="form1" name="form1" method="post" action="?act=add_option_save">
+{#$inputtoken#}
+<div id="html_tpl">
+<table width="100%" border="0" cellspacing="6" cellpadding="0" style="border-bottom:1px #93AEDD  dashed">
+  <tr>
+    <td width="120" align="right">选项内容：</td>
+    <td><input name="name[]" type="text" class="input_text_200"  value=""/></td>
+  </tr>
+  <tr>
+    <td width="120" align="right">选项分值：</td>
+    <td><input name="score[]" type="text" class="input_text_200"  value="" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/></td>
+  </tr>
+</table>
+</div>
+		 <div id="html"></div>
+<table width="100%" border="0" cellspacing="6" cellpadding="0">
+  <tr>
+    <td width="120"> </td>
+    <td>
+	<input type="submit" name="addsave" value="保存" class="admin_submit" />
+	<input type="hidden" name="question_id" value="{#$question_id#}"  />
+	<input type="button" name="add_form" id="add_form" value="继续添加" class="admin_submit" />
+		  <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='?act=option_list&id={#$question_id#}'"/>
+	
+	</td>
+  </tr>
+</table>
+ </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

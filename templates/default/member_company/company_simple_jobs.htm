@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_common.css" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/user_company.css" />
+<link href="{#$QISHI.site_template#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.zclip.min.js" type="text/javascript"></script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 微信招聘</div>
+	<div class="usermain">
+		<div class="leftmenu com link_bk">
+			{#include file="member_company/left.htm"#}
+		</div>
+		<div class="rightmain">
+			<div class="bbox1">
+				<div class="mobile-job">
+					<h1>微信招聘</h1>
+					<div class="mobile-job-block clearfix">
+						<div class="code-item f-left">
+							<div class="code"><img src="{#$QISHI.site_dir#}plus/url_qrcode.php?url={#$w_url#}" alt="扫描二维码" width="120" height="120" /></div>
+							<p class="clearfix"><a href="javascript:;" class="f-left underline showQScodeLink" id="showQScodeLink">查看链接</a><a href="{#$QISHI.site_dir#}plus/url_qrcode.php?url={#$w_url#}&download=1" class="f-right underline">下载二维码</a></p>
+						</div>
+						<script type="text/javascript">
+							$(".showQScodeLink").die().live('click', function() {
+								var d = dialog({
+								    content: $("#qshowaBox"),
+								    quickClose: true,// 点击空白处快速关闭
+								    width: '300px'
+								});
+								d.show(document.getElementById('showQScodeLink'));
+								$('.qshowa').zclip({
+									path: '{#$QISHI.site_template#}flash/ZeroClipboard.swf',
+									copy: function(){
+										return $('.qshowaBoxD').val();
+									},
+									afterCopy: function(){
+										$('.qshowa').html('复制成功!');
+									}
+								});
+							});
+						</script>
+						<div id="qshowaBox" style="display:none"><div><input class="qshowaBoxD" value="{#$QISHI.site_domain#}{#$QISHI.site_dir#}plus/url_qrcode.php?url={#$w_url#}"></div><a href="javascript:;" class="qshowa">复制链接</a></div>
+						<div class="mj-data f-left">
+							<div class="f-left mj-data-item first"><div>{#$click#}</div><p>昨日访问</p></div>
+							<div class="f-left mj-data-item"><div>{#$praise#}</div><p>昨日获得点赞</p></div>
+						</div>
+						<a href="?act=data_statistics" class="check-data f-left">查看效果数据</a>
+					</div>
+					<div class="mj-text-block">
+						<div class="mj-text">
+							<h3>什么是微信招聘</h3>
+							<p>微信招聘是我们帮您生成的手机招聘页面，通过使用微信分享、线下海报张贴分享等方式让您获得成倍的招聘效果。微信招聘中调取了您最新的职位信息与您的企业资料，无需设置即可生成。职位调取会随您的更新而动态调整，从而显示最新的职位。</p>
+						</div>
+						<div class="mj-text">
+							<h3>什么是点赞</h3>
+							<p>在您的微信招聘主页最后一页有点赞按钮，您可以通过分享您的微信招聘主页让更多的求职者访问进而获得更多的点赞。</p>
+						</div>
+						<div class="mj-text">
+							<h3>如何使用微信招聘</h3>
+							<p>
+								通过微信朋友圈分享 <br />
+								第一步 填写企业资料发布职位 <br />
+								第二步 微信扫描二维码 分享到朋友圈 <br />
+								第三步 邀请更多人一起分享
+							</p>
+						</div>
+						<div class="mj-text">
+							<h3>张贴海报让更多人看到</h3>
+							<p>下载微信招聘二维码，将二维码张贴到招聘海报上，让更多人通过扫描二维码访问您的微信招聘主页。</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	{#include file="user/footer.htm"#}
+</body>
+</html>

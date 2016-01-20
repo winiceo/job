@@ -1,0 +1,227 @@
+{#qishi_shop_show set="列表名:show,商品ID:$id"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<title>积分商城-商品详细-{#$show.shop_title#}</title>
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/shop.css" />
+<script src="{#$QISHI.site_shop_template#}js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.like-item:last').css({'border-bottom':0});
+		$('.commodity-list .commodity-item:nth-child(4n)').css({'margin-right':0});
+		$('.s-control-li:last').css({'margin-bottom':0});
+
+		$(".big-show .show-li:not(:first-child)").hide();
+		$(".small-control .s-control-li").each(function(){
+			$(this).hover(function(){
+				var index = $(this).index();
+				$(this).siblings(".s-control-li").removeClass('side-select');
+				$(this).addClass('side-select');
+				$(".big-show .show-li").eq(index).show().siblings().hide();
+			})
+		});
+		// 新闻滚动
+		var AutoScroll = function(){
+		        $('.exchange-notice').find("ul:first").animate({
+		                marginTop:"-32px"
+		        },500,function(){
+		        	console.log('1');
+		                $(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+		        });
+		}
+		setInterval(AutoScroll,3000);
+		// 减
+		$('#control1').click(function() {
+			var shop_customer="{#$show.shop_customer#}";
+			var num =$("#num").val();
+			if(num==1)
+			{
+				alert("数量至少为1件")
+			}
+			else
+			{
+				num--;
+				$("#num").val(num);
+			}
+		});
+		// 加
+		$('#control2').click(function() {
+			var shop_customer="{#$show.shop_customer#}";
+			var num =$("#num").val();
+			if(shop_customer!=0 &&　num>=shop_customer)
+			{
+				alert("每人限换"+shop_customer+"件!");
+			}
+			else
+			{
+				num++;
+				$("#num").val(num);
+			}
+		});
+		$("#num").change(function(){
+			var shop_customer="{#$show.shop_customer#}";
+			var num =$("#num").val();
+			if(num>1)
+			{
+				if(shop_customer!=0 &&　num>=shop_customer)
+				{
+					$("#num").val(shop_customer);
+					alert("每人限换"+shop_customer+"件!");
+				}
+			}
+			else
+			{
+				$("#num").val("1");
+				alert("数量至少为1件");
+			}
+		});
+		// 立即兑换
+		$("#convert_btn").click(function() {
+			var id = "{#$show.id#}";
+			var num =$("#num").val();
+			var myDialog = dialog();
+			myDialog.title('兑换商品');
+		    myDialog.content("加载中...");
+		    myDialog.width('500');
+		    myDialog.showModal();
+		    $.get("shop_ajax.php?id="+id+"&num="+num, function(data){
+		    	var dataArr = data.split(",");
+		    	if (dataArr[1] == 1) {
+		    		window.location.href = 'shop_order.php?act=order_add&id='+id+'&num='+num+'&key='+dataArr[0];
+		    	} else {
+		    		myDialog.content(data);
+		    	}
+		        /* 关闭 */
+		        $(".DialogClose").live('click',function() {
+		          myDialog.close().remove();
+		        });
+		    });
+		});
+		// 选项卡
+		$(".comm-text-control .ct-control-item").click(function(){
+			var indx=$(this).index();
+			$(this).addClass('active').siblings().removeClass('active');
+			$(".tabox >div").eq(indx).show().siblings().hide();
+		});
+	});
+	
+</script>
+</head>
+<body>
+	{#include file="../tpl_shop/default/header.htm"#}
+	<div class=" container shop-main clearfix">
+		<!-- left -->
+		<div class="fourthree-left">
+			<div class="commodity-show clearfix">
+				<div class="comm-show-pic f-left"><img src="{#if $show.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$show.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="产品图片" width="288" height="288" /></div>
+				<div class="comm-right f-left">
+					<div class="comm-top-part">
+						<h3><span title="{#$show.shop_title#}">{#$show.shop_title_#}</span></h3>
+						<div class="comm-number"><span>礼品编号：{#$show.shop_number#}</span><span>品牌: {#$show.shop_brand#}</span></div>
+					</div>
+					<div class="comm-bottom-part">
+						<div class="hasexchange">
+							<p>累计兑换</p>
+							<span>{#$show.click#}</span>
+						</div>
+						<div class="comm-b-item clearfix">
+							<div class="cb-type f-left">所需积分：</div>
+							<div class="cb-content f-left"><span>{#$show.shop_points#}</span>积分</div>
+						</div>
+						<div class="comm-b-item clearfix">
+							<div class="cb-type f-left">剩余库存：</div>
+							<div class="cb-content f-left"><em>{#$show.shop_stock#}</em>件</div>
+						</div>
+						<div class="comm-b-item clearfix">
+							<div class="cb-type f-left">兑换数量：</div>
+							<div class="cb-content f-left">
+								<a href="javascript:;" class="cb-number-control cb-left f-left"id="control1"></a>
+								<div class="cb-number-content f-left"><input type="text" name="num" id="num" onkeyup="value=this.value.replace(/\D+/g,'')" value="1" /></div>
+								<a href="javascript:;" class="cb-number-control cb-right f-left" id="control2"></a>
+							</div>
+							<div class="cb-last f-left">{#if $show.shop_customer==0#}不限制{#else#}每人限兑{#$show.shop_customer#}件{#/if#}</div>
+						</div>
+						<div class="order-submit">
+							<input type="button" value="立即兑换" class="order-btn f-left" id="convert_btn"/>
+							<div class="bdsharebuttonbox f-left"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+							<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="comm-text-wrap">
+				<div class="comm-text-control clearfix">
+					<div class="ct-control-item f-left active"><i class="ct-arrow"></i>商品介绍</div>
+					<div class="ct-control-item f-left"><i class="ct-arrow"></i>兑换记录</div>
+				</div>
+				<div class="tabox">
+					<div class="comm-text-box">
+						{#$show.content#}
+					</div>
+					<div class="record-data" style="display: none;">
+						<table>
+							<thead>
+								{#if $show.exchange#}
+								<tr>
+									<th class="align-left" width="300">{#if $smarty.session.utype==1#}企业名{#else#}联系人{#/if#}</th>
+									<th width="250">兑换件数</th>
+									<th width="">兑换时间</th>
+								</tr>
+								{#/if#}
+							</thead>
+							<tbody>
+								{#if $show.exchange#}
+								{#foreach from=$show.exchange item=li#}
+								<tr>
+									<td class="align-left">{#$li.company_name#}</td>
+									<td>{#$li.num#}</td>
+									<td>{#$li.addtime|date:"Y-m-d H:i:s"#}</td>
+								</tr>
+								{#/foreach#}
+								{#else#}
+								<tr>
+									<td colspan=3><div class="data-empty"><img src="{#$QISHI.site_shop_template#}images/empty-box.png" alt="">没有兑换记录！</div></td>
+								</tr>
+								{#/if#}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- right -->
+		<div class="fourthree-right">
+			<div class="count-box">
+				{#if empty($smarty.session.username)#}
+				<a href="javascript:;" class="account-login" style="display: block;">我的积分</a>
+				{#else#}
+				<div class="count-info">
+					<h4>{#$com_info.companyname#}</h4>
+					<p>账户积分：<span>{#$com_point#}</span> 分</p>
+				</div>
+				{#/if#}
+			</div>
+			<div class="your-like">
+				<h3 class="like-title">猜你喜欢</h3>
+				<div class="like-list">
+					{#qishi_shop_list set="列表名:list,分页显示:1,显示数目:15,标题长度:10,填补字符:...,排序:click>desc"#}
+					{#foreach from=$list item=li#}
+					<div class="like-item clearfix">
+						<div class="like-pic f-left"><a href="{#$li.shop_url#}"><img src="{#if $li.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$li.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品图片" width="53" height="53" /></a></div>
+						<div class="like-detail f-left">
+							<p><a href="{#$li.shop_url#}" title="{#$li.shop_title#}">{#$li.shop_title_#}</a></p>
+							<div class="price">积分：<span>{#$li.shop_points#}</span></div>
+						</div>
+					</div>
+					{#/foreach#}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{#include file="footer.htm"#}
+</body>
+</html>

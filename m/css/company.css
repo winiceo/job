@@ -1,0 +1,73 @@
+/*
+**公司主页
+*/
+/*主页*/
+.company-show{}
+.company-show .company-top{background-color: #fff;padding:20px 15px 14px 15px;}
+.company-show .company-top>h1.c-name{font-size: 18px;color:#333;max-width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;margin-bottom: 8px;}
+.company-show .company-top>h1.c-name img{vertical-align: middle;margin-left: 5px;}
+.company-show .company-top>p{font-size: 14px;color:#666;line-height: 22px;width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.company-show .company-content{margin-top: 10px;background-color: #fff;padding-top: 20px;}
+.company-show .company-content h2{margin:0 15px;font-size: 14px;color:#333;padding-left:5px;border-left: 3px solid #0180cf;line-height: 16px;}
+.company-show .company-content .company-info{font-size: 14px;color:#666;line-height: 24px;padding: 15px;border-bottom:1px solid #e2e2e2;}
+.company-show .company-content .company-info.havemore{max-height:134px;overflow: hidden;}
+.company-show .company-content .info-more{display: block;height: 40px;line-height: 40px;text-align: center;color:#999;font-size: 14px;}
+.company-show .company-content .company-job-list{}
+.company-show .company-content .company-job-list .job-item{padding:15px 15px 12px;box-sizing:border-box;width: 100%;height: 100px;border-bottom: 1px solid #e2e2e2;font-size: 12px;}
+.company-show .company-content .company-job-list .job-item:active{background-color: #f5f5f5;}
+.company-show .company-content .company-job-list .job-item .job-title{font-size: 16px;color:#333;margin-bottom: 8px;width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.company-show .company-content .company-job-list .job-item .job-title a{color:#333;}
+.company-show .company-content .company-job-list .job-item>p{margin-bottom: 8px;font-size: 12px;color:#666;width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.company-show .company-content .company-job-list .job-item .job-pay span{font-size: 14px;color:#ff2222;line-height: 18px;}
+.company-show .company-content .company-job-list .job-item .job-pay em{font-style: normal;color:#999;font-size: 12px;line-height: 18px;}
+.company-show .company-content .company-contact{padding:15px;padding-bottom: 6px;font-size: 14px;color:#666;}
+.company-show .company-content .company-contact .contact-item{margin-bottom: 6px;line-height: 20px;}
+.company-show .company-content .company-contact .contact-item i{color:#0180cf;position: relative;font-size: 16px;top:2px;}
+.company-show .company-content .company-contact .contact-item p{padding-left: 20px;box-sizing:border-box;}
+.company-show .company-content .company-contact .contact-item p a{color:#0180cf;}
+.company-show .company-content  .contact-login{padding:15px;}
+.company-show .company-content  .contact-login .login-tips{background-color: #fff8e6;height: 50px;text-align: center;font-size: 14px;color:#333;line-height: 50px;white-space: nowrap;}
+.company-show .company-content  .contact-login .button-group{padding:14px 30px 0 30px;}
+.company-show .company-content  .contact-login .button-group>div{text-align: center;}
+
+/*职位详情*/
+.job-fixed-bottom{position: fixed;bottom:0;left:0;width: 100%;box-sizing:border-box;height: 56px;border-top:1px solid #0180cf;background-color: #fff;z-index: 50;padding:8px 15px;}
+.job-fixed-bottom .f-bottom-ctrl{text-align: center;}
+.job-fixed-bottom .f-bottom-ctrl a{color:#999;font-size: 12px;}
+.job-fixed-bottom .f-bottom-ctrl a i{color:#ff9900;font-size: 24px;margin-top: -3px;}
+.company-job-top{background-color: #fff;padding:20px 15px 14px 15px;}
+.company-job-top .job-name{font-size: 18px;color:#333;line-height: 24px;margin-bottom: 7px;}
+.company-job-top .job-name span{font-size: 12px;color:#999;}
+.company-job-top .top-pay{font-size: 18px;color:#ff2222;margin-bottom: 5px;}
+.company-job-top .top-pay span{font-size: 12px;color:#666;}
+.company-job-top>p{font-size: 14px;color:#666;line-height: 20px;}
+.company-job-top .job-tag-box{line-height: 26px;}
+.company-job-top .job-tag-box .job-tag{height: 26px;line-height: 26px;border-radius: 3px;background-color: #53b6f3;margin:7px 7px 0 0;padding:0 5px;color:#fff;font-size: 12px;white-space: nowrap;}
+.company-job-top .job-tag-box .job-tag.color1{background-color: #53b6f3;}
+.company-job-top .job-tag-box .job-tag.color2{background-color: #2fcfcd;}
+.company-job-top .job-tag-box .job-tag.color3{background-color: #f8c45f;}
+.company-job-top .job-tag-box .job-tag.color4{background-color: #fd9fcb;}
+.company-job-top .job-tag-box .job-tag.color5{background-color: #fa9964;}
+
+.job-contact{padding:10px 15px;background-color: #fff;margin-top: 10px;box-sizing:border-box;position: relative;}
+.job-contact .job-c-info{width: 70%;border-right:1px solid #e2e2e2;}
+.job-contact .job-c-info h3,
+.job-contact .job-c-info p{width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.job-contact .job-c-info h3{font-size: 16px;color:#333;margin-bottom: 8px;}
+.job-contact .job-c-info h3 a{color:#333;}
+.job-contact .job-c-info>p{font-size: 14px;color:#666;line-height: 22px;}
+.job-contact .job-phone{width: 29%;text-align: center;font-size: 12px;height: 69px;}
+.job-contact .job-phone a{color:#0180cf;}
+.job-contact .job-phone a i{color:#ff9900;font-size: 40px;}
+.job-desc{font-size: 14px;color:#666;line-height: 22px;padding: 15px;word-break:break-all;}
+
+
+
+
+
+
+
+
+
+
+

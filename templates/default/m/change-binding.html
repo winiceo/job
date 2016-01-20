@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>微信-切换绑定账号</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/login-reg.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+	<script type="text/javascript" src="./js/layer/layer.js" ></script>
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+		$("#bind_but").click(function(){
+			$("#login_form").submit();
+		});
+	});
+	</script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center"><span class="title-only">切换绑定账号</span></div>
+		</header>
+		<div class="content-wrap">
+			<div id="err"></div>
+			<nav class="top-tab layout-box"><div class="binding-tips">只差一步，即可完成绑定设置</div></nav>
+			<section class="user-form-wrap">
+				<form id="login_form" action="?act=change_binding_save" method="post">
+				<input name="from" type="text" class="txtinput"  value="{#$from#}"  style="display:none"/>
+				<div class="form-tab-item" style="display:block;">
+					<div class="user-form">
+						<div class="form-row clearfix">
+							<i class="user-icon user f-left"></i>
+							<div class="input-area"><input type="text" name="username" id="username" placeholder="请输入用户名/手机号/邮箱"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon pwd f-left"></i>
+							<div class="input-area"><input type="password" name="password" id="password" placeholder="请输入6-16位密码"></div>
+						</div>
+					</div>
+					{#if $err#}
+					<div class="binding-error">
+					{#$err#}
+					</div>
+					{#/if#}
+					<div class="user-submit"><button id="bind_but" class="user-submit-btn phone mobile_reg" type="submit">登录</button></div>
+				</div>
+				</form>
+			</section>
+		</div>
+	</div>
+	{#include file="m/footer.htm"#}
+</body>
+</html>
+

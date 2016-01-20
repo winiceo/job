@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-收到简历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<link rel="stylesheet" href="../css/search.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/filter.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.thisurl').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">收到简历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<div class="select_bar clear">
+				<ul class="clear">
+					<li class="col s_state" data-go="state"><div><span>{#if $smarty.get.state_cn#}{#$smarty.get.state_cn#}{#else#}标签{#/if#}</span></div></li>
+					<li class="col s_job" data-go="job"><div><span>{#if $smarty.get.jobname#}{#$smarty.get.jobname#}{#else#}职位{#/if#}</span></div></li>
+					<li class="col s_apply" data-go="apply"><div><span>{#if $smarty.get.is_apply_cn#}{#$smarty.get.is_apply_cn#}{#else#}来源{#/if#}</span></div></li>
+					<li class="col s_look" data-go="look"><div><span>{#if $smarty.get.look_cn#}{#$smarty.get.look_cn#}{#else#}状态{#/if#}</span></div></li>
+				</ul>
+				<div class="mark_bottom"><div class="mark_line"></div></div>
+				<div class="lock"></div>
+				<div class="select_bar_div">
+					<div id="stateList" class="sl_list"><div><ul></ul></div></div>
+					<div id="jobList" class="sl_list">
+						<ul id="tag_level">
+							<li data-val="0">全部职位</li>
+							{#if $jobs#}
+								{#foreach from=$jobs  item=list#}
+								<li data-val="{#$list.id#}">{#$list.jobs_name#}</li>
+								{#/foreach#}
+							{#/if#}
+						</ul>
+					<div><ul></ul></div></div>
+					<div id="applyList" class="sl_list"><div><ul></ul></div></div>
+					<div id="lookList" class="sl_list"><div><ul></ul></div></div>
+				</div>
+				<input type="hidden" id="hstate" value="{#$smarty.get.state#}">
+				<input type="hidden" id="hstate_cn" value="{#$smarty.get.state_cn#}">
+				<input type="hidden" id="hjobsid" value="{#$smarty.get.jobsid#}">
+				<input type="hidden" id="hjobname" value="{#$smarty.get.jobname#}">
+				<input type="hidden" id="his_apply" value="{#$smarty.get.is_apply#}">
+				<input type="hidden" id="his_apply_cn" value="{#$smarty.get.is_apply_cn#}">
+				<input type="hidden" id="hlook" value="{#$smarty.get.look#}">
+				<input type="hidden" id="hlook_cn" value="{#$smarty.get.look_cn#}">
+			</div>
+			{#if $jobs_apply#}
+			{#foreach from=$jobs_apply  item=list#}
+			{#if $list.fullname#}
+			<article class="classifylist interviewlist nomb thisurl" url="../{#$list.resume_url#}">
+				<section class="title flex-box">
+					<div class="name {#if $list.resume_state==1#}suitable{#elseif $list.resume_state==2#}nosuitable{#elseif $list.resume_state==3#}undetermined{#elseif $list.resume_state==4#}inappropriate{#/if#}">{#$list.fullname#}</div>
+					<div class="status flex2">{#$list.apply_addtime|date_format:'%Y-%m-%d'#}</div>
+				</section>
+				<section class="content flex-box">{#$list.sex_cn#} | {#$list.age#}岁 | {#$list.education_cn#} | {#$list.experience_cn#} | {#$list.major_cn#}</section>
+				<section class="content flex-box">面试职位：{#$list.jobs_name#}</section>
+			</article>
+			{#else#}
+			<article class="classifylist interviewlist nomb thisurl">
+				<section class="content flex-box">[{#$list.resume_name#}]该简历已经删除</section>
+			</article>
+			{#/if#}
+			{#/foreach#}
+			<article class="listshowmore flex-box">查看更多</article>
+			{#else#}
+			<article class="nodata">
+				<div class="cryimg flex-box"></div>
+				<div class="txt flex-box">未匹配到相关收到的简历！</div>
+			</article>
+			{#/if#}
+		</div>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="sms/admin_sms_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+套餐模式是指会员可以购买不同的短信数量
+</p>
+</div>
+ 	
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+        <tr>
+          <td width="6%" height="26" class="admin_list_tit admin_list_first">显示</td>
+          <td  class="admin_list_tit ">名称</td>
+          <td width="10%" align="center" class="admin_list_tit">短信数量</td> 
+          <td width="8%" align="center"  class="admin_list_tit">排序</td>
+          <td width="15%" align="center"  class="admin_list_tit">操作</td>
+        </tr>
+		{#foreach from=$setmeal item=list#}
+        <tr>
+          <td class="admin_list admin_list_first" >
+		  {#if $list.display=="1"#}显示{#else#}<span style="color: #999999">屏蔽</span>{#/if#}</td>
+          <td  class="admin_list" > 
+			{#$list.setmeal_name#} <span style="color:#999999">(id:{#$list.id#})</span>
+	      </td> 
+          <td align="center" class="admin_list" >{#$list.num#}</td>
+          <td align="center" class="admin_list" >{#$list.show_order#}</td>
+          <td align="center"  class="admin_list" ><a href="?act=set_meal_edit&id={#$list.id#}">设置</a>&nbsp;&nbsp;&nbsp;<a href="?act=set_meal_del&id={#$list.id#}&{#$urltoken#}" onclick="return confirm('你确定要删除吗？')">删除</a></td>
+        </tr>
+		{#/foreach#}
+  </table>
+  <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+<input name="add" type="button" class="admin_submit" id="add"    value="新增"  onclick="window.location='?act=set_meal_add'"/>
+		</td>
+        <td width="305" align="right">
+		
+	    </td>
+      </tr>
+  </table>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

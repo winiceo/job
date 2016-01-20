@@ -1,0 +1,65 @@
+{#qishi_campus_show set="列表名:campus,院校ID:GET[id],院校介绍长度:500"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>{#$campus.campusname#} - {#$QISHI.site_name#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/school.css" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/ui-dialog.css" type="text/css" />	
+<script src="{#$QISHI.site_campus_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_campus_template#}js/simplefoucs.js"></script>
+<script src="{#$QISHI.site_campus_template#}js/dialog-min.js"></script>
+<script>
+	$(document).ready(function() {
+		// 点击查看大图
+		$("#img_show").click(function() {
+			dialog({
+				title: '院校风采',
+			    content: $("#focus"),
+			}).showModal();
+		});
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_campus/default/header.htm"#}
+	<div class="container">
+		<div class="school-box clearfix">
+			<div class="school-logo f-left"><img src="{#$campus.logo#}" alt="logo" width="218" height="104" /></div>
+			<div class="school-information f-left">
+				<h4><span>学校名称：</span>{#$campus.campusname#}</h4>
+				<div class="school-text"><span>学校主页：</span><a target="_blank" href="{#$campus.website#}" class="underline">{#$campus.website_#} </a></div>
+				<div class="school-text"><span>学校地址：</span>{#$campus.address#}</div>
+				<div class="school-text">已注册简历毕业生<em>{#$campus.graduate_num#}</em>名</div>
+			</div>
+		</div>
+		<div class="school-tab clearfix">
+			<a href="{#"QS_campusshow,id:$campus.id"|qishi_url#}" class="s-tab-item f-left active">学校介绍</a>
+			<a href="{#"QS_campusresume,id:$campus.id"|qishi_url#}" class="s-tab-item f-left">校生简历</a>
+		</div>
+		<div class="introduction clearfix">
+			{#if $campus.campus_img_num > 0#}
+			<div class="in-img-group f-right">
+				<div class="in-img-box"><img src="{#$campus.campus_img#}" alt="" width="394" height="240" /></div>
+				<p>共{#$campus.campus_img_num#}张<a href="javascript:void(0)" id="img_show" class="underline">[点击查看大图]</a></p>
+			</div>
+			{#/if#}
+			<div class="introduction-text">
+				{#$campus.contents#}
+			</div>
+		</div>
+	</div>
+	{#include file="../tpl_campus/default/footer.htm"#}
+	<div id="focus" style="display: none;">
+        <ul>
+        	{#foreach from=$campus.campus_img_big item=val#}
+            <li><img src="{#$val#}" width='600px' height='400px'/></li>
+            {#/foreach#}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptit">修改测题</div>
+<form id="form1" name="form1" method="post" action="?act=edit_question_save">
+{#$inputtoken#}
+<table width="100%" border="0" cellspacing="6" cellpadding="0" >
+  <tr>
+    <td width="120" align="right">题目：</td>
+    <td><input name="title" type="text" class="input_text_200"  value="{#$question.title#}"/></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="6" cellpadding="0">
+  <tr>
+    <td width="120"> </td>
+    <td>
+	<input name="id" type="hidden" value="{#$question.id#}" />
+	<input name="paper_id" type="hidden" value="{#$question.paper_id#}" />
+	<input type="submit" name="addsave" value="保存" class="admin_submit" />
+		  <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='?act=question_list&id={#$question.paper_id#}'"/>
+	
+	</td>
+  </tr>
+</table>
+ </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

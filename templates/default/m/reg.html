@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="gb2312">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	{#qishi_pageinfo set="列表名:page,调用:QS_index"#}
+	<title>{#$QISHI.site_name#}-注册</title>
+	<meta name="description" content="{#$page.description#}" id="description">
+	<meta name="keywords" content="{#$page.keywords#}">
+	<meta name="author" content="骑士CMS" />
+	<meta name="copyright" content="74cms.com" />
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/login-reg.css">
+	<script type="text/javascript" src="./js/jquery-1.11.3.js" ></script>
+	<script type='text/javascript' src="./js/jquery.common.js" ></script>
+</head>
+<body class="global-bg">
+	<div class="global-container">
+		<header class="global-header">
+			<div class="header-left" id="pageback">
+				<a href="javascript:;" class="header-back"><i class="w-icon w-icon-back"></i></a>
+			</div>
+			<div class="header-center"><span class="title-only">注册</span></div>
+			<div class="header-right-link"><a href="login.php">登录</a></div>
+		</header>
+		<div class="content-wrap">
+			<div id="err"></div>
+			<nav class="top-tab layout-box">
+				<div class="tab-item box-col active"><span>手机注册</span></div>
+				<div class="tab-item box-col"><span>邮箱注册</span></div>
+			</nav>
+			<section class="user-form-wrap">
+				<!-- 手机注册 -->
+				<div class="form-tab-item" style="display:block;">
+					<div class="user-form">
+						<div class="form-row clearfix">
+							<i class="user-icon phone f-left"></i>
+							<div class="input-area"><input type="text" name="mobile" id="mobile" placeholder="请输入手机号"></div>
+							<div class="code-box"><input type="button" value="获取验证码" class="code-btn" id="codeBtn"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon number f-left"></i>
+							<div class="input-area"><input type="text" name="verifycode" id="verifycode" placeholder="请输入验证码"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon pwd f-left"></i>
+							<div class="input-area"><input type="password" name="password_mobile" id="password_mobile" placeholder="请输入6-16位密码"></div>
+							<i class="user-eye close"></i>
+						</div>
+					</div>
+					<div class="user-submit"><button class="user-submit-btn phone mobile_reg" type="submit" disabled>注册</button></div>
+					<label class="protocol"><input type="checkbox" name="agreement_mobile" id="agreement_mobile" value="1" checked><span>同意<a href="javascript:;">注册协议</a></span></label>
+				</div>
+				<!-- 邮箱注册 -->
+				<div class="form-tab-item">
+					<div class="user-form">
+						<div class="form-row clearfix">
+							<i class="user-icon user f-left"></i>
+							<div class="input-area"><input type="text" name="username" id="username" placeholder="请输入用户名"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon mail f-left"></i>
+							<div class="input-area"><input type="text" name="email" id="email" placeholder="请输入常用邮箱"></div>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon pwd f-left"></i>
+							<div class="input-area"><input type="password" name="password" id="password" placeholder="请输入6-16位密码"></div>
+							<i class="user-eye close"></i>
+						</div>
+						<div class="form-row clearfix">
+							<i class="user-icon pwd f-left"></i>
+							<div class="input-area"><input type="password" name="password1" id="password1" placeholder="请再次输入密码"></div>
+							<i class="user-eye close"></i>
+						</div>
+					</div>
+					<div class="user-submit"><button class="user-submit-btn email" type="submit">注册</button></div>
+					<label class="protocol"><input type="checkbox" name="agreement" id="agreement" value="1" checked><span>同意<a href="javascript:;">注册协议</a></span></label>
+					<input type="hidden" name="utype" id="utype" value="{#$utype#}">
+				</div>
+			</section>
+		</div>
+	</div>
+	
+
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/fastclick.js"></script>
+	<script>
+		$(function() {
+			// 切换
+			$('.top-tab .tab-item').on('click', function() {
+				var index = $(this).index();
+				$(this).addClass('active').siblings().removeClass('active');
+				$('.user-form-wrap .form-tab-item').eq(index).show().siblings().hide();
+			})
+			//密码动作
+			$('.user-eye').on('click', function() {
+				if ($(this).prev().find("input").attr('type') == 'password') {
+					$(this).removeClass('close');
+					$(this).prev().find("input").attr('type', 'text');
+				}else{
+					$(this).addClass('close');
+					$(this).prev().find("input").attr('type', 'password');
+				}
+			});
+			// 发送验证码
+			$('#codeBtn').on('click', function() {
+				$.post('?act=reg_send_code', {'act':'reg_send_code','mobile':$('#mobile').val()}, function(data) {
+					if($.trim(data)!='success')
+					{
+						if(data=='请60秒后重新验证！')
+						{
+							showTime(60);
+						}
+						var html = '<div class="user-form-error" style="display: block;"><i class="error-icon"></i>'+data+'</div>';
+						$("#err").html(html);
+						setTimeout(function () {
+		                    $("#err .user-form-error").hide();
+		                }, 1000);
+					}
+					else
+					{
+						showTime(60);
+						$('.mobile_reg').removeAttr("disabled"); 
+					}
+				});
+			});
+			//手机注册
+			$('.mobile_reg').on('click', function() {
+				var verifycode =$("input[name=verifycode]").val();
+				var password_mobile =$("input[name=password_mobile]").val();
+				var utype =$("input[name=utype]").val();
+				var agreement_mobile =$("input[name=agreement_mobile]").val();
+				$.post("?act=phone_reg",{verifycode:verifycode,password_mobile:password_mobile,utype:utype,agreement_mobile:agreement_mobile,'mobile':$('#mobile').val()},function(data){
+					var bool = data.indexOf(".php");
+					if(bool<0)
+					{
+						var html ='<div class="user-form-error" style="display: block;"><i class="error-icon"></i>'+data+'</div>';
+						$("#err").html(html);
+						setTimeout(function () {
+		                    $("#err .user-form-error").hide();
+		                }, 1000);
+					}
+					else
+					{
+						window.location.href=data;
+					}
+				})
+			});
+			//ajax提交邮箱注册
+			$('.email').on('click', function() {
+				var username =$("input[name=username]").val();
+				var email =$("input[name=email]").val();
+				var password =$("input[name=password]").val();
+				var password1 =$("input[name=password1]").val();
+				var utype =$("input[name=utype]").val();
+				var agreement =$("input[name=agreement]").val();
+				$.post("?act=do_reg",{username:username,email:email,password:password,password1:password1,utype:utype,agreement:agreement},function(data){
+					var bool = data.indexOf(".php");
+					if(bool<0)
+					{
+						var html ='<div class="user-form-error" style="display: block;"><i class="error-icon"></i>'+data+'</div>';
+						$("#err").html(html);
+						setTimeout(function () {
+		                    $("#err .user-form-error").hide();
+		                }, 1000);
+					}
+					else
+					{
+						window.location.href=data;
+					}
+				})
+			});
+		});
+		function showTime(time){
+			$('#codeBtn').prop('disabled', true);
+
+			for (var i = 0; i <= time; i++) {
+				window.setTimeout("updateP("+ i +","+time+")", i*1000);
+			};
+		};
+		function updateP(num, time) {
+			if(num == time) {
+				$('#codeBtn').val('重新发送').prop('disabled', false);
+			}else{
+				var printnr = time - num;
+				$('#codeBtn').val(printnr +"秒重新发送");
+			}
+		}
+	</script>
+</body>
+</html>

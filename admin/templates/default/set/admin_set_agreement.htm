@@ -1,0 +1,99 @@
+{#include file="sys/admin_header.htm"#}
+<link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="kindeditor/lang/zh_CN.js"></script>
+
+<div class="admin_main_nr_dbox">
+  <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="set/admin_set_config_nav.htm"#}
+  <div class="clear"></div>
+</div> 
+<div class="toptit">注册设置</div>
+<form action="?act=set_save" method="post"  name="form1" id="form1">
+    {#$inputtoken#}
+  <table width="700" border="0" cellspacing="5" cellpadding="1" style=" margin-bottom:3px; margin-top:10px;">
+     <tr>
+      <td width="180" align="right">手机注册用户名前缀：</td>
+      <td > 
+      <input name="reg_prefix" type="text"  class="input_text_200" id="reg_prefix"   value="{#$config.reg_prefix#}" maxlength="10"/>
+       </td>
+    </tr>
+    <tr>
+      <td width="180" align="right">邮箱注册用户名前缀：</td>
+      <td > 
+      <input name="email_reg_prefix" type="text"  class="input_text_200" id="email_reg_prefix"   value="{#$config.email_reg_prefix#}" maxlength="10"/>
+       </td>
+    </tr>
+  <tr>
+      <td width="180" align="right">手机注册生成用户名：</td>
+      <td  id="reg_mobile_type">
+    <label><input name="reg_mobile_type"  type="radio" value="1" {#if $config.reg_mobile_type =="1"#}checked="checked"{#/if#} />手机号</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <label><input name="reg_mobile_type"  type="radio" value="2" {#if $config.reg_mobile_type =="2"#}checked="checked"{#/if#} />前缀+手机号</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <label><input name="reg_mobile_type"  type="radio" value="3" {#if $config.reg_mobile_type =="3"#}checked="checked"{#/if#} />前缀+随机字符</label>&nbsp;&nbsp;&nbsp;   
+      </td>
+    </tr>
+    <tr>
+      <td width="180" align="right">邮箱注册生成用户名：</td>
+      <td  id="reg_email_type">
+    <label><input name="reg_email_type"  type="radio" value="1" {#if $config.reg_email_type =="1"#}checked="checked"{#/if#} />邮箱地址</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <label><input name="reg_email_type"  type="radio" value="2" {#if $config.reg_email_type =="2"#}checked="checked"{#/if#} />前缀+邮箱地址</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <label><input name="reg_email_type"  type="radio" value="3" {#if $config.reg_email_type =="3"#}checked="checked"{#/if#} />前缀+随机字符</label>&nbsp;&nbsp;&nbsp;   
+      </td>
+    </tr>
+   <tr>
+      <td width="180" align="right">第三方注册生成用户名：</td>
+      <td > 
+      <input name="third_reg_prefix" type="text"  class="input_text_200" id="third_reg_prefix"   value="{#$config.third_reg_prefix#}" maxlength="10"/> 加随机字符串
+       </td>
+    </tr>
+    <tr>
+      <td width="180" align="right">微信注册生成密码：</td>
+      <td  id="reg_weixin_password_tpye">
+    <label><input name="reg_weixin_password_tpye"  type="radio" value="1" {#if $config.reg_weixin_password_tpye =="1"#}checked="checked"{#/if#} />与用户名相同</label>&nbsp;&nbsp;&nbsp;
+     <label><input name="reg_weixin_password_tpye"  type="radio" value="2" {#if $config.reg_weixin_password_tpye =="2"#}checked="checked"{#/if#} />随机密码</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <label><input name="reg_weixin_password_tpye"  type="radio" value="3" {#if $config.reg_weixin_password_tpye =="3"#}checked="checked"{#/if#} />指定密码</label>&nbsp;&nbsp;&nbsp;   
+      </td>
+    </tr>
+  <tr  id="config_reg_password" style="display:none">
+      <td width="180" align="right">输入指定密码：</td>
+      <td >
+    <input name="reg_weixin_password" type="text"  class="input_text_200" id="reg_weixin_password"   value="{#$config.reg_weixin_password#}" maxlength="16"/> 
+      </td>
+    </tr>
+    <tr>
+      <td align="right">&nbsp;</td>
+      <td height="50"><span style="font-size:14px;">
+        <input name="submit2" type="submit" class="admin_submit"    value="保存修改"/>
+      </span></td>
+    </tr>
+  </table>
+  </form>
+<div class="toptit">会员注册协议</div>
+  <form action="?act=set_save" method="post"   name="form1" id="form1">
+  {#$inputtoken#}
+<table width="100%" border="0" cellspacing="0" cellpadding="0"  >
+
+            <tr>
+              <td width="441"><textarea name="agreement" style=" width:700px;height:400px; font-size:12px; line-height:180%"  id="agreement">{#$text.agreement#}</textarea>
+                   <script>
+      var editor;
+      KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="agreement"]', {
+          allowFileManager : true
+        });
+      });
+    </script>             </td>
+            </tr>
+            <tr>
+              <td height="50">
+			  
+                <input name="submit2" type="submit" class="admin_submit"    value="保存修改"/>
+              </td>
+            </tr>
+          </table>
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

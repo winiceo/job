@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link href="{#$QISHI.site_template#}css/user_common.css" rel="stylesheet" type="text/css" />
+<link href="{#$QISHI.site_template#}css/user_hunter.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.vtip-min.js" type="text/javascript" language="javascript"></script>
+<script>
+$(function(){
+	$("input[type='button'],input[type='submit']").hover(function(){
+		$(this).addClass("hover");
+	},function(){
+		$(this).removeClass("hover");
+	})
+
+	$(".get_resume_input").click(function(){
+		$(".select_ul").slideDown("fast").css('z-index', '11');
+		//生成背景
+		$(".get_resume_input").parents(".get_resume").before("<div class=\"menu_bg_layer\"></div>");
+		$(".menu_bg_layer").height($(document).height());
+		$(".menu_bg_layer").css({ width: $(document).width(), position: "absolute", left: "0", top: "0" , "z-index": "5", "background-color": "#ffffff"});
+		$(".menu_bg_layer").css("opacity","0");
+		$(".menu_bg_layer").click(function(){
+			$(".menu_bg_layer").remove();
+			$(".select_ul").slideUp("fast");
+			$(".get_resume_input").parent("div").css("position","");
+		});
+	});
+	$(".select_ul li").each(function() {
+		$(this).click(function(){
+			var liTxt = $(this).html();
+			var jobsid= $(this).attr("jobsid");
+			$(".get_resume_input").val(liTxt);
+			$(".select_ul").hide();
+			$(".menu_bg_layer").remove();
+			window.location.href="?act={#$act#}&look={#$smarty.get.look#}&jobsid="+jobsid+"";
+
+		})
+	});
+	$(".select_ul li").hover(function(){
+		$(this).addClass('hovers');
+	},function(){
+		$(this).removeClass('hovers');
+	})
+})
+</script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 面试邀请</div>
+
+<div class="usermain">
+  <div class="leftmenu com link_bk">
+  	 {#include file="member_hunter/left.htm"#}		
+  </div>
+  <div class="rightmain">
+  
+ 	<div class="bbox1 link_bk my_account intrgration" style="padding-top:0;">
+		<div class="topnav get_resume" style="z-index:30">
+		 	<div class="titleH1">
+			  <div class="title_h1">面试邀请</div>
+			</div>
+			<div class="navs">
+				<a href="?act={#$act#}&look=" {#if $smarty.get.look==""#}class="se"{#/if#}>所有简历<span class="">({#$count#})</span></a>
+				<a href="?act={#$act#}&look=1" {#if $smarty.get.look=="1"#}class="se"{#/if#}>未查看<span class="no_check">({#$count1#})</span></a>
+				<a href="?act={#$act#}&look=2" {#if $smarty.get.look=="2"#}class="se"{#/if#}>已查看<span class="">({#$count2#})</span></a>
+				<div class="clear"></div>
+			</div>
+			<div class="get_resume_box">
+				按职位查看：
+				<span class="select_box">
+					<input type="text" class="get_resume_input" value="{#if $jobs_name#}{#$jobs_name#}{#else#}全部职位{#/if#}" readonly="readonly" UNSELECTABLE="on"/>
+					<ul class="select_ul" style="display:none;">
+						<li jobsid="">全部职位</li>
+						{#foreach from=$jobs item=list#}
+						<li jobsid="{#$list.id#}">{#$list.jobs_name#}</li>
+						{#/foreach#}
+					</ul>
+				</span>
+			</div>
+	  	</div>
+		<div class="data resume" style="padding-top:20px;">
+			{#if $resume#}
+			<form id="form1" name="form1" method="post" action="?act=interview_del">
+		  	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+		  		<tbody>
+		  			<tr bgcolor="#F5F5F5" align="left">
+		  				<th width="135" class="left" align="left"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" /> 姓名</th>
+		  				<th width="178" align="left">邀请职位</th>
+		  				<th width="100" align="left">对方查看</th>
+		  				<th width="150" align="center">通知内容</th>
+		  				<th width="151" align="left">邀请时间</th>
+		  				<th width="60" align="left">操作</th>
+		  			</tr>
+		  			{#foreach from=$resume item=list#}
+			  		 {#if $list.sex_cn#}
+		  			<tr class="data_content" height="58">
+		  				<td width="135" class="left"><input name="y_id[]" type="checkbox" id="y_id"   value="{#$list.did#}"/>
+		  				{#if $list.personal_look=="1"#}
+							<a style="color:#ff6600" href="{#$list.resume_url#}" target="_blank" title="{#$list.fullname_#}">{#$list.fullname#}</a>
+		  				{#elseif $list.personal_look=="2"#}
+							<a style="" href="{#$list.resume_url#}" target="_blank" title="{#$list.fullname_#}">{#$list.fullname#}</a>
+		  				{#/if#}
+		  				</td>
+		  				<td width="178" title="{#$list.jobs_name_#}">{#$list.jobs_name#}</td>
+		  				<td width="100">
+		  					{#if $list.personal_look=="1"#}
+				   			<span style="color: #999999">[对方未看]</span>
+				   			{#elseif $list.personal_look=="2"#}
+				   			<span style="color: #999999">[对方已看]</span>
+				   			{#/if#}
+				   		</td>
+		  				<td width="150" align="center">
+							<img src="{#$QISHI.site_template#}images/17.jpg"  border="0"  style="cursor:pointer" title="{#$list.notes|nl2br#}" class="vtip"/>
+						</td>
+		  				<td width="151">{#$list.interview_addtime|date_format:"%Y-%m-%d"#}</td>
+		  				<td width="60" class="link_lan"><a href="?act=interview_del&delete=delete&y_id={#$list.did#}" onclick="return confirm('您确定删除吗?')">删除</a></td>
+		  			</tr>
+		  			{#else#}
+		  			<tr class="data_content" height="58">
+		  				<td width="175" class="left" colspan="6">
+		  				<input name="y_id[]" type="checkbox" id="y_id"  value="{#$list.did#}"/> 被邀请人[{#$list.resume_name#}] 的简历可能已被删除，您可以删除本条信息.				
+		  				</td>
+		  			</tr>
+		  			{#/if#}
+		  			{#/foreach#}
+		  		</tbody>
+		  	</table>
+		  	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+		  		<tbody> 
+		  			<tr>
+						<td width="70">&nbsp;&nbsp;&nbsp;&nbsp; <label><input type="checkbox" name="chkAll"   id="chk2" title="全选/反选" /> <span> 全选 </span></label></td> 
+		  				<td width="100" class="left"> 
+							<input type="submit" name="delete" value="删除"  class="but95_35lan"    onClick="return confirm('您确定删除吗?')"/></td>
+		  				<td width="500"></td>
+		  			</tr>
+		  		</tbody>
+		  	</table>
+		  </form>
+  			{#if $page#}
+			<table border="0" align="center" cellpadding="0" cellspacing="0" class="link_bk">
+	          <tr>
+	            <td height="50" align="center"> <div class="page link_bk">{#$page#}</div></td>
+	          </tr>
+	      </table>
+	      {#/if#}
+			{#else#}
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+		  		<tbody>
+		  			<tr bgcolor="#F5F5F5" align="left">
+		  				<th width="135" class="left"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" /> 姓名</th>
+		  				<th width="178">邀请职位</th>
+		  				<th width="100">对方查看</th>
+		  				<th width="150" align="center">通知内容</th>
+		  				<th width="151">邀请时间</th>
+		  				<th width="60">操作</th>
+		  			</tr>
+		  		</tbody>
+		  	</table>
+			<div class="emptytip">没有找到对应的信息！</div>
+			{#/if#}
+		  </div>
+
+  	</div>
+  </div>
+  <div class="clear"></div>
+</div>
+{#include file="user/footer.htm"#}
+</body>
+</html>

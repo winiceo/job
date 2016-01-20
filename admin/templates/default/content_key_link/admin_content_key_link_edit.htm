@@ -1,0 +1,38 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="content_key_link/admin_content_key_link_nav.htm"#}
+  <div class="clear"></div>
+</div>
+ <div class="toptit">修改关键词</div>
+ 
+    <form id="form1" name="form1" method="post"   action="?act=editsave" >
+	{#$inputtoken#}
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="120" height="30" align="right"  >关键词：</td>
+      <td  ><input name="name" type="text" class="input_text_200"   maxlength="100" value="{#$hotword.name#}"/>
+       </td>
+    </tr>
+	   
+
+	    <tr>
+      <td height="30" align="right"  >关键字链接：</td>
+      <td   ><input name="url" type="text" class="input_text_200"  maxlength="100" value="{#$hotword.url#}"/><span class="admin_note" style="color: rgb(153, 153, 153);">例如 http://www.74cms.com</span>
+       </td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="50"  >
+	  <input name="id" type="hidden" value="{#$hotword.id#}" />
+            <input name="submit3" type="submit" class="admin_submit"    value="保存"/>
+        <input name="submit22" type="button" class="admin_submit"    value="返回" onclick="Javascript:window.history.go(-1)"/>
+       </td>
+    </tr>
+  </table>
+    </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

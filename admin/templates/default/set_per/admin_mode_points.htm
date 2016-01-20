@@ -1,0 +1,71 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  {#include file="set_per/admin_set_per_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+积分模式是指会员每次通过创建、完善简历或者是申请职位等操作来增扣积分，此模式简易灵活，无时间限制。<br />
+每日上限：指的是当超过上限时同一个操作的积分不再增减。
+</p>
+</div>
+<div class="toptit">基本设置</div>
+ 
+	<form action="?act=set_points_config_save" method="post"  name="form1" id="form1">
+ {#$inputtoken#}
+	
+    <table width="100%" border="0" cellspacing="5" cellpadding="1" style=" margin-bottom:3px;">
+
+      <tr>
+        <td width="200" align="right">创建简历每日上限：</td>
+        <td><input name="create_resume_points_max" type="text"  class="input_text_150" id="create_resume_points_max" value="{#$config.create_resume_points_max#}" maxlength="10"/> <span  style="color:#666666"> {#$config.points_quantifier#}{#$config.points_byname#}</span></td>
+      </tr>
+      <tr>
+        <td width="200" align="right">刷新简历每日上限：</td>
+        <td><input name="resume_refresh_points_max" type="text"  class="input_text_150" id="resume_refresh_points_max" value="{#$config.resume_refresh_points_max#}" maxlength="10"/> <span  style="color:#666666"> {#$config.points_quantifier#}{#$config.points_byname#}</span></td>
+      </tr>
+      <tr>
+        <td width="200" align="right">申请职位每日上限：</td>
+        <td><input name="apply_jobs_points_max" type="text"  class="input_text_150" id="apply_jobs_points_max" value="{#$config.apply_jobs_points_max#}" maxlength="10"/> <span  style="color:#666666"> {#$config.points_quantifier#}{#$config.points_byname#}</span></td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">&nbsp;</td>
+        <td height="55"><span style="font-size:14px;">
+          <input name="submit2" type="submit" class="admin_submit"    value="保存修改"/>
+        </span></td>
+      </tr>
+    </table>
+	</form>
+    <form action="?act=set_points_save" method="post"  name="form1" id="form1">
+	 {#$inputtoken#}
+	<div class="toptit">基本设置</div>
+ 
+    <table width="100%" border="0" cellspacing="5" cellpadding="1">
+	  {#foreach from=$points item=points#}
+      <tr>
+        <td width="200" align="right" >{#$points.title#}：</td>
+        <td width="5" >
+
+		  <select name="operation[]" style="font-size:12px;">
+		    <option value="1"  {#if $points.operation=="1"#}selected="selected"{#/if#}>加</option>
+		    <option value="2"  {#if $points.operation=="2"#}selected="selected"{#/if#}>减</option>
+        </select>		</td>
+        <td >
+		<input name="id[]" type="hidden" value="{#$points.id#}" />
+		<input name="value[]" type="text" class="input_text_50"   value="{#$points.value#}" maxlength="4"/>
+积分</td>
+      </tr>
+	  	  {#/foreach#}
+      <tr>
+        <td align="right"  >&nbsp;</td>
+        <td height="50" colspan="2"  ><input name="submit" type="submit" class="admin_submit"    value="保存"/></td>
+      </tr>
+    </table>    
+  </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

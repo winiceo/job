@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-添加培训经历</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/jquery.editCV.js" ></script>
+		<script type="text/javascript" src="../js/iscroll.js" ></script>
+		<script type="text/javascript" src="../js/mb.js" ></script>
+		<script type="text/javascript" src="../js/popWin.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function()
+			{
+				// 提交 表单
+				var isPost = true;
+				$("#train_submit").click(function(){
+					var resume_train="{#$resume_train#}";
+					if(resume_train){
+					var id = "{#$resume_train.id#}";
+					}
+					var pid = {#$smarty.get.pid#};
+					var agency =$("input[name='agency']").val();
+					var course =$("input[name='course']").val();
+					var startyear =$("#startDate_dummy").val().split(".")[0];
+					var startmonth =$("#startDate_dummy").val().split(".")[1];
+					var endyear =$("#endDate_dummy").val().split(".")[0];
+					var endmonth =$("#endDate_dummy").val().split(".")[1];
+					var description =$("#description").val();
+					if (isPost) {
+						isPost = false;
+						$.post("?act=resume_train_save",{id:id,pid:pid,agency:agency,course:course,startyear:startyear,startmonth:startmonth,endyear:endyear,endmonth:endmonth,description:description},function(data){
+							if(data=="ok"){
+								layer.msg('添加成功！', {icon: 1});
+								setTimeout(function () {
+								    window.location.href="?act=resume_train&pid="+pid+"";
+								}, 2000);
+							}else if(data=="err"){
+								layer.msg('添加失败！', {icon: 2});
+							}else{
+								layer.msg(data);
+								$('.layui-layer').css("left",($(window).width() - $('.layui-layer').outerWidth())/2);
+							}
+							isPost = true;
+						})
+					};
+				});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">培训经历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="formDiv comresume">
+				<div class="formChild">
+					<div class="lt">机构名称<span>*</span></div>
+					<div class="mt"><input id="agency" name="agency" value="{#$resume_train.agency#}"></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">培训课程<span>*</span></div>
+					<div class="mt"><input id="course" name="course" value="{#$resume_train.course#}"></div>
+				</div>
+				<div class="formChild">
+					<div class="lt">开始时间<span>*</span></div>
+					<label id="startDateTxt" data-type="yearStart" data-text="选择开始时间" class="mt check mbs">{#$resume_train.startyear#}年{#$resume_train.startmonth#}月</label>
+					<input type="hidden" id="startDate_dummy" name="startDate" value="{#$resume_train.startyear#}.{#$resume_train.startmonth#}" />
+				</div>
+				<div class="formChild">
+					<div class="lt">结束时间<span>*</span></div>
+					<label id="endDateTxt" data-type="yearEnd" data-text="选择结束时间" class="mt check mbs">{#$resume_train.endyear#}年{#$resume_train.endmonth#}月</label>
+					<input type="hidden" id="endDate_dummy" name="endDate" value="{#$resume_train.endyear#}.{#$resume_train.endmonth#}">
+				</div>
+				<div class="formChild">
+					<div class="lt">培训内容</div>
+					<label id="descriptionTxt" class="mt check">{#$resume_train.description#}</label>
+					<input type="hidden" id="description" name="description" value="{#$resume_train.description#}" readonly="">
+				</div>
+			</article>
+			<article class="flex-box arlogout"><a class="logout" id="train_submit" href="javascript:;">保存</a></article>
+		</div>
+	</body>
+</html>

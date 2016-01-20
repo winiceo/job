@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-套餐余量</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev"  id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">套餐余量</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="infohead infoheadperfect infoheadsetmeal flex-box">
+				<div class="flexinfoheadlogo"><div>账户状态</div></div>
+				<div class="resumeintegrityrungs flex-box">
+					<div class="left">{#if $QISHI.operation_mode>="2" &&  $user_setmeal.setmeal_id>1 #}<img class="img" src="{#$QISHI.site_dir#}data/setmealimg/{#$user_setmeal.setmeal_id#}.gif" />{#/if#}{#$user_setmeal.setmeal_name#}</div>
+					<div class="right flex2">({#$user_setmeal.starttime|date_format:'%Y-%m-%d'#} 至 {#if $user_setmeal.endtime==0#}--{#else#}{#$user_setmeal.endtime|date_format:'%Y-%m-%d'#}{#/if#})</div>
+				</div>
+			</article>
+			<article class="optionlist optionlisteditworkexp personalinfo companyinfo" style="border-bottom: none;">
+				<section class="flex-box list" url="">
+					<div class="right flex2">发布招聘职位数
+						<div class="txt">{#$jobs_num#}</div>
+					</div>
+				</section>
+				<section class="flex-box list" url="">
+					<div class="right flex2">下载普通简历人才数
+						<div class="txt">{#$user_setmeal.download_resume_ordinary#}</div>
+					</div>
+				</section>
+				<section class="flex-box list" url="">
+					<div class="right flex2">下载高级简历人才数
+						<div class="txt">{#$user_setmeal.download_resume_senior#}</div>
+					</div>
+				</section>
+				<section class="flex-box list" url="">
+					<div class="right flex2">邀请普通人才数
+						<div class="txt">{#$user_setmeal.interview_ordinary#}</div>
+					</div>
+				</section>
+				<section class="flex-box list" url="">
+					<div class="right flex2">邀请高级人才数
+						<div class="txt">{#$user_setmeal.interview_senior#}</div>
+					</div>
+				</section>
+				<section class="flex-box list" url="">
+					<div class="right flex2">人才库容量
+						<div class="txt">{#$favorites_num#}</div>
+					</div>
+				</section>
+			</article>
+		</div>
+	</body>
+</html>

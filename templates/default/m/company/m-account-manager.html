@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>企业会员中心-账户管理</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/user-company.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/wapcheckall.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// 添加链接
+				$('.optionlist .list').click( function () {window.location.href =  $(this).attr('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev" id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">账户管理</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			<article class="optionlist accountmanager">
+				<section class="flex-box list" url="user.php?act=company_info">
+					<div class="left com"><div class="icon enterinfo"><span class="icon-user-cominfo"></span></div></div>
+					<div class="right flex2">企业资料</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="user.php?act=company_auth">
+					<div class="left com"><div class="icon enterauthe"><span class="icon-user-enterauthe"></span></div></div>
+					<div class="right flex2">企业认证</div>
+					<div class="arrow"></div>
+				</section>
+				<section class="flex-box list" url="./account_security.php">
+					<div class="left com"><div class="icon accountsecurity"><span class="icon-user-accountsecurity"></span></div></div>
+					<div class="right flex2{#if $QISHI.operation_mode=="1"#} nobm{#/if#}">账户安全</div>
+					<div class="arrow{#if $QISHI.operation_mode=="1"#} nobm{#/if#}"></div>
+				</section>
+				{#if $QISHI.operation_mode!="1"#}
+				<section class="flex-box list" url="user.php?act=setmeal_surplus">
+					<div class="left com"><div class="icon mealallowance"><span class="icon-user-manage"></span></div></div>
+					<div class="right flex2 nobm">套餐余量</div>
+					<div class="arrow nobm"></div>
+				</section>
+				{#/if#}
+			</article>
+		</div>
+	</body>
+</html>

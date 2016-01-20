@@ -1,0 +1,7 @@
+/**
+**关于我们相关样式
+**/
+.about-head{}
+.about-head h1{background-color: #fff;padding:25px 15px 15px;font-size: 16px;color:#333;line-height: 100%;}
+.about-head .bottom-bg{width: 100%;height: 4px;background: url(../images/simple-item-bottom.png) repeat-x 0px 0px;}
+.about-main{background-color: #fff;margin-top:10px;padding:15px;font-size: 14px;color:#666;line-height: 24px;text-indent:1em;}

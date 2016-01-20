@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="gb2312">
+		<title>个人会员中心-培训经历列表</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta name="author" content="骑士CMS" />
+		<meta name="copyright" content="74cms.com" />
+		<link rel="stylesheet" href="../css/user-common.css" />
+		<link rel="stylesheet" href="../css/personal.css" />
+		<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+		<script type='text/javascript' src="../js/jquery.common.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript">
+			$(document).ready(function()
+			{
+				/* 删除培训经历 */
+		        $(".deletebtn").on('click', function(event) {
+		        	var workid = $(this).attr("data");
+		        	event.stopPropagation();
+		            layer.confirm('确定要删除该培训经历吗？', {
+		                btn: ['确认','取消'], //按钮
+		                title: '删除培训经历'
+		            }, function(){
+						$.get("?act=resume_train_del",{ train_id: workid},function(data){
+							if(data=="ok"){
+								layer.msg('删除成功！', {icon: 1});
+								setTimeout(function () {
+								    window.location.reload();
+								}, 2000);
+							}else if(data=="err"){
+								layer.msg('删除失败！', {icon: 2});
+							}
+						})
+		            }, function(){
+		                layer.closeAll();
+		            });
+		        });
+		        $('.thisurl').click( function () {window.location.href =  $(this).data('url');});
+			});
+		</script>
+	</head>
+	<body class="global-bg">
+		<div class="global-container">
+			<header class="global-header flex-box">
+				<div class="header-left flex1"><div class="prev"  id="pageback"></div></div>
+				<div class="header-center flex2"><span class="title-only">培训经历</span></div>
+				<div class="header-right flex3"></div>
+			</header>
+			{#foreach from=$resume_train_list item=list#}
+			<article class="classifylist classifylistworke thisurl" data-url="?act=resume_train_add&pid={#$smarty.get.pid#}&id={#$list.id#}">
+				<section class="title flex-box">
+					<div class="name">{#$list.agency#}</div>
+					<div class="status flex2"></div>
+				</section>
+				<section class="txt flex-box">
+					<div class="left">{#$list.startyear#}.{#$list.startmonth#} - {#if $list.todate=="1"#}至今{#else#}{#$list.endyear#}.{#$list.endmonth#}{#/if#}  |  {#$list.course#}</div>
+				</section>
+				<section class="content flex-box">培训内容：{#$list.description#}</section>
+				<div class="deletebtn" data="{#$list.id#}">删除</div>
+			</article>
+			{#/foreach#}
+			<article class="flex-box arlogout"><a class="logout" href="?act=resume_train_add&pid={#$smarty.get.pid#}">添加培训经历</a></article>
+		</div>
+	</body>
+</html>

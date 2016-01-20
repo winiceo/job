@@ -1,0 +1,58 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+测评类型只允许修改不允许删除或者添加。
+</p>
+</div>
+<div class="toptit">
+编辑
+测试类型
+</div>
+<form action="?act=save_type" method="post" name="form1" id="form1" enctype="multipart/form-data">
+{#$inputtoken#}
+<table width="100%" border="0" cellspacing="0" cellpadding="6"  >
+ <tr>
+<td align="right" style=" border-bottom:1px #CCCCCC dashed">类型名称：</td>
+ <td style=" border-bottom:1px #CCCCCC dashed;color: #0066CC">
+ <input name="id" type="hidden" value="{#$show.id#}" />
+ <strong>{#$show.name#}</strong>
+ </td>
+ </tr>
+<tr>
+      <td align="right"  style=" border-bottom:1px #CCCCCC dashed">类型Logo： </td>
+      <td style=" border-bottom:1px #CCCCCC dashed">
+        <input name="logo" type="file" id="logo" style="width:200px; font-size:12px; padding:3px; border:1px #7797A8 solid;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>
+         {#if $show.logo#} <input type="button" name="Submit" value="查看Logo" class="vtip" title="<img src={#$eval_dir#}{#$show.logo#}  border=0  align=absmiddle>"  style=" font-size:12px;"/>{#/if#} 
+      </td>
+    </tr>
+    <tr>
+    <td align="right" style=" border-bottom:1px #CCCCCC dashed">适用人群：</td>
+     <td style=" border-bottom:1px #CCCCCC dashed;color: #0066CC">
+      <input name="suitable_crowd" type="text" class="input_text_200" id="suitable_crowd" value="{#$show.suitable_crowd#}"/>
+     </td>
+     </tr>
+   <tr>
+<td align="right" style=" border-bottom:1px #CCCCCC dashed">类型描述：</td>
+ <td style=" border-bottom:1px #CCCCCC dashed">
+  <textarea id="description" name="description" style="width:400px;height:150px;">{#$show.description#}</textarea>
+</td>
+ </tr>
+ <tr>
+<td width="180" align="right"></td>
+ <td>
+ <input name="submit" type="submit" class="admin_submit"    value="提交"/>
+<input name="submit222" type="button" class="admin_submit"    value="返回列表" onclick="Javascript:window.history.go(-1)"/>
+ </td>
+ </tr>
+</table>
+</form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

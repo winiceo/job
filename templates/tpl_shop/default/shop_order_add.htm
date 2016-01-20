@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<title>积分商城-商品兑换信息填写</title>
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/shop.css" />
+<script src="{#$QISHI.site_shop_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_template#}js/jquery.validate.min.js" type='text/javascript' language="javascript"></script>
+<script>
+	$(document).ready(function() {
+		$('.like-item:last').css({'border-bottom':0});
+		$("#Form1").validate({
+		rules:
+		{
+			contact:
+			{
+				required: true
+			},
+			mobile:
+			{
+				required: true,
+				isPhoneNumber:true
+			},
+			address:
+			{
+				required: true
+			},
+		},
+		messages: 
+		{
+			contact:
+			{
+			required: "请输入联系人"
+			},
+			mobile:
+			{
+				required: "请输入联系电话",
+				isPhoneNumber: jQuery.format("请正确填写手机号码")
+			},
+			address:
+			{
+				required: "请输入联系地址"
+			}
+		},
+		errorPlacement: function(error, element) {
+		if ( element.is(":radio") )
+		error.appendTo( element.parent().next().next() );
+		else if ( element.is(":checkbox") )
+		error.appendTo ( element.next());
+		else
+		error.appendTo(element.parent().next());
+		}
+		});
+		jQuery.validator.addMethod("isPhoneNumber", function(value, element) {   
+		    var tel = /^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|18[0-9]{9}$/;
+		    return this.optional(element) || (tel.test(value));
+		}, "请正确填写手机号码");
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_shop/default/header.htm"#}
+	<div class=" container shop-main clearfix">
+		<!-- left -->
+		<div class="fourthree-left">
+			<form action="?act=order_save" method="post" id="Form1">
+			<div class="commodity-show clearfix">
+				<div class="comm-show-pic f-left"><img src="{#if $show.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$show.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="产品图片" width="288" height="288" /></div>
+				<div class="comm-right f-left">
+					<div class="comm-top-part">
+						<h3><span title="{#$show.shop_title#}">{#$show.shop_title#}</span></h3>
+						<div class="comm-number"><span>礼品编号：{#$show.shop_number#}</span><span>品牌: {#$show.shop_brand#}</span></div>
+					</div>
+					<div class="comm-bottom-part">
+						<div class="hasexchange">
+							<p>累计兑换</p>
+							<span>{#$show.click#}</span>
+						</div>
+						<div class="comm-b-item clearfix">
+							<div class="cb-type f-left">所需积分：</div>
+							<div class="cb-content f-left"><span>{#$need_points#}</span>积分</div>
+						</div>
+						<div class="comm-b-item clearfix">
+							<div class="cb-type f-left">剩余库存：</div>
+							<div class="cb-content f-left"><em>{#$show.shop_stock#}</em>件</div>
+						</div>
+						<div class="comm-b-item clearfix">
+							<div class="cb-type f-left">兑换数量：</div>
+							<div class="cb-content f-left">
+								<em>{#$num#}</em>
+							</div>
+						</div>
+						<div class="order-submit">
+							<div class="bdsharebuttonbox f-left"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+							<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="comm-text-wrap">
+				<div class="comm-text-control clearfix">
+					<p>请填写联系方式，我们尽快将礼品配送给您！</p>
+				</div>
+				<div class="exchange-infoedit">
+					<div class="infoedit-item clearfix">
+						<div class="infoedit-type f-left"><span>*</span>联系人</div>
+						<div class="infoedit-content f-left"><input type="text" class="info-input" name="contact" id="contact" value="{#if $com_profile.contact#}{#$com_profile.contact#}{#else#}{#$per_profile.realname#}{#/if#}"/></div>
+						<label></label>
+					</div>
+					<div class="infoedit-item clearfix">
+						<div class="infoedit-type f-left"><span>*</span>手机号</div>
+						<div class="infoedit-content f-left"><input type="text" class="info-input" name="mobile" id="mobile" value="{#if $com_profile.telephone#}{#$com_profile.telephone#}{#else#}{#$per_profile.phone#}{#/if#}"/></div>
+						<label></label>
+					</div>
+					<div class="infoedit-item clearfix">
+						<div class="infoedit-type f-left"><span>*</span>联系地址</div>
+						<div class="infoedit-content f-left"><input type="text" class="info-input" name="address" id="address" value="{#if $com_profile.address#}{#$com_profile.address#}{#/if#}"/></div>
+						<label></label>
+					</div>
+					<div class="infoedit-item clearfix">
+						<div class="infoedit-type f-left">&nbsp;</div>
+						<input type="hidden" name="shop_id" value="{#$show.id#}"/>
+						<input type="hidden" name="num" value="{#$num#}"/>
+						<div class="infoedit-content f-left"><input type="submit" value="立即兑换" class="order-btn" /></div>
+					</div>
+				</div>
+			</div>
+			</form>
+		</div>
+		<!-- right -->
+		<div class="fourthree-right">
+			<div class="count-box">
+				{#if empty($smarty.session.username)#}
+				<a href="javascript:;" class="account-login" style="display: block;">我的积分</a>
+				{#else#}
+				<div class="count-info">
+					<h4>{#if $com_info.companyname#}{#$com_info.companyname#}{#else#}{#$smarty.session.username#}{#/if#}</h4>
+					<p>账户积分：<span>{#$com_point#}</span> 分</p>
+				</div>
+				{#/if#}
+			</div>
+			<div class="your-like">
+				<h3 class="like-title">猜你喜欢</h3>
+				<div class="like-list">
+					{#qishi_shop_list set="列表名:list,分页显示:1,显示数目:15,标题长度:10,填补字符:...,排序:click>desc"#}
+					{#foreach from=$list item=li#}
+					<div class="like-item clearfix">
+						<div class="like-pic f-left"><a href="{#$li.shop_url#}"><img src="{#if $li.shop_img#}{#$QISHI.site_dir#}data/shop/thumb/{#$li.shop_img#}{#else#}{#$QISHI.site_dir#}data/shop/no_img.png{#/if#}" alt="商品图片" width="53" height="53" /></a></div>
+						<div class="like-detail f-left">
+							<p><a href="{#$li.shop_url#}" title="{#$li.shop_title#}">{#$li.shop_title_#}</a></p>
+							<div class="price">积分：<span>{#$li.shop_points#}</span></div>
+						</div>
+					</div>
+					{#/foreach#}
+				</div>
+			</div>
+		</div>
+	</div>
+	{#include file="footer.htm"#}
+</body>
+</html>

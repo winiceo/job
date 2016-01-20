@@ -1,0 +1,42 @@
+{#qishi_jobfair_section_show set="列表名:show,招聘会ID:GET[id]"#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$show.title#} - 专场招聘会 - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$QISHI.site_name#}{#$show.trade_cn#},行业专场招聘会">
+<meta name="keywords" content="{#$QISHI.site_name#},{#$show.trade_cn#}">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link rel="stylesheet" href="{#$QISHI.site_template#}css/special-jobfair.css" />
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+	<div class="container header-logo"><a href="{#$QISHI.site_dir#}"><img src="{#$QISHI.site_template#}images/jobfair-logo.png" alt="" width="176" height="60" /></a></div>
+	<div class="banner-wrap industry"></div>
+	<div class="container jobfair-container">
+		{#if $show.company_list#}
+		<ul class="industry-container clearfix">
+			{#foreach from=$show.company_list item=list#}
+			<li class="industry-item f-left">
+				<div class="logo-box"><a href="{#$list.company_url#}"><img src="{#if $list.logo#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}data/logo/{#$list.logo#}{#else#}{#$QISHI.site_domain#}{#$QISHI.site_dir#}data/logo/no_logo.gif{#/if#}" alt="" width="188" height="99" /></a></div>
+				<div class="com-name"><a href="{#$list.company_url#}">{#$list.companyname#}</a></div>
+				<p class="com-text">{#$list.company_signature#}</p>
+				<ul class="industry-job-list">
+					{#foreach from=$list.jobs item=li#}
+					<li class="industry-job-item clearfix">
+						<div class="job-name f-left"><a href="{#$li.jobs_url#}" class="underline">{#$li.jobs_name#}</a></div>
+						<span class="job-pay f-right">{#$li.wage_cn#}</span>
+					</li>
+					{#/foreach#}
+				</ul>
+				<a href="{#$list.company_url#}" class="more-link">查看更多职位>></a>
+			</li>
+			{#/foreach#}
+		</ul>
+		{#else#}
+		没有添加参会企业
+		{#/if#}
+	</div>
+
+</body>
+</html>

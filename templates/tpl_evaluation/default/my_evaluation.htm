@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>人才测评-我的测评</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_evaluation_template#}css/review.css" />
+<link href="{#$QISHI.site_template#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_evaluation_template#}js/jquery.js"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".del_record").on('click', function(e)
+	{
+		var list_id=$(this).attr('list_id');
+		var myDialog=dialog();
+		myDialog.title('系统提示');
+		myDialog.content('<div class="del-dialog"><div class="tip-block"><span class="del-tips-text">删除后无法恢复，您确定要删除吗？</span></div></div><div class="center-btn-wrap"><input type="button" value="确定" class="btn-65-30blue btn-big-font DialogSubmit" /><input type="button" value="取消" class="btn-65-30grey btn-big-font DialogClose" /></div>');
+		myDialog.width('300');
+		myDialog.showModal();
+		/* 关闭 */
+		$(".DialogClose").live('click',function() {
+			myDialog.close().remove();
+		});
+		// 确定
+		$(".DialogSubmit").click(function() 
+		{
+			$.get('evaluation_ajax.php?act=del_record&id='+list_id, function(data) {
+				if(data==1)
+				{
+					window.location.reload();
+				}
+				else
+				{
+					myDialog.content(data);
+				}
+			});
+		});
+	});
+});
+</script>
+</head>
+<body>
+	{#include file="../tpl_evaluation/default/header.htm"#}
+	<div class="review-main container">
+		<div class="review-wrap">
+			<div class="g-top-box">
+				<h1><span>我的测评</span></h1>
+				<div class="my-review clearfix">
+					<div class="my-info f-left">
+						<div class="my-avater f-left"><img src="{#$user_info.avatars#}" alt="" width="64" height="64" /></div>
+						<div class="info-text">
+							<h4>{#$user_info.username#}</h4>
+							<p>邮箱：{#if $user_info.email#}{#$user_info.email#}{#else#}未填写{#/if#}</p>
+							<p>手机号：{#if $user_info.mobile#}{#$user_info.mobile#}{#else#}未填写{#/if#}</p>
+						</div>
+					</div>
+					<div class="my-fraction f-right">
+						<div class="fration-item f-left">
+							<div class="fration-type">自我<br />认知</div>
+							<p>{#$count.1#}</p>
+						</div>
+						<div class="fration-item f-left">
+							<div class="fration-type">职业<br />倾向</div>
+							<p>{#$count.2#}</p>
+						</div>
+						<div class="fration-item f-left">
+							<div class="fration-type">专业<br />人才</div>
+							<p>{#$count.3#}</p>
+						</div>
+						<div class="fration-item f-left">
+							<div class="fration-type">管理<br />人才</div>
+							<p>{#$count.4#}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="g-main-box">
+				{#if $record_list#}
+				<div class="review-data">
+					<div class="buding"></div>
+					<table>
+						<thead>
+							<tr>
+								<th class="align-left" width="190">测评名称</th>
+								<th width="195">测评分类</th>
+								<th width="200">测评时间</th>
+								<th width="130">测评得分</th>
+								<th width="180">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#foreach from=$record_list item=list#}
+							<tr>
+								<td class="align-left">{#$list.paper_title#}</td>
+								<td><a href="{#$list.url#}" class="r-link underline">{#$list.name#}</a></td>
+								<td>{#$list.addtime|date_format:"%Y-%m-%d %H:%M"#}</td>
+								<td><span>{#$list.score#}</span></td>
+								<td><a href="{#"QS_paper_result,id:$list.id"|qishi_url#}" class="review-ctrl-link underline">详情</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" class="review-ctrl-link underline del_record" list_id="{#$list.id#}">删除</a></td>
+							</tr>
+							{#/foreach#}
+						</tbody>
+					</table>
+				</div>
+				{#if $page#}
+				<table border="0" align="center" cellpadding="0" cellspacing="0">
+		          	<tr>
+		          		<td height="50" align="center"> <div class="page link_bk">{#$page#}</div></td>
+		          	</tr>
+		      	</table>
+				{#/if#}
+				{#else#}
+				<div class="no-data">
+					<i class="no-data-icon"></i><span>你好懒，什么都没有测评！</span>
+				</div>
+				{#/if#}
+			</div>
+		</div>
+	</div>
+	{#include file="../tpl_evaluation/default/footer.htm"#}
+</body>
+</html>

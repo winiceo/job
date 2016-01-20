@@ -1,0 +1,133 @@
+{#qishi_train_news_show set="列表名:show,新闻ID:GET[id]"#}
+{#qishi_train_show set="列表名:train,机构ID:"|cat:$show.train_id#}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$show.title#} - {#$train.trainname#} - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$show.keywords#}}，机构新闻,{#$train.trainname#}">
+<meta name="keywords" content="{#$show.description#}，机构新闻,{#$train.trainname#}">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/css.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/train.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/jquery.dialog.js" type="text/javascript" language="javascript"></script>
+<SCRIPT TYPE="text/javascript">
+$(document).ready(function(){
+	var train_id="{#$train.id#}";
+	var tsTimeStamp= new Date().getTime();
+	$.get("{#$QISHI.site_dir#}plus/ajax_contact.php", { "id": train_id,"time":tsTimeStamp,"act":"train_contact"},
+		function (data,textStatus)
+		 {			
+			$("#train_contact").html(data);
+		 }
+	);
+	var id="{#$smarty.get.id#}";
+		var tsTimeStamp= new Date().getTime();
+		$.get("{#$QISHI.site_dir#}plus/ajax_click.php", { "id": id,"time":tsTimeStamp,"act":"train_news_click"},
+			function (data,textStatus)
+			 {			
+				$("#click").html(data);
+			 }
+		);
+});
+</SCRIPT>
+</head>
+<body class="bgf5">
+{#include file="../tpl_train/default/header-train.htm"#}
+<div class="talents_information">
+	<div class="between">
+		<!-- 基本信息 -->
+		<div class="hunterbox_container hunter_info_box" style="margin-bottom:0px;">
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="photo"><img src="{#$train.logo#}" width="197" height="68" border="0"></div>
+						<div class="text">
+							<div class="c ch20"><h4>{#$train.trainname#}</h4></div>
+							<div class="c">{#$train.address#}</div>
+						</div>
+					</div>
+				</div>
+				<div class="com_nav">
+					<ul>
+						<li><a href="{#"QS_train_agencyshow,id:"|cat:$train.id|qishi_url#}">机构介绍</a></li>
+						<li><a href="{#"QS_train_agency_curriculum,id:"|cat:$train.id|qishi_url#}">培训课程</a></li>
+						<li><a href="{#"QS_train_agency_lecturer,id:"|cat:$train.id|qishi_url#}">师资力量</a></li>
+						<li class="active"><a href="{#"QS_train_agency_news,id:"|cat:$train.id|qishi_url#}">新闻动态</a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="com_container">
+					<div class="news_dateil">
+						<div class="title">{#$show.title#}</div>
+						<div class="w260">{#$show.addtime|date_format:"%Y-%m-%d %H:%M:%S"#}</div>
+						<div class="w260">查看：<span id="click"></span>次</div>
+						<div class="retrun"><a href="{#"QS_train_agency_news,id:"|cat:$show.train_id|qishi_url#}">返回新闻列表</a></div>
+						<div class="clear"></div>
+					</div>
+					<div class="news_txt">
+						<p>{#$show.content|nl2br#}</p>
+						<div class="share">
+							<!-- Baidu Button BEGIN -->
+						    <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+						        <a class="bds_qzone"></a>
+						        <a class="bds_tsina"></a>
+						        <a class="bds_tqq"></a>
+						        <a class="bds_renren"></a>
+						        <span class="bds_more">更多</span>
+						    </div>
+						<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=659075" ></script>
+						<script type="text/javascript" id="bdshell_js"></script>
+						<script type="text/javascript">
+							document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + new Date().getHours();
+						</script>
+						<div class="clear"></div>	
+						<!-- Baidu Button END -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 基本信息 End-->
+	</div>
+	<div class="between">
+		<!-- 机构名片 -->
+		<div class="hunterbox_container mine_hunter_box ">
+			<div class="h">
+				<div class="t">机构名片</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="text">
+							<div class="c cname">机构性质：{#$train.nature_cn#}</div>
+							<div class="c">所在地区：{#$train.district_cn#}</div>
+							<div class="c">成立时间：{#$train.founddate|date_format:"%Y-%m-%d"#}</div>
+							{#if $train.website#}
+							<div class="c">机构网站：<a target="_blank" href="{#$train.website#}">{#$train.website#}</a></div>
+							{#/if#}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 机构名片 End-->
+		<!-- 联系方式 -->
+		<div class="hunterbox_container hunter_contact_box">
+			<div class="h">
+				<div class="t">联系方式</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content" id="train_contact"></div>
+		</div>
+		<!-- 联系方式 End-->
+	</div>
+	<div class="clear"></div>
+</div>
+{#include file="footer.htm"#}
+</body>
+</html>

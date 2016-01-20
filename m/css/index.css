@@ -1,0 +1,68 @@
+/*
+**首页
+*/
+.index-wrap{background-color: #fff;width: 100%;height:auto;}
+.index-wrap .index-top-bar{width: 100%;text-align: center;border-top:1px solid #e2e2e2;border-bottom:1px solid #e2e2e2;line-height: 50px;}
+.index-wrap .index-top-bar .bar-item{font-size: 16px;color:#333;background-color: #fff;display: block;}
+.index-wrap .index-top-bar .line-gradient{height: 50px;width: 1px;background-color: transparent;border-left:1px solid #e2e2e2;display: block;}
+.index-wrap .index-menu{padding:22px 0 4px 0;font-size: 12px;}
+.index-wrap .index-menu .menu-row{text-align: center;}
+.index-wrap .index-menu .menu-row .index-menu-item{color:#666;margin-bottom: 18px;display: block;}
+.index-wrap .index-menu .menu-row .index-menu-item .menu-icon{margin:0 auto;width: 50px;height: 50px;color:#fff;border-radius: 50%;line-height: 50px;text-align: center;margin-bottom: 5px;}
+.menu-icon.color1{background-color: #e66363;}
+.menu-icon.color2{background-color: #f2b759;}
+.menu-icon.color3{background-color: #63a7e6;}
+.menu-icon.color4{background-color: #58ded3;}
+.menu-icon.color5{background-color: #b0db52;}
+.menu-icon.color6{background-color: #61d5e6;}
+.menu-icon.color7{background-color: #b57af1;}
+.menu-icon.color8{background-color: #ee6ec5;}
+.menu-icon.color9{background-color: #51dd7f;}
+.menu-icon.color10{background-color: #61d5e6;}
+.index-wrap .index-menu .menu-row .index-menu-item .menu-icon i{font-size: 28px;line-height: 52px;}
+.index-wrap .index-broadcast{height: 40px;padding:0 15px;font-size: 12px;border-top:1px solid #e2e2e2;overflow: hidden;position: relative;}
+.index-wrap .index-broadcast i{position: absolute;top:13px;left:15px;color:#999;}
+.index-wrap .index-broadcast ul{padding-left: 20px;line-height: 40px;overflow: hidden;}
+.index-wrap .index-broadcast ul a{color:#999;}
+.index-list-block{width: 100%;padding-top: 10px;background-color: #f0f0f0;}
+.index-list-block .index-list-content{background-color: #fff;}
+.index-list-content .i-list-menu{height: 48px;font-size: 14px;color:#666;text-align: center;border-bottom: 1px solid #e2e2e2;}
+.index-list-content .i-list-menu .list-menu-item{color:#666;line-height: 46px;border-bottom: 2px solid transparent;display: block;}
+.index-list-content .i-list-menu .list-menu-item i{font-size: 16px;margin-right: 3px;position: relative;top:2px;}
+.index-list-content .i-list-menu .list-menu-item.curr{color:#0180cf;border-bottom: 2px solid #0180cf;}
+.index-list-content .index-title{height: 48px;line-height: 48px;font-size: 14px;color:#0180cf;padding:0 15px;border-bottom: 1px solid #e2e2e2;}
+.index-list-content .index-title .title i{font-size: 16px;position: relative;top:1px;}
+.index-list-content .index-title .title-more{font-size: 12px;color:#0180cf;}
+.index-list-content .index-data-list{}
+.index-list-content .index-data-list .data-item{padding:15px 15px 12px;box-sizing:border-box;width: 100%;height: 100px;border-bottom: 1px solid #e2e2e2;font-size: 12px;}
+.index-list-content .index-data-list .data-item:active{background-color: #f5f5f5;}
+.index-list-content .index-data-list .data-item .job-title{font-size: 16px;color:#333;margin-bottom: 8px;width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.index-list-content .index-data-list .data-item .job-title a{color:#333;}
+.index-list-content .index-data-list .data-item>p{margin-bottom: 8px;font-size: 12px;color:#666;width: 100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.index-list-content .index-data-list .data-item .job-pay span{font-size: 14px;color:#ff2222;line-height: 18px;}
+.index-list-content .index-data-list .data-item .job-pay em{font-style: normal;color:#999;font-size: 12px;line-height: 18px;}
+.index-list-content .index-data-list .data-item-more{display: block;height: 44px;text-align: center;width: 100%;font-size: 12px;color:#0180cf;line-height: 44px;}
+.index-list-content .index-data-list .data-item-more:active{background-color: #f5f5f5;}
+.index-list-content .index-company-list{/*border-bottom: 1px solid #e2e2e2*/}
+.index-list-content .index-company-list .company-block{border-bottom:1px solid #e2e2e2;border-right:1px solid #e2e2e2;box-sizing:border-box;width: 50%;height: 60px;overflow: hidden;text-align: center;}
+.index-list-content .index-company-list .company-block:nth-child(2n){border-right:0;}
+.index-list-content .index-company-list .company-block img{vertical-align: middle;width: 100%;max-width:400px;min-width: 160px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

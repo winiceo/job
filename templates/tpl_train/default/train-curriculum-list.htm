@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>{#if $smarty.get.key#}{#$smarty.get.key#} - {#/if#}{#if $smarty.get.citycategory#}{#"QS_district,"|cat:$smarty.get.citycategory|qishi_categoryname#} - {#/if#}{#if $smarty.get.category#}{#"QS_train_category,"|cat:$smarty.get.category|qishi_categoryname#} - {#/if#}{#if $smarty.get.classtype#}{#"QS_train_classtype,"|cat:$smarty.get.classtype|qishi_categoryname#} - {#/if#}{#if $smarty.get.start#}{#if $smarty.get.start ==360#}常年开课{#else#}{#$smarty.get.start#}天内{#/if#} - {#/if#}{#if $smarty.get.refre#}{#$smarty.get.refre#}天内 - {#/if#}教育培训  - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#if $smarty.get.citycategory#}{#"QS_district,"|cat:$smarty.get.citycategory|qishi_categoryname#}，{#/if#}{#if $smarty.get.category#}{#"QS_train_category,"|cat:$smarty.get.category|qishi_categoryname#}，{#/if#}{#if $smarty.get.classtype#}{#"QS_train_classtype,"|cat:$smarty.get.classtype|qishi_categoryname#}，{#/if#}{#if $smarty.get.start#}{#if $smarty.get.start ==360#}常年开课{#else#}{#$smarty.get.start#}天内{#/if#}，{#/if#}{#if $smarty.get.refre#}{#$smarty.get.refre#}天内，{#/if#}{#$QISHI.site_name#} - 教育培训">
+<meta name="keywords" content="{#$QISHI.site_name#},教育培训">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/train.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/ui-dialog.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type='text/javascript' ></script>
+<script src="{#$QISHI.site_template#}js/dialog-min.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_template#}js/dialog-min-common.js" type="text/javascript" language="javascript"></script>
+<script src="{#$QISHI.site_dir#}data/cache_classify.js" type='text/javascript' charset="utf-8"></script>
+<script src="{#$user_tpl#}js/jquery.train-search.js" type='text/javascript' ></script>
+<script src="{#$QISHI.site_template#}js/jquery.autocomplete.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+ 	allaround("{#$QISHI.site_dir#}");
+	// 地区填充数据
+	city_filldata("#city_list", QS_city_parent, QS_city, "#result-list-city", "#aui_outer_city", "#city_result_show", "#citycategory", "{#$QISHI.site_dir#}");
+	$(".recommend_curriculum_list .h .s a").click(function(event) {
+		generateBackground();
+	});
+	// 正在加载
+	function generateBackground() {
+		var backgroundHtm = '<div id="bonfire-pageloader"><div class="bonfire-pageloader-icon"></div></div>';
+		var html = jQuery('body');
+		html.append(backgroundHtm);
+		jQuery(window).resize(function(){
+			 resizenow();
+		});
+		function resizenow() {
+			var browserwidth = jQuery(window).width();
+			var browserheight = jQuery(window).height();
+			jQuery('.bonfire-pageloader-icon').css('right', ((browserwidth - jQuery(".bonfire-pageloader-icon").width())/2)).css('top', ((browserheight - jQuery(".bonfire-pageloader-icon").height())/2 + $(document).scrollTop() - 109));
+		};
+		resizenow();
+	}
+	// 全选反选
+	$("input[name='selectall']").unbind().click(function(){$(".l :checkbox").attr('checked',$(this).is(':checked'))});
+	$("#allapplyjobs").click(function()
+	{
+		var sltlength=$(".l input:checked").length;
+		if (sltlength==0)
+		{
+			dialog({
+                title: '系统提示',
+                content: "请选择课程！",
+                width:300,
+            }).show();
+		} else {
+			var jidArr=new Array();
+			$(".l .p :checkbox[checked]").each(function(index){jidArr[index]=$(this).val();});
+			var url_="{#$QISHI.site_dir#}user/user_apply_course.php?id="+jidArr.join("-")+"&act=app";
+			var myDialog = dialog();
+			myDialog.title('申请课程');
+			myDialog.content("加载中...");
+			myDialog.width('500');
+			myDialog.showModal();
+			$.get(url_, function(data){
+				myDialog.content(data);
+				/* 关闭 */
+				$(".DialogClose").live('click',function() {
+					myDialog.close().remove();
+				});
+			});
+		}
+	});
+	// 单个申请课程
+	$(".apply_for_jobs").click(function(){
+		var id=$(this).attr("aid");
+		var url_="{#$QISHI.site_dir#}user/user_apply_course.php?id="+id+"&act=app";
+		var myDialog = dialog();
+		myDialog.title('申请课程');
+		myDialog.content("加载中...");
+		myDialog.width('500');
+		myDialog.showModal();
+		$.get(url_, function(data){
+			myDialog.content(data);
+			/* 关闭 */
+			$(".DialogClose").live('click',function() {
+				myDialog.close().remove();
+			});
+		});
+	});	
+	// 去掉列表最后一个的下边框
+	$(".recommend_curriculum_list .l").last().css("border-bottom","none");
+});
+</script>
+</head>
+<body class="bgf5">
+{#include file="../tpl_train/default/header-train.htm"#}
+<!-- 搜索块 -->
+<div class="container" style="margin-bottom:10px;">
+	<div id="filterSearch" style="border:none;">
+		<div class="top-search clearfix" style="background:#ffffff">
+			<div class="filter-item f-left">
+					<div class="choose-item">
+						<div class="choose-control choose-control-s">
+							<span class="cc-default cc-default-s" id="city_result_show">选择地区类别</span><i class="choose-icon"></i>
+							<!-- 工作地区弹出框 -->
+							<div class="aui_outer aui_outer_st8" id="aui_outer_city">
+								<table class="aui_border">
+									<tbody>
+										<tr>
+											<td class="aui_c">
+												<div class="aui_inner">
+													<table class="aui_dialog">
+														<tbody>
+															<tr>
+																<td class="aui_main">
+																	<div class="aui_content" style="padding: 0px;">
+																		<div class="LocalDataMultiC" style="width:623px;">
+																			<div class="selector-header"><span class="selector-title">地区选择</span><div></div><span id="ct-selector-save" class="selector-save">确定</span><span class="selector-close">X</span><div class="clear"></div></div>
+
+																			<div class="data-row-head"><div class="data-row"><div class="data-row-side data-row-side-c">最多选 <strong class="text-warning">3</strong> 项&nbsp;&nbsp;已选 <strong id="arscity" class="text-warning">0</strong> 项</div><div id="result-list-city" class="result-list data-row-side-ra"></div></div><div class="cla"></div></div>
+																			<div class="data-row-list data-row-main" id="city_list">
+																				<!-- 列表内容 -->
+																			</div>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 工作地区弹出框 End-->
+						</div>
+					</div>
+			</div>
+			<div class="t-search-box f-left t-search-box-s">
+				<div class="type-input-box f-left" id="hidden_input_box">
+					<div class="key">{#$smarty.get.key|default:"请输入课程名称"#}</div>
+					<input class="s" type="text" name="key" id="key" value="{#$smarty.get.key#}" style="display:none;"/>
+					<input name="citycategory" id="citycategory" type="hidden" value="{#$smarty.get.citycategory#}"/>
+					<input name="category" id="category" type="hidden" value="{#$smarty.get.category#}" />
+					<input name="classtype" id="classtype" type="hidden" value="{#$smarty.get.classtype#}" />
+					<input type="hidden" name="start" id="start" value="{#$smarty.get.start#}">
+					<input type="hidden" name="refre" id="refre" value="{#$smarty.get.refre#}">
+					<input type="hidden" name="sort" id="sort" value="{#$smarty.get.sort#}">
+					<input type="hidden" name="page" id="page" value="{#$smarty.get.page#}">
+				</div>
+			</div>
+			<div class="t-search-btn f-left"><input type="button" detype="QS_train_curriculum" id="searcnbtn" value="搜&nbsp;索" /></div>
+		</div>
+		<div class="fliter-wrap">
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left fl-type-s">课程类别：</div>
+				<div class="fl-content r-choice f-left">
+					{#qishi_get_classify set="列表名:c_nature,类型:QS_train_category,显示数目:100"#}
+					{#foreach from=$c_nature item=list#}
+					<div class="fl-content-li{#if $list.id == $smarty.get.category#} select{#/if#} fl-content-li-s" type="category" code="{#$list.id#}">{#$list.categoryname#}</div>
+					{#/foreach#}
+				</div>
+			</div>
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left">上课班制：</div>
+				<div class="fl-content f-left">
+					{#qishi_get_classify set="列表名:c_nature,类型:QS_train_classtype,显示数目:100"#}
+					{#foreach from=$c_nature item=list#}
+					<div class="fl-content-li{#if $list.id == $smarty.get.classtype#} select{#/if#}" type="classtype" code="{#$list.id#}">{#$list.categoryname#}</div>
+					{#/foreach#}
+				</div>
+			</div>
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left">开课时间：</div>
+				<div class="fl-content f-left">
+					<div class="fl-content-li{#if $smarty.get.start == 3#} select{#/if#}" type="start" code="3">3天内</div>
+					<div class="fl-content-li{#if $smarty.get.start == 7#} select{#/if#}" type="start" code="7">7天内</div>
+					<div class="fl-content-li{#if $smarty.get.start == 30#} select{#/if#}" type="start" code="30">30天内</div>
+					<div class="fl-content-li{#if $smarty.get.start == 360#} select{#/if#}" type="start" code="360">常年开课</div>
+				</div>
+			</div>
+			<div class="filter-list-wrap clearfix">
+				<div class="fl-type f-left">更新时间：</div>
+				<div class="fl-content f-left">
+					<div class="fl-content-li{#if $smarty.get.refre == 3#} select{#/if#}" type="refre" code="3">3天内</div>
+					<div class="fl-content-li{#if $smarty.get.refre == 7#} select{#/if#}" type="refre" code="7">7天内</div>
+					<div class="fl-content-li{#if $smarty.get.refre == 30#} select{#/if#}" type="refre" code="30">30天内</div>
+				</div>
+			</div>
+		</div>
+		<div class="fliter-result clearfix" id="has_result">
+			<div class="fr-type f-left">已选条件：</div>
+			<div class="fr-content f-left rl">
+			{#if $smarty.get.key#}
+				<div class="has-select-item f-left" type="key">{#$smarty.get.key#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.citycategory#}
+				<div class="has-select-item f-left" type="citycategory">地区类别<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.category#}
+				{#qishi_get_classify set="列表名:category,类型:QS_train_category,显示数目:100"#}
+				{#foreach from=$category item=list#}
+				{#if $list.id == $smarty.get.category#}
+					<div class="has-select-item f-left" type="category">{#$list.categoryname#}<i class="fliter-clear-icon"></i></div>
+				{#/if#}
+				{#/foreach#}
+			{#/if#}
+			{#if $smarty.get.classtype#}
+				{#qishi_get_classify set="列表名:c_classtype,类型:QS_train_classtype"#}
+				{#foreach from=$c_classtype item=list#}
+				{#if $list.id == $smarty.get.classtype#}
+					<div class="has-select-item f-left" type="classtype">{#$list.categoryname#}<i class="fliter-clear-icon"></i></div>
+				{#/if#}
+				{#/foreach#}
+			{#/if#}
+			{#if $smarty.get.start#}
+				<div class="has-select-item f-left" type="start">{#if $smarty.get.start == 3#}3天内{#elseif $smarty.get.start == 7#}7天内{#elseif $smarty.get.start == 30#}30天内{#elseif $smarty.get.start == 360#}常年开课{#/if#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			{#if $smarty.get.refre#}
+				<div class="has-select-item f-left" type="refre">{#if $smarty.get.refre == 3#}3天内{#elseif $smarty.get.refre == 7#}7天内{#elseif $smarty.get.refre == 30#}30天内{#/if#}<i class="fliter-clear-icon"></i></div>
+			{#/if#}
+			</div>
+			<div class="fliter-clear f-right" id="clear_all_selected"><a href="javascript:;" class="clear-link">清空所选</a></div>
+		</div>
+	</div>
+</div>
+<!-- 搜索块 End-->
+<!-- 课程列表 -->
+{#qishi_curriculum_list  set="分页显示:1,列表名:course,显示数目:GET[inforow],填补字符:...,显示数目:GET[inforow],描述长度:70,开课时间:GET[start],日期范围:GET[refre],课程类别:GET[category],地区分类:GET[citycategory],上课班制:GET[classtype],关键字:GET[key],排序:GET[sort],列表页:QS_train_curriculum"#}
+<div class="recommend_curriculum_list">
+	<div class="h">
+		<div class="t">排序</div>
+		<div class="s">
+			<a href="{#"QS_train_curriculum,citycategory:"|cat:$smarty.get.citycategory|cat:"-category:"|cat:$smarty.get.category|cat:"-classtype:"|cat:$smarty.get.classtype|cat:"-start:"|cat:$smarty.get.start|cat:"-refre:"|cat:$smarty.get.refre|cat:"-sort:rtime"|cat:"-key:"|cat:$smarty.get.key|qishi_url#}" {#if $smarty.get.sort=="rtime" || $smarty.get.sort==""#}class="select"{#/if#}>更新时间</a>
+		    <a href="{#"QS_train_curriculum,citycategory:"|cat:$smarty.get.citycategory|cat:"-category:"|cat:$smarty.get.category|cat:"-classtype:"|cat:$smarty.get.classtype|cat:"-start:"|cat:$smarty.get.start|cat:"-refre:"|cat:$smarty.get.refre|cat:"-sort:hot"|cat:"-key:"|cat:$smarty.get.key|qishi_url#}" {#if $smarty.get.sort=="hot"#}class="select"{#/if#}>热度</a>
+		</div>
+	</div>
+	<div class="h">
+		<div class="t ti"><label><input name="selectall" id="selectall" type="checkbox">&nbsp;&nbsp;全选</label></div>
+		<div class="s si"><span id="allapplyjobs">申请课程</span></div>
+		<div class="s siri"><div class="pageminnav">{#$pagemin#}</div></div>
+	</div>
+	{#if $course#}
+	{#foreach from=$course item=list#}
+	<div class="l">
+		<div class="p"><input type="checkbox" value="{#$list.id#}"></div>
+		<div class="t">
+			<div class='name'><div class="pname"><a href="{#$list.course_url#}" target="_blank">{#$list.course_name#}</a></div><div class="cname"><a href="{#$list.train_url#}">{#$list.trainname#}</a></div></div>
+			<div class="c"><div class="lc">课程类别：{#$list.category_cn#}</div><div class="lc">上课班制：{#$list.classtype_cn#}</div><div class="lc">授课讲师：{#$list.teacher_cn#}</div><div class="lc">培训费用：<span class="f90">{#$list.favour_expenses#}</span>元&nbsp;&nbsp;(<span class="midline">{#$list.train_expenses#}元</span>)</div></div>
+			<div class="c"><div class="lc">所在地区：{#$list.district_cn#}</div><div class="lc">开课时间：{#$list.starttime|date_format:"%Y-%m-%d"#}</div><div class="lc">课程学时：{#$list.classhour#}学时</div><div class="lc">刷新时间：{#$list.refreshtime|date_format:"%Y-%m-%d"#}</div></div>
+			<div class="c">课程描述：{#$list.briefly#}</div>
+		</div>
+		<div class="apply_for_jobs" aid="{#$list.id#}"></div>
+	</div>
+	{#/foreach#}
+	{#if $page#}
+	<script type="text/javascript">
+		$(document).ready(function() {
+		// 如果有分页给最后一条添加下边框
+		$(".recommend_curriculum_list .l").last().css("border-bottom","1px dotted #e2e2e2");
+		});
+	</script>
+	<table border="0" align="center" cellpadding="0" cellspacing="0" class="link_bk">
+	        	<tr>
+	          		<td height="50" align="center"> <div class="page link_bk">{#$page#}</div></td>
+	          	</tr>
+	</table>
+	{#/if#}
+	{#else#}
+		<div class="emptytip">抱歉，没有符合此条件的信息！</div>
+	{#/if#}
+</div>
+<!-- 课程列表 End-->
+{#include file="footer.htm"#}
+</body>
+</html>

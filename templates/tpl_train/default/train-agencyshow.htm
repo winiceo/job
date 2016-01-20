@@ -1,0 +1,156 @@
+{#qishi_train_show set="列表名:train,机构ID:GET[id]"#}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>{#$train.trainname#} - {#$QISHI.site_name#}</title>
+<meta name="description" content="{#$train.description#}},机构简介">
+<meta name="keywords" content="{#$train.trainname#},机构简介">
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<meta http-equiv="X-UA-Compatible" content="edge"><meta name="renderer" content="webkit">
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<link href="{#$QISHI.site_template#}css/common.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/css.css" rel="stylesheet" type="text/css" />
+<link href="{#$user_tpl#}css/train.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type='text/javascript' ></script>
+<link href="{#$user_tpl#}css/ui-dialog.css" rel="stylesheet" type="text/css" />	
+<script src="{#$user_tpl#}js/jquery.js"></script>
+<script src="{#$user_tpl#}js/dialog-min.js"></script>
+<script src="{#$user_tpl#}js/simplefoucs.js" type="text/javascript"></script>
+<script src="http://api.map.baidu.com/api?v=1.2" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	var train_id="{#$train.id#}";
+	var tsTimeStamp= new Date().getTime();
+	$.get("{#$QISHI.site_dir#}plus/ajax_contact.php", { "id": train_id,"time":tsTimeStamp,"act":"train_contact"},
+		function (data,textStatus)
+		 {			
+			$(".train_contact").html(data);
+		 }
+	);
+	// 点击查看大图
+	$("#img_show").click(function() {
+		dialog({
+			title: '机构风采',
+		    content: $("#focus"),
+		}).showModal();
+	});
+});
+</script>
+</head>
+<body class="bgf5">
+{#include file="../tpl_train/default/header-train.htm"#}
+<div class="talents_information">
+	<div class="between">
+		<!-- 基本信息 -->
+		<div class="hunterbox_container hunter_info_box" style="margin-bottom:0px;">
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="photo"><img src="{#$train.logo#}" width="197" height="68" border="0"></div>
+						<div class="text">
+							<div class="c ch20"><h4>{#$train.trainname#}</h4></div>
+							<div class="c">{#$train.address#}</div>
+						</div>
+					</div>
+				</div>
+				<div class="com_nav">
+					<ul>
+						<li class="active"><a href="{#"QS_train_agencyshow,id:"|cat:$train.id|qishi_url#}">机构介绍</a></li>
+						<li><a href="{#"QS_train_agency_curriculum,id:"|cat:$train.id|qishi_url#}">培训课程</a></li>
+						<li><a href="{#"QS_train_agency_lecturer,id:"|cat:$train.id|qishi_url#}">师资力量</a></li>
+						<li><a href="{#"QS_train_agency_news,id:"|cat:$train.id|qishi_url#}">新闻动态</a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="introduce">机构介绍：{#$train.contents#}</div>
+			</div>
+		</div>
+		<!-- 基本信息 End-->
+		<!-- 课程列表 -->
+		<div class="hunterbox_container job_other_box">
+			<div class="h">
+				<div class="t">课程列表</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				{#qishi_curriculum_list set="列表名:course,填补字符:...,课程名长度:18,分页显示:0,显示数目:3,列表页:QS_train_agency_curriculum,会员UID:$train.uid,机构名长度:10"#}
+				{#foreach from=$course item=list#}
+				<div class="cell">
+					<div class="c ch20"><a href="{#$list.course_url#}" target="_blank">{#$list.course_name#}</a></div>
+					<div class="c">{#$list.category_cn#} ｜{#$list.classtype_cn#} ｜{#$list.refreshtime_cn#}</div>
+					<div class="c cm">{#$list.favour_expenses#}</div>
+					<div class="c cd">{#$list.district_cn#}</div>
+				</div>
+				{#/foreach#}
+			</div>
+		</div>
+		<!-- 课程列表 End-->
+	</div>
+	<div class="between">
+		<!-- 机构名片 -->
+		<div class="hunterbox_container mine_hunter_box">
+			<div class="h">
+				<div class="t">机构名片</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="text">
+							<div class="c cname">机构性质：{#$train.nature_cn#}</div>
+							<div class="c">所在地区：{#$train.district_cn#}</div>
+							<div class="c">成立时间：{#$train.founddate|date_format:"%Y-%m-%d"#}</div>
+							{#if $train.website#}
+							<div class="c">机构网站：<a target="_blank" href="{#$train.website#}">{#$train.website#}</a></div>
+							{#/if#}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 机构名片 End-->
+		{#if $train.train_img_num>0#}
+		<!-- 机构风采 -->
+		<div class="hunterbox_container mine_hunter_box">
+			<div class="h">
+				<div class="t">机构风采</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content">
+				<div class="cell">
+					<div class='info'>
+						<div class="text">
+							<div class="img-show"><img src="{#$QISHI.site_dir#}data/train_img/thumb/{#$train.train_img#}"  width="255" height="104" /></div>
+							<p>共{#$train.train_img_num#}张<a href="javascript:void(0)" id="img_show">[点击查看大图]</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="focus" style="display: none;">
+	        <ul>
+	        	{#foreach from=$train.train_img_big item=val#}
+	            <li><img src="{#$val#}" width='600px' height='400px'/></li>
+	            {#/foreach#}
+	        </ul>
+	    </div>
+		<!-- 机构风采 End-->
+		{#/if#}
+		<!-- 联系方式 -->
+		<div class="hunterbox_container hunter_contact_box">
+			<div class="h">
+				<div class="t">联系方式</div>
+				<div class="clear"></div>
+			</div>
+			<div class="box_content train_contact"></div>
+		</div>
+		<!-- 联系方式 End-->
+	</div>
+	<div class="clear"></div>
+</div>
+{#include file="footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,70 @@
+<div id="shop-header">
+	<div class="header-top">
+		<div class="container clearfix">
+			<div class="header-title f-left">
+				您好 <a href="{#"QS_login"|qishi_url#}">{#$smarty.session.username#}</a>，欢迎访问骑士人才网积分商城  {#if empty($smarty.session.username)#}<a href="{#"QS_login"|qishi_url#}">[登录]</a>{#else#}<a href="{#"QS_login,act:logout"|qishi_url#}" style="color:#0066cc">[退出]</a>{#/if#}
+			</div>
+			<div class="top-control f-right">
+				{#if $smarty.session.uid#}
+				<a href="shop_order.php">我的订单</a>|<a href="{#$QISHI.site_dir#}user/company/company_index.php">会员中心</a>|
+				{#else#}
+				<a href="javascript:;" class="account-login">我的订单</a>|<a href="javascript:;" class="account-login">会员中心</a>|
+				{#/if#}
+				<a href="{#$QISHI.site_dir#}">返回人才网</a></div>
+		</div>
+	</div>
+	<div class="header-logo-search clearfix container">
+		<div class="shop-logo f-left"><a href="{#$QISHI.site_dir#}"><img src="{#$QISHI.upfiles_dir#}{#$QISHI.web_logo#}" alt="{#$QISHI.site_name#}" width="260" height="70" /></a></div>
+		<div class="logo-side-title f-left">积分商城</div>
+		<div class="top-search f-left">
+			<form action="shop_list.php" method="get">
+			<div class="search-main clearfix">
+				<input type="hidden" name="shop_nav" value="{#$smarty.get.shop_nav#}">
+				<input type="hidden" name="user_points" value="{#$smarty.get.user_points#}">
+				<div class="search-text f-left"><input type="text" name="key" value="{#$smarty.get.key#}"/></div>
+				<div class="search-submit f-left"><input type="submit" value="搜&nbsp;索" /></div>
+			</div>
+			</form>
+			{#if $hotword#}
+			<div class="key-word">
+				<span class="key-title">热门搜索：</span>
+				{#foreach from=$hotword item=list#}
+				<a href="shop_list.php?key={#$list.w_word#}&shop_nav={#$smarty.get.shop_nav#}&user_points={#$smarty.get.user_points#}">{#$list.w_word#}</a>
+				{#/foreach#}
+			</div>
+			{#/if#}
+		</div>
+		<div class="qr-code f-right"><img src="{#$QISHI.site_dir#}data/images/{#$QISHI.weixin_img#}" alt="二维码" width="65" height="65" /></div>
+	</div>
+	<div class="shop-nav">
+		<div class="container">
+			<ul class="nav-wrap clearfix">
+				{#qishi_nav set="调用名称:QS_shop_top,列表名:list"#}
+				{#foreach from=$list item=list#}
+				<li class="f-left"><a href="{#$list.url#}" target="{#$list.target#}" class="nav-item {#if $list.tag==$page_select && $list.tag!=""#} active{#/if#}">{#$list.title#}</a></li>
+				{#/foreach#}
+				<li class="f-left"><a href="shop_esoterica.php" class="nav-item {#if $shop_nav=='esoterica'#}active{#/if#}">积分秘籍</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<link rel="stylesheet" href="{#$QISHI.site_shop_template#}css/ui-dialog.css" />
+<script src="{#$QISHI.site_shop_template#}js/dialog-min.js"></script>
+<script>
+	$(document).ready(function() {
+	//无登录情况 弹框登录
+		$(".account-login").live("click",function(){
+			var myDialog = dialog();// 初始化一个带有loading图标的空对话框
+		    myDialog.title('用户登录');
+		    myDialog.content("加载中...");
+		    myDialog.width('475');
+		    myDialog.showModal();
+			jQuery.ajax({
+			    url: '{#$QISHI.site_dir#}user/user_ajax_login.php',
+			    success: function (data) {
+			        myDialog.content(data);// 填充对话框内容
+			    }
+			});
+		});
+	});
+</script>

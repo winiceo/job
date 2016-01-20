@@ -1,0 +1,37 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+<div class="toptit">修改选项</div>
+<form id="form1" name="form1" method="post" action="?act=edit_option_save">
+{#$inputtoken#}
+<table width="100%" border="0" cellspacing="6" cellpadding="0" >
+  <tr>
+    <td width="120" align="right">选项内容：</td>
+    <td><input name="name" type="text" class="input_text_200"  value="{#$option.name#}"/></td>
+  </tr>
+  <tr>
+    <td width="120" align="right">选项分值：</td>
+    <td><input name="score" type="text" class="input_text_200"  value="{#$option.score#}" onKeyUp="if(event.keyCode !=37 && event.keyCode != 39) value=value.replace(/\D/g,'');" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="6" cellpadding="0">
+  <tr>
+    <td width="120"> </td>
+    <td>
+	<input name="id" type="hidden" value="{#$option.id#}" />
+	<input name="question_id" type="hidden" value="{#$option.question_id#}" />
+	<input type="submit" name="addsave" value="保存" class="admin_submit" />
+		  <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='?act=option_list&id={#$option.question_id#}'"/>
+	
+	</td>
+  </tr>
+</table>
+ </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

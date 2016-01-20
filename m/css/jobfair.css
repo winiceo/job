@@ -1,0 +1,59 @@
+/*
+**招聘会相关样式
+*/
+/*列表*/
+.jobfair-list{background-color: #fff;}
+.jobfair-list .jobfair-item{padding:15px;position: relative;border-bottom:1px solid #e2e2e2;padding-bottom: 5px;}
+.jobfair-list .jobfair-item .jobfair-content{width: 80%;}
+.jobfair-list .jobfair-item .jobfair-content h2{font-size: 16px;line-height: 24px;margin-bottom: 10px;}
+.jobfair-list .jobfair-item .jobfair-content h2 a{color:#333;}
+.jobfair-list .jobfair-item .jobfair-content .jobfair-txt{color:#666;font-size: 12px;}
+.jobfair-list .jobfair-item .jobfair-content .jobfair-txt p{line-height: 100%;white-space: nowrap;margin-bottom: 10px;vertical-align: middle;}
+.jobfair-list .jobfair-item .jobfair-content .jobfair-txt p a{color:#0180cf;font-size: 16px;line-height: 14px;}
+.jobfair-list .jobfair-item .jobfair-content .jobfair-txt p a i{vertical-align: middle;position: relative;top:-1px;}
+.jobfair-list .jobfair-item .jobfair-state{font-size: 5em;position: absolute;top:5px;right:0;}
+.jobfair-list .jobfair-item .jobfair-state .w-icon-booking{color:#0180cf;}
+.jobfair-list .jobfair-item .jobfair-state .w-icon-booked{color:#767676;}
+.jobfair-list .jobfair-item .jobfair-state .w-icon-coming{color:#ff6600;}
+
+/*详情*/
+.jobfair-detail-wrap{}
+.jobfair-detail-wrap .j-top{}
+.jobfair-detail-wrap .j-top .top-outline{background-color: #fff;padding:15px;border-bottom:1px solid #e2e2e2;position: relative;padding-bottom: 5px;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-content{width: 80%;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-content h2{font-size: 16px;line-height: 24px;margin-bottom: 10px;color:#333;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-content .j-top-txt{color:#666;font-size: 12px;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-content .j-top-txt p{line-height: 100%;white-space: nowrap;margin-bottom: 10px;vertical-align: middle;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-content .j-top-txt p a{color:#0180cf;font-size: 16px;line-height: 14px;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-content .j-top-txt p a i{vertical-align: middle;position: relative;top:-1px;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-state{font-size: 5em;position: absolute;top:5px;right:0;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-state .w-icon-booking{color:#0180cf;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-state .w-icon-booked{color:#767676;}
+.jobfair-detail-wrap .j-top .top-outline .j-top-state .w-icon-coming{color:#ff6600;}
+.jobfair-detail-wrap .j-top .j-top-control{background-color: #fff;height: 62px;padding:0 15px;text-align: center;}
+.jobfair-detail-wrap .j-top .bottom-bg{width: 100%;height: 4px;background: url(../images/simple-item-bottom.png) repeat-x 0px 0px;}
+.jobfair-detail-wrap .j-block{background-color: #fff;margin-top: 10px;padding:20px 15px 0;}
+.jobfair-detail-wrap .j-block>h2{font-size: 14px;color:#333;padding-left: 5px;border-left:3px solid #0180cf;font-weight: normal;line-height: 16px;}
+.jobfair-detail-wrap .j-block .jobfair-intro{font-size: 14px;color: #666;line-height: 24px;padding: 12px 15px;border-bottom: 1px solid #e2e2e2;margin:0 -15px;}
+.jobfair-detail-wrap .j-block .jobfair-intro.havemore{max-height: 134px;overflow: hidden;}
+.jobfair-detail-wrap .j-block .intro-more{display: block;height: 40px;line-height: 40px;text-align: center;color: #999;font-size: 14px;margin:0 -15px;}
+.jobfair-detail-wrap .j-block .jobfair-intro-box{padding:12px 0;}
+.jobfair-detail-wrap .j-block .intro-p{font-size: 14px;color:#666;line-height: 24px;}
+.jobfair-detail-wrap .j-block .join-industry{padding:12px 0;font-size: 14px;}
+.jobfair-detail-wrap .j-block .join-industry li{color:#666;line-height: 24px;vertical-align: middle;max-width:100%;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;}
+.jobfair-detail-wrap .j-block .join-industry li i{font-size: 12px;color:#ff5a5a;margin-right: 7px;vertical-align: middle;position: relative;top:-1px;}
+
+/*固定底部*/
+.jobfair-fixed-bottom{position: fixed;left:0;bottom:0;background-color: #fff;border-top:1px solid #0180cf;z-index: 50;width: 100%;height: 54px;text-align: center;padding:0 15px;box-sizing:border-box;}
+.jobfair-fixed-bottom .local-action .jobfair-locate{color:#999;font-size: 12px;}
+.jobfair-fixed-bottom .local-action .jobfair-locate i{color:#ff9900;font-size: 30px;}
+.jobfair-fixed-bottom .local-action .jobfair-locate p{margin-top: -3px;}
+
+.nodata{text-align: center;padding-top: 96px;background-color: #f0f0f0;}
+.nodata .cryimg{width: 60px;height: 60px;background-image: url(../images/nodata-cryimg.gif);margin: 0 auto;}
+.nodata .txt{font-size: 12pt;color: #333333;text-align: center;margin-top: 12px;display: block;}
+.nodata .hint{font-size: 9pt;color: #999999;margin-top: 6px;display: block;}
+.nodata .hint span{color: #FF9900;}
+
+
+

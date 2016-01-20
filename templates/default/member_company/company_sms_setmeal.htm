@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>{#$title#}</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link href="{#$QISHI.site_template#}css/user_common.css" rel="stylesheet" type="text/css" />
+<link href="{#$QISHI.site_template#}css/user_company.css" rel="stylesheet" type="text/css" />
+<script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
+</head>
+<body {#if $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"{#/if#}>
+{#include file="user/header.htm"#}
+<div class="page_location link_bk">当前位置：<a href="{#$QISHI.site_dir#}">首页</a> > <a href="{#$userindexurl#}">会员中心</a> > 充值订单</div>
+
+<div class="usermain">
+  <div class="leftmenu  com link_bk">
+  	  {#include file="member_company/left.htm"#}		
+  </div>
+  <div class="rightmain">
+  
+ 	<div class="bbox1 link_bk my_account intrgration" style="padding-top:0;">
+		<div class="topnav">
+			<div class="titleH1">
+				<div class="h1-title">短信提醒</div>
+			</div>
+
+			<div class="navs">
+				<a href="?act=set_sms"  class="se">短信设置</a>
+				<a href="?act=sms_order">短信充值</a>
+				<a href="?act=sms_order_list">订单列表</a>
+				<div class="clear"></div>
+			</div>
+		</div>
+		 <div class="balance margin-common">
+  			<div class="bal_text">{#if $user_setmeal.set_sms>0#}您还有<span>{#$user_setmeal.set_sms#} </span>条免费短信未使用{#/if#}&nbsp;&nbsp;&nbsp;&nbsp;{#if $sms_setting#}我的短信套餐剩余短信：<span>{#$sms_setting.num#} </span> 条{#/if#} </div>
+  		</div>
+	<form id="form1" name="form1" method="post" action="?act=set_sms_save">
+  		<!-- 设置套餐 -->
+		<table border="0" bordercolor="#ccc" cellpadding="0" cellspacing="0" width="755" class="package_tab" style="margin: 0 auto;">
+			<tbody>
+				<tr height="45" bgcolor="#0180CF">
+					<th width="150" align="center">通知操作</th>
+					<th style="text-align:left;"></th> 
+				</tr> 
+				{#if $sms_config.set_applyjobs == '1'#}
+				<tr align="center" height="45">
+					<td align="center">申请职位：</td> 
+					<td style="text-align:left; ">
+						<label style="padding:0 20px 0 20px;"><input name="com_applyjobs" type="radio" value="1"  {#if $sms_setting.com_applyjobs=="1"#}checked="checked"{#/if#}/>通知</label> &nbsp;&nbsp;&nbsp;
+						<label><input name="com_applyjobs" type="radio" value="0" {#if $sms_setting.com_applyjobs=="0"#}checked="checked"{#/if#}/>不通知</label>
+					</td> 
+				</tr>
+				{#/if#}
+				{#if $sms_config.set_invite == '1'#}
+				<tr align="center" height="45">
+					<td align="center">邀请面试：</td>  
+					<td style="text-align:left; ">
+						<label style="padding:0 20px 0 20px;"><input name="com_invite" type="radio" value="1"  {#if $sms_setting.com_invite=="1"#}checked="checked"{#/if#}/>通知</label> &nbsp;&nbsp;&nbsp;
+						<label><input name="com_invite" type="radio" value="0" {#if $sms_setting.com_invite=="0"#}checked="checked"{#/if#}/>不通知</label>
+					</td> 
+				</tr>
+				{#/if#} 
+				<tr>
+					<td align="center"><input type="submit" name="Submit3" value="确认修改" class="but95lan"   /> </td>
+					<td height="50" align="left">&nbsp;</td>
+				  </tr>
+			</tbody> 
+		</table>
+		 </form>
+
+  	</div>
+  </div>
+  <div class="clear"></div>
+</div>
+{#include file="user/footer.htm"#}
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta name="renderer" content="webkit"> 
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
+<title>校园招聘-合作院校</title>
+<link rel="shortcut icon" href="{#$QISHI.site_dir#}favicon.ico" />
+<meta name="author" content="骑士CMS" />
+<meta name="copyright" content="74cms.com" />
+<link rel="stylesheet" href="{#$QISHI.site_campus_template#}css/school.css" />
+<script src="{#$QISHI.site_campus_template#}js/jquery.js"></script>
+<script>
+	$(document).ready(function() {
+		// 回车搜索
+		$('#campusname').keydown(function(e) {
+			if (e.keyCode==13) {
+				search_location(dir);
+			}
+		});
+		// 搜索按钮点击
+		$("#searcnbtn").click(function() {
+			search_location();
+		});
+		// 搜索跳转
+		function search_location() {
+			generateBackground();
+			var listype = $("#searcnbtn").attr('detype');
+			var key=$("input[name=campusname]").val();
+			var page=1;
+			$.get("{#$QISHI.site_dir#}plus/ajax_search_location.php", {"act":listype,"key":key,"page":page},
+				function (data,textStatus)
+				 {	
+					 window.location.href=data;
+				 },"text"
+			);
+		}
+		// 正在加载
+		function generateBackground() {
+			var backgroundHtm = '<div id="bonfire-pageloader"><div class="bonfire-pageloader-icon"></div></div>';
+			var html = jQuery('body');
+			html.append(backgroundHtm);
+			jQuery(window).resize(function(){
+				 resizenow();
+			});
+			function resizenow() {
+				var browserwidth = jQuery(window).width();
+				var browserheight = jQuery(window).height();
+				jQuery('.bonfire-pageloader-icon').css('right', ((browserwidth - jQuery(".bonfire-pageloader-icon").width())/2)).css('top', ((browserheight - jQuery(".bonfire-pageloader-icon").height())/2 + $(document).scrollTop() - 109));
+			};
+			resizenow();
+		}
+	});
+</script>
+</head>
+<body>
+	{#include file="../tpl_campus/default/header.htm"#}
+	<div class="container">
+		<div class="index-common-block clearfix">
+			<div class="title-block clearfix">
+				<h2 class="f-left">合作院校</h2>
+				<div class="school-search f-right">
+					<div class="s-search f-left"><input name="campusname" id="campusname" type="text" value="{#$smarty.get.key#}" placeholder="请输入院校名称" /></div>
+					<div class="s-search-submit f-left"><input detype="QS_campuslist" type="button" id="searcnbtn" value="搜索" /></div>
+				</div>
+			</div>
+			{#qishi_campus_list  set="分页显示:1,列表名:campus,填补字符:...,院校名称:GET[key],院校名长度:30,排序:id>desc"#}
+			{#if $campus#}
+			<div class="school-list clearfix">
+				{#foreach from=$campus item=li#}
+				<div class="school-item f-left">
+					<div class="school-logo f-left"><a href="{#$li.url#}" target="_blank"><img src="{#$li.logo#}" alt="院校logo" width="185" height="65" /></a></div>
+					<div class="school-info f-left">
+						<h3><a href="{#$li.url#}" target="_blank" class="underline">{#$li.campusname#}</a></h3>
+						<div>学校主页：<a href="{#$li.website#}" target="_blank" class="underline">{#$li.website_#}</a></div>
+						<div title="{#$li.address#}">学校地址：{#$li.address#}</div>
+					</div>
+				</div>
+				{#/foreach#}
+			</div>
+			{#if $page#}
+			<table align="center" cellspacing="0" cellpadding="0" border="0" class="link_bk">
+				<tbody>
+					<tr>
+						<td align="center" height="50">
+							<div class="page">
+								{#$page#}
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			{#/if#}
+	      	{#else#}
+	      	<div class="emptytip">抱歉，没有符合此条件的信息！</div>
+	      	{#/if#}
+		</div>
+	</div>
+	{#include file="../tpl_campus/default/footer.htm"#}
+</body>
+</html>

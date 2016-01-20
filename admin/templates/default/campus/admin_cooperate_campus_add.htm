@@ -1,0 +1,101 @@
+{#include file="sys/admin_header.htm"#}
+<link rel="stylesheet" href="kindeditor/themes/default/default.css" />
+<script charset="utf-8" src="kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="kindeditor/lang/zh_CN.js"></script>
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  {#include file="campus/admin_set_campus_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptit">添加院校</div>
+  <form id="form1" name="form1" method="post" action="?act=campus_add_save"  enctype="multipart/form-data">
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="4" cellspacing="0"   >
+    <tr>
+      <td width="100" height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">院校名称：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed"> <input name="campusname" type="text" class="input_text_200" id="campusname" maxlength="25" value=""/> <label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">院校主页：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="website" type="text" class="input_text_200" id="website" maxlength="25" value=""/><label></label></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  style=" border-bottom:1px #CCCCCC dashed">院校地址：</td>
+      <td  style=" border-bottom:1px #CCCCCC dashed" ><input name="address"  class="input_text_200" id="address" maxlength="25" value=""/><label></label></td>
+    </tr>
+	
+    <tr>
+      <td align="right"  style=" border-bottom:1px #CCCCCC dashed">院校Logo： </td>
+      <td style=" border-bottom:1px #CCCCCC dashed">
+        <input name="logo" type="file" id="logo" style="width:200px; font-size:12px; padding:3px; border:1px #7797A8 solid;" onKeyDown="alert('请点击右侧“浏览”选择您电脑上的图片！');return false"/>
+      </td>
+    </tr>
+    <!-- 院校风采 -->  
+    <tr >
+      <td align="right"  >院校风采： </td>
+      <td >
+        <div id="picture">
+          <p style="color:#ff9900">最多上传10张图片</p>
+          <div id="picture1">
+            <input id="txt1"  type="text" class="input_text_200"  maxlength="25" value=""/>
+            <input type="button" value="上传图片"  />
+            <input id="file1"  class="file_opacity" type="file"  onchange="document.getElementById('txt1').value=this.value" name="image[]">
+            <input class="del" type="button"  name="" value="删除" onclick="lis(2,1)" />
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="right" style=" border-bottom:1px #CCCCCC dashed" > </td>
+      <td style=" border-bottom:1px #CCCCCC dashed">
+      &nbsp;
+      <input type="button"  value="继续添加图片" onclick="lis(1,0)" />
+      </td>
+    </tr>
+    <!-- 院校风采 --> 
+		<tr>
+      <td  align="right" style=" border-bottom:1px #CCCCCC dashed">院校简介：</td>
+      <td ><textarea id="contents" name="contents" style="width:700px;height:300px;visibility:hidden;"></textarea>
+    <script>
+      var editor;
+      KindEditor.ready(function(K) {
+        editor = K.create('textarea[name="contents"]', {
+          allowFileManager : true,
+          afterBlur: function(){this.sync();}
+        });
+        K('input[name=Submit2]').click(function(e) {
+          editor.html('');
+        });
+      });
+    </script></td>
+    </tr>
+    <tr>
+      <td height="30" align="right"  >&nbsp;</td>
+      <td height="60"  ><span style="font-size:14px;">
+        <input type="hidden" name="member_type"  value="1" />
+        <input name="submit3" type="submit" class="admin_submit"    value="添加"/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location.href='?act=campus_list'"/>
+      </span></td>
+    </tr>
+  </table>
+  </form>
+</div>
+<script type="text/javascript" src="js/jquery.addFuJian.js"></script>
+<script type="text/javascript">
+  // 上传 院校风采 
+  $(".up_but").die().click(function(){
+    $("#up_img").click();
+    $("#up_img").change(function(event) {
+      var img_name=$("#up_img").val();
+      $("#img_name").val(img_name);
+      $("#img_name").bind('oninput propertychange',function(event) {
+       alert("sss");
+      });
+    });
+  });
+</script>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

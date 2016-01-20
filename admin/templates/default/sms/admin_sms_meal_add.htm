@@ -1,0 +1,59 @@
+{#include file="sys/admin_header.htm"#}
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+	{#include file="sms/admin_sms_nav.htm"#}
+  <div class="clear"></div>
+</div>
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+服务套餐模式是指会员可以购买不同的短信提示包
+</p>
+</div>
+<div class="toptit">新增服务套餐</div>
+ 
+	  <form id="form1" name="form1" method="post" action="?act=set_meal_add_save">
+	 {#$inputtoken#}
+    <table border="0" cellspacing="3" cellpadding="3">
+      <tr>
+        <td width="200" align="right">套餐名称：</td>
+        <td width="391"><input name="setmeal_name" type="text" class="input_text_200" id="setmeal_name"/></td>
+      </tr>
+	  <tr>
+        <td align="right">短信套餐价格：</td>
+        <td><input name="expense" type="text" class="input_text_200" id="expense" />
+        元 <span class="admin_note"></span> </td>
+      </tr> 
+	  <tr>
+        <td align="right">短信数量：</td>
+        <td><input name="num" type="text" class="input_text_200" id="num" />
+        条<span class="admin_note"></span></td>
+      </tr> 
+      <tr>
+        <td align="right">显示顺序：</td>
+        <td><input name="show_order" type="text" class="input_text_200" id="show_order" onkeyup="if(event.keyCode !=37 &amp;&amp; event.keyCode != 39) value=value.replace(/\D/g,'');" value="0" maxlength="3"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/\D/g,''))"/>
+          数字越大越靠前</td>
+      </tr> 
+	  <tr>
+      <td align="right">显示状态：</td>
+      <td><label>
+          <input name="display" type="radio" value="1" checked="checked" />
+        正常</label> &nbsp;&nbsp;&nbsp;<label>
+        <input type="radio" name="display" value="0" />
+        屏蔽</label></td>
+      </tr> 
+      <tr>
+        <td align="center">&nbsp;</td>
+        <td height="50" align="left"><input type="submit" name="Submit3" value="提交" class="admin_submit"   />
+		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="Javascript:window.history.go(-1)"/>
+		</td>
+      </tr>
+    </table>
+  
+    </form>
+    </div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>
