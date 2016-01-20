@@ -1,0 +1,258 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#RewardCompany").QSdialog({
+            DialogTitle: "扣除企业费用",
+            DialogContent: "#DivRewardCompany",
+            DialogContentType: "id",
+            DialogAddObj: "#OpRewardCompany",
+            DialogAddType: "html"
+        });
+        $("#RewardClue").QSdialog({
+            DialogTitle: "奖励线索提供者",
+            DialogContent: "#DivRewardClue",
+            DialogContentType: "id",
+            DialogAddObj: "#OpRewardClue",
+            DialogAddType: "html"
+        });
+
+        $("#Form1").validate({
+            rules: {
+                title: {
+                    required: true
+                },
+                content: {
+                    required: true
+                }
+            },
+            messages: {
+                title: {
+                    required: jQuery.format("请填写新闻标题")
+                },
+                content: {
+                    required: jQuery.format("请填写新闻内容")
+                }
+            },
+            errorPlacement: function (error, element) {
+                if (element.is(":radio"))
+                    error.appendTo(element.parent().next().next());
+                else if (element.is(":checkbox"))
+                    error.appendTo(element.next());
+                else
+                    error.appendTo(element.next());
+            }
+        });
+    });
+</script>
+<div class="admin_main_nr_dbox">
+    <div class="pagetit">
+        <div class="ptit"> {#$pageheader#}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="seltpye_y">
+        <form id="form1" name="form1" method="post" action="?act=reward_perform">
+
+            <div class="toptit">此职位企业联系方式</div>
+
+            <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+                <tr>
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>联 系 人： {#$company_profile.contact#}
+                    </td>
+
+
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>联系电话： {#$company_profile.telephone#}
+                    </td>
+
+
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>联系邮箱： {#$company_profile.email#}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试人数： {#$promotion.interview_num#}
+                    </td>
+
+
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试金额： {#$promotion.interview_money#}
+                    </td>
+
+
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试成功金额：
+                        {#$promotion.interview_success_money#}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed" colspan="3">
+                        <input type="button" name="" value="扣除费用" class="admin_submit  " id="RewardCompany">
+                    </td>
+                </tr>
+            </table>
+
+            <div class="toptit">此线索联系人信息</div>
+
+            <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+                <tr>
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>线索联 系 人： {#$clue.link_name#}
+                    </td>
+
+
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>线索联系电话： {#$clue.link_telephone#}
+                    </td>
+
+
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>线索说明： {#$clue.remark#}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>线索提供者姓名： {#$member.username#}
+                    </td>
+
+
+                    <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>线索提供者邮箱： {#$member.email#}
+                    </td>
+
+
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>线索提供者电话： {#$member.mobile#}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed" colspan="3">
+                        <input type="button" name="" value="奖励提供者" class="admin_submit" id="RewardClue">
+                    </td>
+                </tr>
+            </table>
+            <span id="OpRewardCompany"></span>
+            <span id="OpRewardClue"></span>
+            </form>
+    </div>
+    <div class="toptit">添加访问日志</div>
+
+    <form id="Form12" name="Form12" method="post" action="?act=clue_log_save">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+            <tr>
+                <td class="admin_list admin_list_first">
+                    备注:
+                </td>
+                <td class="admin_list admin_list_first">
+                    <textarea name="notes" id="notes"></textarea>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="admin_list admin_list_first">
+
+                </td>
+                <td class="admin_list admin_list_first" colspan="2">
+                    {#$inputtoken#}
+
+                    <input name="id" type="hidden" value="{#$clue.id#}">
+                    <input name="submit3" type="submit" class="admin_submit" value="保存修改">
+                </td>
+
+
+            </tr>
+
+
+        </table>
+    </form>
+    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <tr>
+            <td class="admin_list admin_list_tit">
+                操作人姓名
+            </td>
+            <td class="admin_list admin_list_tit">
+                内容
+            </td>
+            <td class="admin_list admin_list_tit">
+                时间
+            </td>
+
+        </tr>
+        {#foreach from=$clue_log item=list#}
+        <tr>
+            <td class="admin_list admin_list_first">
+                {#$list.admin_name#}
+            </td>
+            <td class="admin_list admin_list_first">
+                {#$list.notes#}
+            </td>
+            <td class="admin_list admin_list_first">
+                {#$list.addtime|date:"Y-m-d H:i"#}
+            </td>
+
+        </tr>
+        {#/foreach#}
+    </table>
+    <span id="DelSel"></span>
+
+
+    {#if !$clue_log#}
+    <div class="admin_list_no_info">没有任何信息！</div>
+    {#/if#}
+</div>
+
+
+<div style="display:none" id="DivRewardCompany">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6">
+        <tr>
+            <td width="80" height="30">扣除金额</td>
+            <td height="30"><input name="amount" class="input_text_100"></td>
+        </tr>
+        <tr>
+            <td width="80" height="25">理由：</td>
+            <td>
+                <textarea name="reason" id="reason" cols="50" style="font-size:12px"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td height="25">&nbsp;</td>
+            <td> {#$inputtoken#}
+                <input type="hidden" name="company_uid" value="{#$company_profile.uid#}">
+                <input type="submit" name="reduce_money" value="确定" class="admin_submit"/></td>
+        </tr>
+    </table>
+</div>
+<div style="display:none" id="DivRewardClue">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6">
+        <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6">
+            <tr>
+                <td width="80" height="30">奖励金额</td>
+                <td height="30"><input name="amount1" class="input_text_100"></td>
+            </tr>
+            <tr>
+                <td width="80" height="25">理由：</td>
+                <td>
+                    <textarea name="reason1" id="reason1" cols="50" style="font-size:12px"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td height="25">&nbsp;</td>
+                <td> {#$inputtoken#}
+                    <input type="hidden" name="member_uid" value="{#$member.uid#}">
+                    <input type="submit" name="add_money" value="确定" class="admin_submit"/></td>
+            </tr>
+        </table>
+    </table>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

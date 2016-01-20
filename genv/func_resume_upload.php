@@ -193,7 +193,7 @@ function import_resume_temp($id)
     $email = trim($rs["email"]);
     $mobile = trim($rs["telephone"]);
     //注册会员
-    $userid = import_user_register($username, '123456', 2, $email, $mobile, false);
+    $userid = import_user_register_upload($username, '123456', 2, $email, $mobile, false);
     if ($userid > 0) {
         //个人信息表
         $member_info['uid'] = $userid;
@@ -441,13 +441,13 @@ function import_resume_temp($id)
 
 }
 //导入简历时的注册会员
-function import_user_register($username,$password,$member_type=0,$email,$mobile,$uc_reg=true)
+function import_user_register_upload($username,$password,$member_type=0,$email,$mobile,$uc_reg=true)
 {
     global $db,$timestamp,$_CFG,$online_ip,$QS_pwdhash;
     $member_type=intval($member_type);
-    $ck_username=get_user_inusername_import($username);
-    $ck_email=get_user_inemail_import($email);
-    $ck_mobile=get_user_inmobile_import($mobile);
+    $ck_username=get_user_inusername_import_upload($username);
+    $ck_email=get_user_inemail_import_upload($email);
+    $ck_mobile=get_user_inmobile_import_upload($mobile);
     if ($member_type==0)
     {
         return -1;
@@ -464,7 +464,7 @@ function import_user_register($username,$password,$member_type=0,$email,$mobile,
     {
         return $ck_mobile['uid'];
     }
-    $pwd_hash=randstr_import();
+    $pwd_hash=randstr_import1();
     $password_hash=md5(md5($password).$pwd_hash.$QS_pwdhash);
     $setsqlarr['username']=$username;
     $setsqlarr['password']=$password_hash;
@@ -482,32 +482,32 @@ function import_user_register($username,$password,$member_type=0,$email,$mobile,
     }
     return $insert_id;
 }
-function get_user_inemail_import($email)
+function get_user_inemail_import_upload($email)
 {
     global $db;
     return $db->getone("select * from ".table('members')." where email = '{$email}' LIMIT 1");
 }
-function get_user_inusername_import($username)
+function get_user_inusername_import_upload($username)
 {
     global $db;
     $sql = "select * from ".table('members')." where username = '{$username}' LIMIT 1";
     return $db->getone($sql);
 }
-function get_user_inid($uid)
-{
-    global $db;
-    $uid=intval($uid);
-    $sql = "select * from ".table('members')." where uid = '{$uid}' LIMIT 1";
-    return $db->getone($sql);
-}
-function get_user_inmobile_import($mobile)
+//function get_user_inid_upload($uid)
+//{
+//    global $db;
+//    $uid=intval($uid);
+//    $sql = "select * from ".table('members')." where uid = '{$uid}' LIMIT 1";
+//    return $db->getone($sql);
+//}
+function get_user_inmobile_import_upload($mobile)
 {
     global $db;
     $sql = "select * from ".table('members')." where mobile = '{$mobile}' LIMIT 1";
     return $db->getone($sql);
 }
 //获取随机字符串
-function randstr_import($length=6)
+function randstr_import1($length=6)
 {
     $hash='';
     $chars= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz@#!~?:-=';
@@ -627,12 +627,16 @@ function resume_upload_insert($file_path)
 {
     $excel=excel_upload($file_path);
     $data=$excel["data"];
+
+
     $rs=array();
     foreach ($data as $key => $value) {
         if(!get_telephone($value["telephone"])){
             $value["status"]=0;
             $value["upload_uid"]=$_SESSION["uid"];
             $value["upload_time"]=time();
+            $value["file"]=$file_path;
+
             $obj = \ORM::for_table(table('resume_temp'))->create($value);
             $rs[]=$obj->save();
         }

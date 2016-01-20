@@ -213,15 +213,18 @@ $app->get('/genv/init', function ($request, $response) {
     //创建表
     //简历临时表；
     $sql=array();
+    $sql[]="alter table ".table('jobs')." add reward tinyint(1) not null default 0";
+
+
+    $sql[]="alter table ".table('jobs_tmp')." add reward tinyint(1) not null default 0";
+
     $sql[]="alter table ".table('resume')." modify major smallint(5) not null";
 
     $sql[]="CREATE table qs_resume_temp select * from qs_resume";
 
-    $sql[]="CREATE table qs_members_person_points select * from qs_members_points";
 
     $sql[]="alter table ".table('jobs_search_rtime')." add reward tinyint(1) not null default 0";//添加悬赏奖
 
-    $sql[]="alter table ".table('jobs_tmp')." add reward tinyint(1) not null default 0";
 
 //
 //    //增加现金字段
@@ -230,6 +233,10 @@ $app->get('/genv/init', function ($request, $response) {
 
     //锁定现金；
      $sql[]="alter table ".table('members_points')." add block_balance int(10) not null default 0";
+
+
+     $sql[]="CREATE table qs_members_person_points select * from qs_members_points";
+
 
     //推广表增加 悬赏相关
      $sql[]="alter table ".table('promotion')." add cp_json text";
@@ -243,10 +250,87 @@ $app->get('/genv/init', function ($request, $response) {
     $sql[]="alter table ".table('resume_temp')." add num tinyint(3) not null ";
     $sql[]="alter table ".table('resume_temp')." add upload_time int(11) not null ";
 
+
+    $sql[]="alter table ".table('resume_temp')." add status tinyint(1)  not null default 0 ";
+
+    $sql[]="insert qs_promotion_category set cat_id=5,cat_type=2,cat_name='悬赏',cat_notes=''";
+
     foreach($sql as $s){
-        $rs=ORM::raw_execute($s);
-        dump($rs);
+        try{
+            $rs=ORM::raw_execute($s);
+            dump($rs);
+        }catch(Exception $e){
+            //dump($e);
+        }
     }
+    //更改临时表；
+    $ss="SHOW FULL COLUMNS FROM qs_resume_temp";
+    $rs=ORM::for_table("qs_resume_temp")->raw_query($ss)->find_array();
+    //$sql=array();
+    foreach($rs as $k=>$v){
+        $sql=vsprintf("ALTER TABLE qs_resume_temp MODIFY %s   %s %s",array($v["Field"],$v["Type"],$v["Default"]?"default ".$v["Default"]:''));
+
+        try{
+            $rs=ORM::raw_execute($sql);
+
+        }catch(Exception $e){
+
+        }
+    }
+
+    try{
+        $sql="ALTER TABLE `qs_resume_temp` CHANGE COLUMN `id` `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, CHANGE COLUMN `key` `key` text CHARACTER SET gbk, ADD PRIMARY KEY (`id`)";
+        $rs=ORM::raw_execute($sql);
+
+
+    }catch(Exception $e){
+
+    }
+
+    $g=ORM::for_table("qs_category_group")->where("g_alias","Genv_check_false")->find_one();
+    if(!$g){
+        $g=ORM::for_table("qs_category_group")->create();
+        $g->g_alias="Genv_check_false";
+        $g->g_name="审核未通过";
+        $g->g_sys=0;
+        $g->save();
+
+        $g=ORM::for_table("qs_category")->create();
+        $g->c_alias="Genv_check_false";
+        $g->c_name="电话打不通";
+        $g->c_index="d";
+        $g->c_parentid=0;
+        $g->save();
+        $g->c_alias="Genv_check_false";
+        $g->c_name="已上班";
+        $g->c_parentid=0;
+        $g->c_index="y";
+        $g->save();
+
+    }
+
+    $g=ORM::for_table("qs_category")->create();
+    $g->c_alias="Genv_check_false";
+    $g->c_name="电话打不通";
+    $g->c_index="d";
+    $g->c_parentid=0;
+    $g->c_order=0;
+    $g->c_note="";
+    $g->stat_jobs="";
+    $g->stat_resume="";
+
+    $g->save();
+    $g=ORM::for_table("qs_category")->create();
+    $g->c_alias="Genv_check_false";
+    $g->c_name="已上班";
+    $g->c_parentid=0;
+    $g->c_index="y";
+    $g->c_order=0;
+    $g->c_note="";
+    $g->stat_jobs="";
+    $g->stat_resume="";
+    $g->save();
+
 
 
 });

@@ -59,6 +59,7 @@ $(document).ready(function(){
 	favoritesJob_dialog('.add_favorites','{#$QISHI.site_dir#}user/user_favorites_job.php?id={#$show.id#}&act=add');
 	//申请职位
 	applyJob_dialog(".app_jobs","{#$QISHI.site_dir#}user/user_apply_jobs.php","1");
+    clueJob_dialog(".clue_jobs","{#$QISHI.site_dir#}user/user_clue_jobs.php");
 	//举报信息
 	reportJob_dialog(".report_button","{#$QISHI.site_dir#}user/user_report.php");
 	// 用户登录
@@ -138,6 +139,9 @@ $(document).ready(function(){
 								{#elseif $show.jobs_gq==2#}
 								<img src="{#$QISHI.site_template#}images/job_sx.gif" />
 								{#else#}
+                                {#if $is_reward#}
+                                <div class="apply-btn f-left"><a href="javascript:;" class="app-button clue_jobs" style="display: block;line-height:34px;text-align: center;margin-right: 20px;" jobs_id="{#$show.id#}">提供人才线索</a></div>
+                                {#/if#}
 								<div class="apply-btn f-left"><a href="javascript:;" class="app-button app_jobs" style="display: block;line-height:34px;text-align: center;" jobs_id="{#$show.id#}">申请职位</a></div>
 								<a href="javascript:;" class="collect {#if $show.check_fav=='1'#}done{#/if#} f-left add_favorites">收藏</a>
 								{#/if#}

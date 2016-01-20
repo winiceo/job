@@ -10,9 +10,11 @@
  * ============================================================================
 */
 define('IN_QISHI', true);
-require_once(dirname(__FILE__).'/../data/config.php');
-require_once(dirname(__FILE__).'/include/admin_common.inc.php');
-require_once(ADMIN_ROOT_PATH.'include/admin_company_fun.php');
+require_once(dirname(__FILE__) . '/../data/config.php');
+require_once(dirname(__FILE__) . '/include/admin_common.inc.php');
+require_once(ADMIN_ROOT_PATH . 'include/admin_company_fun.php');
+require_once(QISHI_ROOT_PATH . 'genv/func_company.php');
+
 $act = !empty($_GET['act']) ? trim($_GET['act']) : 'jobs';
 if($act == 'jobs')
 {
@@ -909,8 +911,49 @@ elseif($act == 'members_list')
 	$smarty->assign('member',$member);
 	$smarty->assign('page',$page->show(3));
 	$smarty->display('company/admin_company_user_list.htm');
-}
-elseif($act == 'delete_user')
+}elseif($act=="check_save"){
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    $cid = !empty($_REQUEST['cid']) ? $_REQUEST['cid'] : adminmsg("你没有选择会员！", 1);
+    $status=!empty($_REQUEST['status'])?intval($_REQUEST["status"]):0;
+    $sql=vsprintf("update   %s set status=%d where id=%d ",array(table("resume_check_apply"),$status,$cid));
+
+    $db->query($sql);
+    adminmsg("操作成功！", 1);
+
+} elseif ($act == 'members_check_list') {
+    //审核列表审核
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    require_once(QISHI_ROOT_PATH . 'include/page.class.php');
+    $wheresql = " WHERE m.utype=1 ";
+    $oederbysql = " order BY m.uid DESC ";
+
+
+    //有无顾问
+    if ($_GET['status'] != "") {
+        //未分配
+        $consultant = intval($_GET['status']);
+        if ($consultant == "0") {
+            $wheresql .= " AND  c.status=0";
+        } //已分配
+        elseif ($consultant == "1") {
+            $wheresql .= " AND c.status = 1";
+        }
+    }
+
+    $joinsql = " LEFT JOIN " . table('resume_check_apply') . " as c ON m.uid=c.uid ";
+    $total_sql = "SELECT COUNT(*) AS num FROM " . table('members') . " as m " . $joinsql . $wheresql;
+    $total_val = $db->get_total($total_sql);
+    $page = new page(array('total' => $total_val, 'perpage' => $perpage, 'getarray' => $_GET));
+    $currenpage = $page->nowindex;
+    $offset = ($currenpage - 1) * $perpage;
+    $member = get_member_check_list($offset, $perpage, $joinsql . $wheresql . $oederbysql);
+    $smarty->assign('pageheader', "企业会员");
+    $smarty->assign('member', $member);
+    $smarty->assign('page', $page->show(3));
+    $smarty->display('company/admin_company_user_check_list.htm');
+} elseif ($act == 'delete_user')  
 {	
 	check_token();
 	check_permissions($_SESSION['admin_purview'],"com_user_del");
@@ -1732,5 +1775,116 @@ elseif($act == "consultant_del"){
 	}
 	del_consultant($id);
 	adminmsg("删除成功！",2);
+}elseif ($act == 'reward_check_list') {
+    //人才简历审核列表
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    require_once(QISHI_ROOT_PATH . 'include/page.class.php');
+    $wheresql = " WHERE 1=1 ";
+    $oederbysql = " order BY addtime DESC ";
+
+
+
+    if ($_GET['status'] != "") {
+        //未分配
+        $consultant = intval($_GET['status']);
+        if ($consultant == "0") {
+            $wheresql .= " AND  c.status=0";
+        } //已分配
+        elseif ($consultant == "1") {
+            $wheresql .= " AND c.status = 1";
+        }
+    }
+
+    $total_sql = "SELECT COUNT(*) AS num FROM " . table('jobs_reward_clue') . " as m " .  $wheresql;
+    $total_val = $db->get_total($total_sql);
+    $page = new page(array('total' => $total_val, 'perpage' => $perpage, 'getarray' => $_GET));
+    $currenpage = $page->nowindex;
+    $offset = ($currenpage - 1) * $perpage;
+    $member = get_clue_check_list($offset, $perpage,   $wheresql . $oederbysql);
+
+    $smarty->assign('pageheader', "人才线索");
+    $smarty->assign('member', $member);
+    $smarty->assign('page', $page->show(3));
+    $smarty->display('company/admin_company_user_clue_list.htm');
+} elseif ($act == 'clue_detail') {
+    get_token();
+    $id = !empty($_REQUEST['cid']) ? $_REQUEST['cid'] : adminmsg("参数有误！", 1);
+    $clue = get_clue_one($id);
+    $company_profile = get_company_one_id($clue["company_id"]);
+    $clue_log=get_clue_log_list($id);
+    $promotion=get_promotion_info($clue["job_id"],5);
+    if($promotion){
+        $json=str_replace('&quot;', '"', trim($promotion["cp_json"]));
+        $json=json_decode($json);
+
+        $promotion=array_merge($promotion,(array)$json);
+    }
+    $member=get_member_info($clue["uid"]);
+
+
+    $smarty->assign('clue', $clue);
+    $smarty->assign('company_profile', $company_profile);
+    $smarty->assign('promotion', $promotion);
+    $smarty->assign('member', $member);
+
+    $smarty->assign('clue_log', $clue_log);
+    $smarty->assign('url', $_SERVER["HTTP_REFERER"]);
+    $smarty->assign('pageheader', "人才访问记录");
+    $smarty->display('company/admin_company_clue_detail.htm');
+}elseif ($act == 'clue_log_save') {
+    check_token();
+     $id = intval($_POST['id']);
+    if (!$id) {
+        adminmsg("参数错误！", 1);
+    }
+    $setsqlarr["cid"] = $id;
+    $setsqlarr["notes"] = !empty($_POST['notes']) ? trim($_POST['notes']) : adminmsg('请填写日志内容！', 1);
+    $setsqlarr['addtime'] = time();
+    $setsqlarr['admin_name'] = $_SESSION["admin_name"];
+
+
+    $db->inserttable(table('jobs_reward_clue_log'), $setsqlarr );
+    write_log("添加人才联系日志" . $id . " ", $_SESSION['admin_name'], 3);
+
+    $link[0]['text'] = "查看修改结果";
+    $link[0]['href'] = "?act=clue_detail&cid={$id}";
+    adminmsg('添加成功！', 2, $link);
+}elseif ($act == 'reward_perform') {
+    check_token();
+
+
+    if (trim($_POST['reduce_money'])) {
+        $amount = intval($_POST['amount']);
+        $company_uid=$_POST["company_uid"];
+        $reason=$_POST["reason"];
+
+        if(!balance_deal($company_uid,2,$amount)){
+            adminmsg("处理失败", 2);
+        }
+        $notes="余额扣费{$amount},扣费原因：".$reason;
+
+
+        $reason = trim($_POST['reason']);
+        $order['oid'] = "KK-" . date('ymd', time()) . "-" . date('His', time());//订单号
+        $order_id = admin_add_order($_SESSION['uid'], 8, $order['oid'], $amount, "余额扣费", $notes, $timestamp, 0, '', 1);
+
+        !$order_id? adminmsg("扣费失败！", 0) : adminmsg("扣费成功！", 2);
+    }elseif (trim($_POST['add_money'])) {
+        $amount = intval($_POST['amount1']);
+        $member_uid=$_POST["member_uid"];
+        $reason=$_POST["reason1"];
+
+        if(!balance_deal_person($member_uid,1,$amount)){
+            adminmsg("处理失败", 2);
+        }
+        $notes="余额增加{$amount},增加原因：".$reason;
+
+        $reason = trim($_POST['reason']);
+        $order['oid'] = "KK-" . date('ymd', time()) . "-" . date('His', time());//订单号
+        $order_id = admin_add_order($_SESSION['uid'], 7, $order['oid'], $amount, "余额增加", $notes, $timestamp, 0, '', 1);
+
+        !$order_id? adminmsg("奖励失败！", 0) : adminmsg("奖励成功！", 2);
+    }
 }
 ?>

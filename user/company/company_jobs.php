@@ -11,6 +11,8 @@
 */
 define('IN_QISHI', true);
 require_once(dirname(__FILE__).'/company_common.php');
+require_once(QISHI_ROOT_PATH . 'genv/func_company.php');
+
 $smarty->assign('leftmenu',"jobs");
 if ($act=='jobs')
 {
@@ -881,6 +883,20 @@ elseif ($act=='jobs_perform')
 			}
 		}
 	}
+	elseif (!empty($_REQUEST['display2']))
+	{
+        if(is_array($yid)){
+            foreach($yid as $id){
+                if(check_job_promotion(intval($id))) {showmsg("有在推广的职位，不能进行此操作",1);exit;}
+
+            }
+        }else{
+            if(check_job_promotion(intval($yid))) {showmsg("有在推广的职位，不能进行此操作",1);exit;}
+
+        }
+	activate_jobs($yid,2,$_SESSION['uid']);
+	showmsg("设置成功！",2);
+	}
 }
 //混合模式下  :  判断刷新职位是否需要消耗积分
 elseif ($act=='ajax_mode_points')
@@ -915,6 +931,7 @@ elseif ($act=='editjobs')
 {
 	$jobs=get_jobs_one(intval($_GET['id']),$_SESSION['uid']);
 	if (empty($jobs)) showmsg("参数错误！",1);
+    if(check_job_promotion(intval($_GET['id']))) showmsg("在推广的职位，不能进行此操作",1);
 	$jobs['contents'] = htmlspecialchars_decode($jobs['contents'],ENT_QUOTES);
 	//对座机进行分隔
 	$telarray = explode('-',$jobs['contact']['landline_tel']);
@@ -945,6 +962,7 @@ elseif ($act=='editjobs')
 elseif ($act=='editjobs_save')
 {
 	$id=intval($_POST['id']);
+    if(check_job_promotion(intval($id))) showmsg("在推广的职位，不能进行此操作",1);
 	$add_mode=trim($_POST['add_mode']);
 	if ($add_mode=='1')
 	{

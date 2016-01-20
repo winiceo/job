@@ -183,8 +183,13 @@ elseif($act == 'edit_category')
 	get_token();
 	$id=intval($_GET['id']);
 	$smarty->assign('navlabel',"category");
-	$smarty->assign('show',get_promotion_cat_one($id));	
-	$smarty->display('promotion/admin_promotion_category_edit.htm');
+	$smarty->assign('show',get_promotion_cat_one($id));
+    if($id==5){
+        $smarty->display('promotion/admin_promotion_category_edit5.htm');
+
+    }else{
+        $smarty->display('promotion/admin_promotion_category_edit.htm');
+    }
 }
 elseif($act=='edit_category_save')
 {	

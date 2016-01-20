@@ -110,7 +110,9 @@ $(document).ready(function() {
 				<li {#if $smarty.get.act=="favorites_list"#}class="h"{#/if#}><a href="company_recruitment.php?act=favorites_list">收藏的简历</a></li>
 				<li {#if $smarty.get.act=="my_attention"#}class="h"{#/if#}><a href="company_recruitment.php?act=my_attention">浏览过的简历</a></li>
 				<li {#if $smarty.get.act=="view_jobs_log"#}class="h"{#/if#}><a href="company_recruitment.php?act=view_jobs_log">谁看过我的职位</a></li>
-				</ul>
+                <li {#if $smarty.get.act=="upload"#}class="h"{#/if#}><a href="company_upload.php?act=upload_list">审核上传简历</a></li>
+
+                </ul>
 			</div>
 		</div>
 		<div class="meunbox">

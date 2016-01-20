@@ -1,0 +1,178 @@
+<div class="content link_lan spread_dialog">
+    <table width="480">
+        <tbody>
+        <tr height="50">
+            <td width="90">可用余额：</td>
+            <td>{#$balance#}元</td>
+        </tr>
+        <tr height="50">
+            <td width="90">推广职位：</td>
+            <td>{#$jobs_name#}</td>
+        </tr>
+        <tr height="30">
+            <td>推广方案：</td>
+            <td width="120">
+                {#$promotion_name#}
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td height="50">面试人数：</td>
+            <td><input name="interview_num" type="text" class="input_text_200 interview" id="interview_num"
+                       maxlength="3" data-value="{#$cat_minday#}" value=""/></td>
+            <td>名，不能小于{#$cat_minday#}</td>
+        </tr>
+        <tr>
+            <td height="50">面试金额：</td>
+            <td><input name="interview_money" type="text" class="input_text_200 interview" id="interview_money"
+                       maxlength="6" data-value="{#$cat_maxday#}" value=""/></td>
+            <td>元，不能小于{#$cat_maxday#}</td>
+        </tr>
+        <tr>
+            <td height="50">成功金额：</td>
+            <td><input name="interview_success_money" type="text" class="input_text_200 interview"
+                       id="interview_success_money" data-value="{#$points_perday#}" maxlength="6" value=""/></td>
+            <td>元，不能小于{#$points_perday#}</td>
+        </tr>
+
+
+
+        </tbody>
+    </table>
+    <table width="480">
+        <tbody>
+        <tr>
+
+            <td>
+                <span style="color:#0066CC" id="count"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+<div class="spread_but_box">
+    <input type="hidden" id="jobid" value="{#$jobid#}">
+    <input type="hidden" id="catid" value="{#$catid#}">
+    <input type="hidden" id="balance" value="{#$balance#}">
+    <input type="button" value="确定" id="submit_ok" disabled class="but95hui DialogSubmit"/>
+    <input type="button" value="取消" class="but95hui DialogClose"/>
+</div>
+{#$cat_notes#}
+<script type="text/javascript">
+
+    function disable_submit(){
+        $("#submit_ok").prop( "disabled",true).removeClass("but95cheng").addClass('but95hui');
+
+
+    }
+    function get_result_money(){
+        var interview_num=$("#interview_num").val();
+        var interview_money=$("#interview_money").val();
+        var interview_success_money=$("#interview_success_money").val();
+        var my_balance=parseInt($("#balance").val());
+        var rs=parseInt(interview_num)*parseInt(interview_money)+parseInt(interview_success_money);
+        console.log(rs>my_balance);
+        var r = /^[0-9]*[1-9][0-9]*$/;
+        if(r.test(rs)){
+            if(rs>my_balance){
+                disable_submit();
+
+                $("#count").html("<br />所需金额<strong style=\"color:red\">&nbsp;&nbsp;"+rs+"元&nbsp;&nbsp;</strong>已超出你的可用余额<br />请<a href='company_service.php?act=pay_add'>充值</a>");
+
+            }else{
+                $("#submit_ok").prop( "disabled",false ).addClass("but95cheng").removeClass('but95hui');
+
+                $("#count").html("<br />将冻结金额<strong style=\"color:#009900\">&nbsp;&nbsp;"+rs+"元&nbsp;&nbsp;</strong> ");
+
+            }
+
+        };
+    }
+    $(document).ready(function () {
+        //计算总积分
+
+
+        $("#interview_num").keyup(function () {
+            if (!(/^(\+|-)?\d+$/.test($(this).val()))) {
+                disable_submit();
+                $("#count").html("<br />输入不正确，必须为数字<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else if ($(this).val() < $(this).data("value")) {
+                disable_submit();
+                $("#count").html("<br />面试人数不能小于"+$(this).data("value")+"<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else {
+
+                $("#count").html("");
+                get_result_money();
+            }
+        });
+        $("#interview_money").keyup(function () {
+            if (!(/^(\+|-)?\d+$/.test($(this).val()))) {
+                disable_submit();
+                $("#count").html("<br />输入不正确，必须为数字<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else if ($(this).val() < $(this).data("value")) {
+                disable_submit();
+                $("#count").html("<br />面试金额不能小于"+$(this).data("value")+"<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else {
+
+                $("#count").html("");
+                get_result_money();
+            }
+        });
+        $("#interview_success_money").keyup(function () {
+            if (!(/^(\+|-)?\d+$/.test($(this).val()))) {
+                disable_submit();
+                $("#count").html("<br />输入不正确，必须为数字<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else if ($(this).val() < $(this).data("value")) {
+                disable_submit();
+                $("#count").html("<br />面试成功金额不能"+$(this).data("value")+"<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else {
+
+                $("#count").html("");
+                get_result_money();
+            }
+        })
+
+
+
+    menuDown("#val_menu", "#val", "", "#menu1", "88px");
+    function menuDown(menuId, input, input_cn, menuList, width) {
+        $(menuId).click(function () {
+            $(menuList).css("width", width);
+            $(menuList).slideDown('fast');
+            //生成背景
+            $(menuId).parent("div").before("<div class=\"menu_bg_layer\"></div>");
+            $(".menu_bg_layer").height($(".FloatBox").height());
+            $(".menu_bg_layer").css({
+                width: $(".FloatBox").width(),
+                position: "absolute",
+                left: "0",
+                top: "0",
+                "z-index": "0",
+                "background-color": "#ffffff"
+            });
+            $(".menu_bg_layer").css("opacity", "0");
+            $(".menu_bg_layer").click(function () {
+                $(".menu_bg_layer").remove();
+                $(menuList).slideUp("fast");
+                $(menuId).parent("div").css("position", "");
+            });
+        });
+
+        $(menuList + " li").click(function () {
+            var id = $(this).attr("id");
+            var title = $(this).attr("title");
+            $(input).val(id);
+            $(input_cn).val(title);
+            $(menuId).html("&nbsp");
+            $(menuId).css("background-color", title);
+            $(menuList).slideUp('fast');
+            $(".menu_bg_layer").remove();
+        });
+    }
+
+    })
+    ;
+</script>
+

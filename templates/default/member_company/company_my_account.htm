@@ -61,8 +61,11 @@
 							<span class="account-type">当前套餐：<span>{#$setmeal.setmeal_name#}</span><em>({#$setmeal.starttime|date_format:"%Y-%m-%d"#} 至 {#if $setmeal.endtime=='0'#}--{#else#}{#$setmeal.endtime|date_format:"%Y-%m-%d"#}{#/if#})</em><a href="company_service.php?act=setmeal_list" class="underline">升级VIP套餐</a></span>
 							{#/if#}
 							{#if $QISHI.operation_mode == '1' || $QISHI.operation_mode == '3'#}
-							<span class="account-type last">当前{#$QISHI.points_byname#}：<span>{#$points#}</span>{#$QISHI.points_quantifier#}<a href="company_service.php?act=order_add" class="underline">积分充值</a></span>
+							<span class="account-type ">当前{#$QISHI.points_byname#}：<span>{#$points#}</span>{#$QISHI.points_quantifier#}<a href="company_service.php?act=order_add" class="underline">积分充值</a></span>
 							{#/if#}
+
+                            <span class="account-type last">当前余额：<span>{#$balance#}</span>元<a href="company_service.php?act=pay_add" class="underline">现金充值</a></span>
+
 						</div>
 					</div>
 					<div class="account-ctrl-bar clearfix">

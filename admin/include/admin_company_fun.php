@@ -1027,7 +1027,23 @@ function order_paid($v_oid)
 			$user_points = get_user_setmeal($order['uid']);
 			write_memberslog($_SESSION['uid'],1,9003,$_SESSION['username'],"短信充值套餐：<strong>{$order['description']}</strong>，(- {$order['amount']})，(剩余:{$user_points['set_sms']})",1,1020,"申请广告位","- {$order['amount']}","{$user_points['set_sms']}");
 		}
-	} 
+ 
+	}  elseif ($order['pay_type'] == '7')        //余额充值
+    {
+        if ($order['amount'] == '0.00') {
+            $ismoney = 1;
+        } else {
+            $ismoney = 2;
+        }
+
+        balance_deal($order['uid'], 1, $order['amount']);
+        $user_balance = get_user_balance($order['uid']);
+
+        $sql = "UPDATE " . table('order') . " SET is_paid= '2',payment_time='{$timestamp}' WHERE oid='{$v_oid}' LIMIT 1 ";    //is_paid =2 为确定支付
+        if (!$db->query($sql)) return false;
+        $note = "余额充值：<strong>{$order['description']}</strong>，(： {$order['amount']})。当前余额为：{$user_balance}";
+        write_memberslog($_SESSION['uid'], 1, 9101, $_SESSION['username'], $note, 4, $order['amount'], $ismoney, 1, 1);
+    }
 		//发送邮件
 	$mailconfig=get_cache('mailconfig');
 	if ($mailconfig['set_payment']=="1" && $user['email_audit']=="1")

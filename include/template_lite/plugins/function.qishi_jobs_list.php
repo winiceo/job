@@ -83,6 +83,9 @@ $a=explode(':',$str);
 	case "½ô¼±ÕÐÆ¸":
 		$aset['emergency'] = $a[1];
 		break;
+            case "ÐüÉÍÕÐÆ¸":
+                $aset['reward'] = $a[1];
+                break;
 	case "ÍÆ¼ö":
 		$aset['recommend'] = $a[1];
 		break;
@@ -231,6 +234,9 @@ if (isset($aset['emergency'])  && $aset['emergency']<>'')
 {
 	$wheresql.=" AND emergency=".intval($aset['emergency']);
 }
+ if (isset($aset['reward']) && $aset['reward'] <> '') {
+        $wheresql .= " AND reward=" . intval($aset['reward']);
+    }
 if (isset($aset['recommend']) && $aset['recommend']<>'')
 {
 	$wheresql.=" AND recommend=".intval($aset['recommend']);
@@ -564,6 +570,14 @@ if (isset($aset['page']))
 			$row['jobs_url']=url_rewrite($aset['jobsshow'],array('id'=>$row['id'],'style'=>$aset['tpl_compnay']));
 			$row['company_url']=url_rewrite($aset['companyshow'],array('id'=>$row['company_id']));
 			$row['wage_newcn']=str_replace("Ôª/ÔÂ","",$row['wage_cn']);
+			 if (isset($aset['reward'])  && $aset['reward']<>'')
+            {
+
+                $rs=$db->getone("SELECT  cp_json from ".table("promotion")." where cp_promotionid=5 and cp_jobid={$row['id']} ");
+                $json=str_replace('&quot;', '"', trim($rs["cp_json"]));
+                $row['block_balance']=json_decode($json)->block_balance;
+
+            }
 			if ($row['tag_cn'])
 			{
 				$tag_cn=explode(',',$row['tag_cn']);

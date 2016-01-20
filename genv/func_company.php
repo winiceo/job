@@ -75,6 +75,10 @@ function block_balance_reward($uid, $balance=0)
     return false;
 
 }
+
+
+
+
 //企业资金异动，1为增加，2为减少；
 function balance_deal($uid,$type=1,$money=0)
 {

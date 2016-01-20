@@ -12,6 +12,8 @@
 if(!defined('IN_QISHI')) die('Access Denied!');
 header("Content-Type:text/html;charset=".QISHI_CHARSET);
 error_reporting(E_ERROR);
+//error_reporting(-1);
+
 define('ADMIN_ROOT_PATH', str_replace('include/admin_common.inc.php', '', str_replace('\\', '/', __FILE__)));
 define('QISHI_ROOT_PATH', dirname(ADMIN_ROOT_PATH).'/');
 ini_set('session.save_handler', 'files');

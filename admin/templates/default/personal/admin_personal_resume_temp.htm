@@ -1,0 +1,232 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript" src="js/jquery.userinfotip-min.js"></script>
+<script type="text/javascript" src="js/jquery.entrustinfotip-min.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#ButAudit").QSdialog({
+	DialogTitle:"请选择",
+	DialogContent:"#AuditSet",
+	DialogContentType:"id",
+	DialogAddObj:"#OpAudit",	
+	DialogAddType:"html"	
+	});
+	$("#ButTalent").QSdialog({
+	DialogTitle:"请选择",
+	DialogContent:"#TalentSet",
+	DialogContentType:"id",
+	DialogAddObj:"#OpTalent",	
+	DialogAddType:"html"	
+	});	
+	$("#ButPhotoresume").QSdialog({
+	DialogTitle:"请选择",
+	DialogContent:"#PhotoresumeSet",
+	DialogContentType:"id",
+	DialogAddObj:"#OpPhotoresume",	
+	DialogAddType:"html"	
+	});
+	//点击批量删除	
+	$("#ButDel").click(function(){
+		if (confirm('你确定要删除吗？'))
+		{
+			$("form[name=form1]").attr("action",$("form[name=form1]").attr("action")+"&delete=true");
+			$("form[name=form1]").submit()
+		}
+	});
+	$("#Butrefresh").click(function(){
+			$("form[name=form1]").attr("action",$("form[name=form1]").attr("action")+"&refresh=ok");
+			$("form[name=form1]").submit()
+	});
+	$("#ButExport").click(function(){
+			$("form[name=form1]").attr("action",$("form[name=form1]").attr("action")+"&export=true");
+			$("form[name=form1]").submit()
+	});
+	//纵向列表排序
+	$(".listod .txt").each(function(i){
+	var li=$(this).children(".select");
+	var htm="<a href=\""+li.attr("href")+"\" class=\""+li.attr("class")+"\">"+li.text()+"</a>";
+	li.detach();
+	$(this).prepend(htm);
+	});
+			
+	$("#fail").click(function(){
+		$("#reason").show();
+	});
+	$("#success").click(function(){
+		$("#reason").hide();
+	});
+
+	$("#not_audit").click(function(){
+		$("#is_del_img").show();
+	});
+	$("#yes_audit").click(function(){
+		$("#is_del_img").hide();
+	});
+	
+	
+		
+});
+</script>
+<div class="admin_main_nr_dbox">
+ <div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+
+<div class="toptip">
+	<h2>提示：</h2>
+	<p>
+上传导入的简历列表<br />
+</p>
+</div>
+
+
+
+ 
+  <form id="form1" name="form1" method="post" action="?act=perform_temp">
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"   class="link_lan">
+    <tr>
+      <td    class="admin_list_tit admin_list_first" >
+     <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>姓名</label>	 </td>
+        <td  align="center"    class="admin_list_tit">性别</td>
+        <td  align="center"   class="admin_list_tit">工作性质</td>
+        <td  align="center"   class="admin_list_tit">同生日期</td>
+        <td  align="center"   class="admin_list_tit">专业</td>
+        <td  align="center"   class="admin_list_tit">邮箱</td>
+        <td  align="center"   class="admin_list_tit">电话</td>
+
+
+
+
+    </tr>
+	{#foreach from=$resumelist item=list#}
+	<tr>
+      <td  class="admin_list admin_list_first" >
+	  <input name="id[]" type="checkbox" id="id" value="{#$list.id#}"  />
+		 {#$list.fullname#}  </td>
+
+	 <td align="center"  class="admin_list">{#$list.sex_cn#}</td>
+	 <td align="center"  class="admin_list">{#$list.nature_cn#}</td>
+	 <td align="center"  class="admin_list">{#$list.birthdate#}</td>
+	 <td align="center"  class="admin_list">{#$list.major_cn#}</td>
+	 <td align="center"  class="admin_list">{#$list.email#}</td>
+	 <td align="center"  class="admin_list">{#$list.telephone#}</td>
+
+
+
+
+    </tr>
+      <tr bgcolor="#cccccc">
+          <td  class="admin_list admin_list_first" colspan="7">
+              审核日志：{#$list.log#}
+          </td>
+      </tr>
+	 {#/foreach#}
+  </table>
+  <span id="OpAudit"></span>
+  <span id="OpTalent"></span>
+  <span id="OpPhotoresume"></span>
+ </form>
+{#if !$resumelist#}
+<div class="admin_list_no_info">没有任何信息！</div>
+{#/if#}
+<table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+      <tr>
+        <td>
+<input type="button" class="admin_submit" id="ButAudit" value="审核简历" />
+
+<input type="button" class="admin_submit" id="ButDel" value="删除"/>
+ 		</td>
+        <td width="305" align="right">
+
+		  <script type="text/javascript">$(document).ready(function(){showmenu("#key_type_cn","#sehmenu","#key_type");});	</script>
+	    </td>
+      </tr>
+  </table>
+<div class="page link_bk">{#$page#}</div>
+</div>
+{#include file="sys/admin_footer.htm"#}
+<div id="AuditSet" style="display: none" >
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选简历设置为：</strong></td>
+    </tr>
+	      <tr>
+      <td width="40" height="25">&nbsp;</td>
+      <td>
+	  <label >
+                      <input name="audit" type="radio" value="1" checked="checked" id="success" />
+                      审核通过 </label>	  </td>
+    </tr>
+
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td><span style="border-top: 1px #A3C7DA solid;">
+        <input type="submit" name="set_audit" value="确定" class="admin_submit">
+      </span></td>
+    </tr>		  
+  </table>
+  </div>
+<div id="TalentSet" style="display:none" >
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选简历设置为：</strong></td>
+    </tr>
+	      <tr>
+      <td width="27" height="25">&nbsp;</td>
+      <td>
+	  <label >
+                      <input name="talent" type="radio" value="1" checked="checked"  />
+                      普通人才 </label>	  </td>
+    </tr>
+    <tr>
+      <td width="27" height="25">&nbsp;</td>
+      <td width="425"><label ><input type="radio" name="talent" value="2"  />高级人才</label>	  </td>
+    </tr>
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td><span style="border-top: 1px #A3C7DA solid;">
+        <input type="submit" name="set_talent" value="确定" class="admin_submit">
+      </span></td>
+    </tr>
+  </table>
+</div>
+<div id="PhotoresumeSet" style="display: none" >
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6" >
+    <tr>
+      <td height="30">&nbsp;</td>
+      <td height="30"><strong  style="color:#0066CC; font-size:14px;">将所选简历设置为：</strong></td>
+    </tr>
+	      <tr>
+      <td width="27" height="25">&nbsp;</td>
+      <td>
+	  <label >
+                      <input name="photoaudit" type="radio" value="1" checked="checked" id="yes_audit"/>
+                      照片审核通过 </label>	  </td>
+    </tr>
+    <tr>
+      <td width="27" height="25">&nbsp;</td>
+      <td width="425"><label >
+                      <input type="radio" name="photoaudit" value="3" id="not_audit"/>
+                       照片审核未通过</label></td>
+    </tr>
+    <tr style="display:none" id="is_del_img">
+      <td width="27" height="25">&nbsp;</td>
+      <td>
+                      <label><input type="checkbox" name="is_del_img" value="1"/>
+					  是否删除相应照片
+                       </label></td>
+    </tr>
+    <tr>
+      <td height="25">&nbsp;</td>
+      <td><span style="border-top: 1px #A3C7DA solid;">
+        <input type="submit" name="set_photoaudit" value="确定" class="admin_submit">
+      </span></td>
+    </tr>		  
+  </table>
+</div>
+</body>
+</html>

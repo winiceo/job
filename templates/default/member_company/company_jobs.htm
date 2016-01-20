@@ -227,6 +227,10 @@ $(document).ready(function(){
 	});
 	// 职位推广
 	set_promotion_dialog(".set_promotion");
+    set_reward_dialog(".set_reward");
+    set_date_dialog(".set_date");
+
+
 	// 推广下拉
 	$(".spread").toggle(function() {
 		$(this).find(".spread_but_group").slideDown("fast");
@@ -335,7 +339,7 @@ $(document).ready(function(){
 					<div class="c-item f-left content1">
 						<div class="job-ma-block">
 							<div><a href="{#$li.jobs_url#}" target="_blank" class="name-link underline" title="{#$li.jobs_name_#}">{#$li.jobs_name#}</a></div>
-							<p>应聘简历：<a href="company_recruitment.php?act=apply_jobs&jobsid={#$li.id#}&jobname={#$li.jobs_name_#}" class="data-ctrl underline">{#$li.countresume#}</a> | 更新时间：{#$li.refreshtime|date_format:"%Y-%m-%d %H:%M"#} <a  href="javascript:;" jobsid="{#$li.id#}" class="data-ctrl underline refresh">[刷新]</a></p>
+							<p>应聘简历：{#$li.countresume#} | 更新时间：{#$li.refreshtime|date_format:"%Y-%m-%d %H:%M"#} <a  href="{#if $QISHI.operation_mode=="1"#}?act=jobs_perform&refresh=1&y_id={#$li.id#}{#else#}javascript:;{#/if#}" jobsid="{#$li.id#}" class="data-ctrl underline refresh">[刷新]</a></p>
 							<div class="job-ma-ctrl">
 								<a href="?act=editjobs&id={#$li.id#}" class="data-ctrl underline">修改</a>&nbsp;<a href="{#"QS_resumelist,jobcategory:"|cat:$li.jobcategory|qishi_url#}" class="data-ctrl underline" target="_blank">匹配</a>&nbsp;<a url="?act=jobs_perform&display2=1&y_id={#$li.id#}" href="javascript:;" class="data-ctrl underline ctrl-close">关闭</a>&nbsp;<a href="javascript:;" class="data-ctrl underline ctrl-del" url="?act=jobs_perform&delete=1&y_id={#$li.id#}">删除</a>
 								<a href="javascript:;" class="pengyouquan" id="jobs_{#$li.id#}">分享到朋友圈</a>
@@ -367,6 +371,12 @@ $(document).ready(function(){
 						<a href="javascript:void(0);" class="data-ctrl set_promotion" catid="1" jobid="{#$li.id#}">推荐</a>
 						{#else#}
 						<a  href="javascript:void(0);" class="data-ctrl underline" style="color:#999" title="该职位已紧急推荐">推荐</a>
+ 						{#/if#}<br>
+                        {#if $li.reward=="0"#}
+                        <a href="javascript:void(0);" class="data-ctrl set_reward" catid="5" jobid="{#$li.id#}">悬赏</a>
+                        {#else#}
+                        <a  href="javascript:void(0);" class="data-ctrl underline set_date" catid="5" jobid="{#$li.id#}" style="color:#999" title="该职位已悬赏">悬赏</a>
+                    
 						{#/if#}
 					</div>
 				</div>
@@ -566,6 +576,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 			</div>
+            <div style="color:red;font-size:15px; padding-left: 10px;"><span>在推广期的简历，不可以修改及关闭，删除操作</span></div>
 			{#else#}
 			<div class="c-data-row emptytip">没有找到对应的职位信息</div>
 			{#/if#}
@@ -692,7 +703,7 @@ $(document).ready(function(){
 					<div class="c-item f-left content1" style="width:535px;">
 						<div class="job-ma-block">
 							<div><a href="{#$li.jobs_url#}" target="_blank" class="name-link underline" title="{#$li.jobs_name_#}">{#$li.jobs_name#}</a></div>
-							<p>应聘简历：{#$li.countresume#} | 更新时间：{#$li.refreshtime|date_format:"%Y-%m-%d %H:%M"#}{#if $li.status==1#}  <a  href="javascript:;" jobsid="{#$li.id#}" class="data-ctrl underline refresh">[刷新]</a>{#/if#}</p>
+							<p>应聘简历：{#$li.countresume#} | 更新时间：{#$li.refreshtime|date_format:"%Y-%m-%d %H:%M"#}{#if $li.status==1#}  <a  href="{#if $QISHI.operation_mode=="1"#}?act=jobs_perform&refresh=1&y_id={#$li.id#}{#else#}javascript:;{#/if#}" jobsid="{#$li.id#}" class="data-ctrl underline refresh">[刷新]</a>{#/if#}</p>
 						</div>
 					</div>
 					<div class="c-item f-left content2" style="width:218px;"><span style="{#if $li.status==2 || $li.status==4#}color:red;{#elseif $li.status==3#}color:#FFB443;{#else#}{#/if#}">{#$li.status_cn#}</span></div>

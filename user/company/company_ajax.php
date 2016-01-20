@@ -11,15 +11,17 @@
 */
 define('IN_QISHI', true);
 require_once(dirname(__FILE__) . '/company_common.php');
-if($act=="company_profile_save_succeed"){
-	$tpl='../../templates/'.$_CFG['template_dir']."member_company/ajax_companyprofile_save_succeed_box.htm";
-	$contents=file_get_contents($tpl);
-	if($company_profile['map_open'] == '1'){
-		$save_msg = '您接下来就可以发布职位啦！ <br />';
-		$opt_button = '<div class="but130cheng " onclick="javascript:location.href=\'company_jobs.php?act=addjobs\'">发布职位</div>';
-	}else{ 
-		$save_msg = '为了让求职者更直观的了解公司所在位置，合理计划 <br />面试出行路线，98%的企业已开通了电子地图。';
-		$opt_button = '<div class="but130cheng" onclick="javascript:location.href=\'company_info.php?act=company_map_open\'">立即开通</div>
+require_once(QISHI_ROOT_PATH . 'genv/func_company.php');
+
+if ($act == "company_profile_save_succeed") {
+    $tpl = '../../templates/' . $_CFG['template_dir'] . "member_company/ajax_companyprofile_save_succeed_box.htm";
+    $contents = file_get_contents($tpl);
+    if ($company_profile['map_open'] == '1') {
+        $save_msg = '您接下来就可以发布职位啦！ <br />';
+        $opt_button = '<div class="but130cheng " onclick="javascript:location.href=\'company_jobs.php?act=addjobs\'">发布职位</div>';
+    } else {
+        $save_msg = '为了让求职者更直观的了解公司所在位置，合理计划 <br />面试出行路线，98%的企业已开通了电子地图。';
+        $opt_button = '<div class="but130cheng" onclick="javascript:location.href=\'company_info.php?act=company_map_open\'">立即开通</div>
 		<div class="but130hui but_right" onclick="javascript:location.href=\'company_jobs.php?act=addjobs\'">发布职位</div>';
 	}
 	$contents=str_replace('{#$save_msg#}',$save_msg,$contents);
@@ -121,6 +123,13 @@ elseif($act=="set_promotion"){
 			}
 		}
 	}
+    if ($catid == '5') {
+        $balance = get_user_can_balance($uid);
+
+        $operation_mode = 1;
+
+        $tpl = '../../templates/' . $_CFG['template_dir'] . "member_company/ajax_set_balance_promotion.htm";
+    }
 	$contents=file_get_contents($tpl);
 	if($end!=1){
 		if($catid=="4"){
@@ -167,6 +176,11 @@ elseif($act=="set_promotion"){
 			$contents=str_replace('{#$points_byname#}',$_CFG['points_byname'],$contents);
 			$contents=str_replace('{#$cat_minday#}',$promotion['cat_minday'],$contents);
 			$contents=str_replace('{#$cat_maxday#}',$promotion['cat_maxday'],$contents);
+            if ($catid == 5) {
+                $contents = str_replace('{#$cat_notes#}', htmlspecialchars_decode($promotion['cat_notes']), $contents);
+                $contents = str_replace('{#$balance#}', $balance, $contents);
+
+            }
 		}elseif($operation_mode==2){
 			$contents=str_replace('{#$days#}',$data['days'],$contents);
 			$contents=str_replace('{#$setmeal_name#}',$setmeal['setmeal_name'],$contents);
@@ -177,12 +191,46 @@ elseif($act=="set_promotion"){
 		}
 	}
 	exit($contents);
-}
-elseif($act=="promotion_add_save"){
-	$catid = intval($_POST['catid'])?intval($_POST['catid']):exit("请选择推广类型！");
-	$jobid = intval($_POST['jobid'])?intval($_POST['jobid']):exit("职位id丢失！");
-	$days = intval($_POST['days'])?intval($_POST['days']):exit("请填写推广天数！");
-	$uid = intval($_SESSION['uid'])?intval($_SESSION['uid']):exit("UID丢失！");
+}elseif ($act == "set_date") {
+    $catid = intval($_GET['catid']) ? intval($_GET['catid']) : exit("参数错误！");
+    $jobid = intval($_GET['jobid']) ? intval($_GET['jobid']) : exit("参数错误！");
+    $uid = intval($_SESSION['uid']) ? intval($_SESSION['uid']) : exit("参数错误！");
+    $jobinfo = get_jobs_one($jobid);
+    $promotion_category = get_promotion_category_one($catid);
+    $promotion = get_promotion_one($jobid,$uid,$catid);
+
+    $tpl = '../../templates/' . $_CFG['template_dir'] . "member_company/ajax_set_date_promotion.htm";
+    $contents = file_get_contents($tpl);
+    if($catid==5){
+         $json=str_replace('&quot;', '"', trim($promotion["cp_json"]));
+        $block_balance=json_decode($json)->block_balance;
+
+        $other='<tr>
+            <td height="50">冻结金额：</td>
+            <td>'.$block_balance.'</td>
+            <td> </td>
+        </tr>';
+    }else{
+        $other='<tr>
+            <td height="50">推广期限：</td>
+            <td>从 '.date("Y-m-d", $promotion["cp_starttime"]).' 到 '.date("Y-m-d", $promotion["cp_endtime"]).'</td>
+
+        </tr>';
+    }
+    $contents = str_replace('{#$cp_val#}', $promotion["cp_val"], $contents);
+    $contents = str_replace('{#$other#}', $other, $contents);
+    $contents = str_replace('{#$jobs_name#}', $jobinfo['jobs_name'], $contents);
+    $contents = str_replace('{#$promotion_name#}', $promotion_category['cat_name'], $contents);
+
+
+
+    exit($contents);
+} 
+elseif ($act == "promotion_add_save") {
+    $catid = intval($_POST['catid']) ? intval($_POST['catid']) : exit("请选择推广类型！");
+    $jobid = intval($_POST['jobid']) ? intval($_POST['jobid']) : exit("职位id丢失！");
+    $days = intval($_POST['days']) ? intval($_POST['days']) : exit("请填写推广天数！");
+    $uid = intval($_SESSION['uid']) ? intval($_SESSION['uid']) : exit("UID丢失！");
 
 	if($catid==4){
 		$val = intval($_POST['val'])?intval($_POST['val']):exit("请选择颜色！");
@@ -280,6 +328,85 @@ elseif($act=="promotion_add_save"){
 	exit("推广失败！");
 	}
 }
+
+elseif ($act == "reward_add_save") {
+    //悬赏招聘添加
+    $_POST = $_GET;
+    $catid = intval($_POST['catid']) ? intval($_POST['catid']) : exit("请选择推广类型！");
+    $jobid = intval($_POST['jobid']) ? intval($_POST['jobid']) : exit("职位id丢失！");
+    $interview_num = intval($_POST['interview_num']) ? intval($_POST['interview_num']) : exit("请填写面试人数！");
+    $interview_money = intval($_POST['interview_money']) ? intval($_POST['interview_money']) : exit("请填写面试金额！");
+    $interview_success_money = intval($_POST['interview_success_money']) ? intval($_POST['interview_success_money']) : exit("请填写面试成功金额！");
+
+
+    $uid = intval($_SESSION['uid']) ? intval($_SESSION['uid']) : exit("UID丢失！");
+    $val_code = "";
+    //可用金额
+    $can_balance = get_user_can_balance($uid);
+
+    $jobs = get_jobs_one($jobid, $uid);
+    $jobs = array_map("addslashes", $jobs);
+
+    if ($jobs['deadline'] < time()) {
+        exit("该职位已到期，请先延期！");
+    }
+    if ($jobid > 0) {
+        $pro_cat = get_promotion_category_one($catid);
+
+        if ($pro_cat["cat_minday"] > $interview_num) {
+            exit("面试人数有误！");
+        }
+        if ($pro_cat["cat_maxday"] > $interview_money) {
+            exit("面试金额有误！");
+        }
+        if ($pro_cat["cat_points"] > $interview_success_money) {
+            exit("面试成功金额有误！");
+        }
+        $block_balance = $interview_num * $interview_money + $interview_success_money;
+
+
+        if ($block_balance > $can_balance) {
+            exit("余额不足！");
+        }
+
+        $info = get_promotion_one($jobid, $uid, $catid);
+        if (!empty($info)) {
+            exit("此职位正在推广中，请选择其他职位或其他方案");
+        }
+        $setsqlarr['cp_available'] = 1;
+        $setsqlarr['cp_promotionid'] = $catid;
+        $setsqlarr['cp_uid'] = $uid;
+        $setsqlarr['cp_jobid'] = $jobid;
+
+
+        $json=array();
+        $json["interview_num"]=$interview_num;
+        $json["interview_money"]=$interview_money;
+        $json["interview_success_money"]=$interview_success_money;
+        $json["block_balance"]=$block_balance;
+
+        $setsqlarr['cp_json'] = json_encode($json);
+        $db->inserttable(table('promotion'), $setsqlarr);
+        $setsqlarr['addtime'] = time();
+        $setsqlarr['interview_num'] = $interview_num;
+        $setsqlarr['interview_money'] = $interview_money;
+        $setsqlarr['interview_success_money'] = $interview_success_money;
+
+        if ($db->inserttable(table('jobs_reward'), $setsqlarr)) {
+            //标注简历推广
+            set_job_reward($jobid, $setsqlarr['cp_promotionid'], $val_code);
+            //锁定金额
+            block_balance_reward($uid, $block_balance);
+            $can_balance = get_user_can_balance($uid);
+            write_memberslog($uid, 1, 9200, $_SESSION['username'], "{$pro_cat['cat_name']}：<strong>{$jobs['jobs_name']}</strong>，悬赏简历 冻结 {$block_balance} ，(可用:{$can_balance})", 1, 1018, "{$pro_cat['cat_name']}", "-{$block_balance}", "{$can_balance}");
+            exit('推广成功！');
+        }
+    } else {
+        exit("推广失败！");
+    }
+}
+
+
 //备注 风采图片
 elseif($act=='img_title')
 {

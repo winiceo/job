@@ -1,0 +1,90 @@
+{#include file="sys/admin_header.htm"#}
+
+<div class="admin_main_nr_dbox">
+    <div class="pagetit">
+        <div class="ptit"> {#$pageheader#}</div>
+        {#include file="replace/admin_replace_nav.htm"#}
+        <div class="clear"></div>
+    </div>
+
+    <div class="toptit">修改</div>
+
+    <div class="admintable">
+
+        <form action="?act=edit_save" method="post" name="FormData" id="FormData">
+
+            {#$inputtoken#}
+            <table width="100%" border="0" cellpadding="3" cellspacing="0">
+                <tr>
+                    <td class="tit">类型：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="type" value="2" {#if $show.type=="2"#}checked="checked"{#/if#}/>
+                            字段内容</label>
+                        <label>
+                            <input name="type" type="radio" value="1" {#if $show.type=="1"#}checked="checked"{#/if#} />
+                            标题</label>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tit">内容：</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <input name="name" type="text" class="input_text_200" maxlength="20" value="{#$show.name#}"/>
+                        <span class="admin_note">上传的excel里的内容</span></td>
+                </tr>
+                <tr>
+                    <td class="tit">替换后内容：</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <input name="value" type="text" class="input_text_200" maxlength="30" value="{#$show.value#}"/>
+
+                        <span class="admin_note">替换成标准内容</span></td>
+                </tr>
+
+
+                <tr>
+                    <td class="tit">备注：</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <input name="source" type="text" class="input_text_200" maxlength="30" value="{#$show.source#}"/>
+
+                        <span class="admin_note">备注</span></td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <br/>
+                        <br/>
+                        <input name="id" type="hidden" value="{#$show.id#}"/>
+                        <input type="submit" name="Submit" value="确定提交" class="admin_submit"/>
+
+                        <input name="submit22" type="button" class="admin_submit" value="返 回"
+                               onclick="window.location='?act='"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

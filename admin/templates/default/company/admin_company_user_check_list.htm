@@ -1,0 +1,111 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript" src="js/jquery.userinfotip-min.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#ButDel").QSdialog({
+	DialogContent:"#GetDelInfo",
+	DialogContentType:"id",
+	DialogAddObj:"#DelSel",	
+	DialogWidth:"500",
+	DialogAddType:"html"	
+	});
+
+	//点击批量设置顾问
+	$("#AddConsultant").click(function(){
+		$("form[name=form1]").attr("action","?act=consultant_install");
+		$("form[name=form1]").submit()
+	});
+});
+</script>
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+
+
+  <div class="seltpye_x">
+		<div class="left">审核状态</div>
+		<div class="right">
+		<a href="{#"status:"|qishi_parse_url#}" {#if $smarty.get.status==""#}class="select"{#/if#}>不限</a>
+		<a href="{#"status:0"|qishi_parse_url#}" {#if $smarty.get.status=="0"#}class="select"{#/if#}>待审核</a>
+		<a href="{#"status:1"|qishi_parse_url#}" {#if $smarty.get.status=="1"#}class="select"{#/if#}>审核通过</a>
+		<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+  </div>
+  <form id="form1" name="form1" method="post" action="?act=delete_user">
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td  class="admin_list_tit admin_list_first" >
+      <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>用户名</label></td>
+      <td  class="admin_list_tit">email</td>
+	  <td  class="admin_list_tit">手机</td>
+      <td  class="admin_list_tit">企业信息</td>
+      <td width="10%"   align="center"   class="admin_list_tit">注册时间</td>
+      <td width="10%"   align="center"   class="admin_list_tit">注册IP</td>
+	  <td width="10%"   align="center"   class="admin_list_tit">最后登录时间</td>
+
+      <td width="13%"  align="center"  class="admin_list_tit" >操作</td>
+    </tr>
+	{#foreach from=$member item=list#}
+      <tr>
+      <td class="admin_list admin_list_first">
+        <input name="tuid[]" type="checkbox" id="tuid" value="{#$list.uid#}"/>{#$list.username#}(<span style="color:red">{#if $list.check_status==1#}已通过{#else#}未通过{#/if#}</span>)
+		</td>
+ 		<td class="admin_list">
+		{#$list.email#}
+		
+		{#if $list.email_audit=="1"#}<span style="color:#009900">[验]</span>{#/if#}
+		<a href="admin_mail.php?act=send&email={#$list.email#}&uid={#$list.uid#}"> <img src="images/email.gif" border="0" title="发送邮件" /></a>		
+		</td>
+		 <td  class="admin_list">
+		 {#if $list.mobile#}{#$list.mobile#}<a href="admin_sms.php?act=send&mobile={#$list.mobile#}&uid={#$list.uid#}"><img src="images/sms.gif" border="0" title="发送短信" /></a>
+{#else#}未填写{#/if#}
+		{#if $list.mobile_audit=="1"#}<span style="color:#009900">[验]</span>{#/if#}
+		</td>
+        <td class="admin_list">
+		{#if $list.companyname#}
+		<a href="{#$list.company_url#}" target="_blank">{#$list.companyname#}</a>
+		{#else#}<span style="color: #999999">未完善企业资料</span>
+		{#/if#}
+		</td>
+		<td align="center" class="admin_list">
+		{#$list.reg_time|date_format:"%Y-%m-%d"#}
+		</td>
+		<td align="center" class="admin_list"> {#$list.reg_ip#} </td>
+		<td align="center" class="admin_list">
+		{#if $list.last_login_time#}
+		{#$list.last_login_time|date_format:"%Y-%m-%d"#}
+		{#else#}
+		从未登录
+		{#/if#}
+		</td> 
+
+        <td align="center" class="admin_list">
+        {#if $list.check_status==1#}
+            <a href="?act=check_save&cid={#$list.cid#}&status=0">取消审核</a>
+            {#else#}
+            <a href="?act=check_save&cid={#$list.cid#}&status=1">审核通过 </a>
+
+            {#/if#}
+
+		</td>
+      </tr>
+      {#/foreach#}
+    </table>
+	<span id="DelSel"></span>
+  </form>
+	{#if !$member#}
+	<div class="admin_list_no_info">没有任何信息！</div>
+	{#/if#}
+ <div class="page link_bk">{#$page#}</div>
+	<div id="GetDelInfo" style="display: none" >
+
+		</div>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

@@ -349,6 +349,37 @@ jQuery(document).ready(function($) {
 		{#/if#}
 	</div>
 	<!-- 广告位集中区域结束 -->
+    <!-- 列表-最新职位 -->
+    <style>.index-data-container{border:1px solid #ededed;background-color: #fff;margin-top: 15px;}
+    .index-data-container .index-data-title{padding:17px 13px;line-height: 22px;}
+    .index-data-container .index-data-title.photo{padding:17px 20px;}
+    .index-data-container .index-data-title h3{font-size: 16px;color:#333;font-weight: normal;}
+    .index-data-container .index-data-title a{font-size: 14px;color:#999;}
+    .new-job-list{padding:0 13px 10px;font-size: 14px;}
+    .new-job-list .n-job-item{width: 390px;overflow: hidden;white-space: nowrap;text-overflow:ellipsis;margin-bottom: 12px;line-height: 18px;}
+    .new-job-list .n-job-item .n-job-com{margin-right: 10px;color:#0178c8;vertical-align: middle;}
+    .new-job-list .n-job-item .n-job-com img{vertical-align: middle;}
+    .new-job-list .n-job-item .n-job{margin-right: 4px;color:#999;}
+        </style>
+    <div class="index-data-container">
+        <div class="index-data-title clearfix">
+            <h3 class="f-left">悬赏招聘</h3>
+            <a href="{#"QS_jobslist"|qishi_url#}" class="f-right underline" target="_blank">更多>></a>
+         </div>
+        <ul class="new-job-list clearfix">
+            {#qishi_jobs_list set="列表名:jobs,显示数目:10,职位名长度:12,企业名长度:12,悬赏招聘:1,排序:rtime>desc"#}
+            {#foreach from=$jobs item=list#}
+            {#qishi_jobs_list set="列表名:com_jobs_all,显示数目:3,会员UID:$list.uid"#}
+            <li class="n-job-item f-left"><a href="{#$list.company_url#}" target="_blank" class="n-job-com underline">{#$list.companyname#}</a>
+                <a href="{#$list.jobs_url#}" class="n-job underline" target="_blank">{#$list.jobs_name_#}</a>悬赏金额<em style="color:red">{#$list.block_balance#}</em>
+            </li>
+             {#/foreach#}
+
+
+        </ul>
+    </div>
+
+    <!-- 列表-最新职位结束 -->
 	<!-- 列表-推荐职位 -->
 	<div class="index-data-wrap index-data-wrap-i7">
 		<div class="blue-line"></div>

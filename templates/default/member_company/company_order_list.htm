@@ -99,6 +99,8 @@
 									<li><a href="company_service.php?act=order_list&pay_type=2&is_paid={#$smarty.get.is_paid#}">广告订单</a></li>
 									<li><a href="company_service.php?act=order_list&pay_type=3&is_paid={#$smarty.get.is_paid#}">短信订单</a></li>
 									<li><a href="company_service.php?act=order_list&pay_type=4&is_paid={#$smarty.get.is_paid#}">积分订单</a></li>
+                                    <li><a href="company_service.php?act=order_list&pay_type=7&is_paid={#$smarty.get.is_paid#}">余额充值</a></li>
+                                    <li><a href="company_service.php?act=order_list&pay_type=8&is_paid={#$smarty.get.is_paid#}">管理员扣款</a></li>
 								</ul>
 							</div>
 						</div>
@@ -107,11 +109,12 @@
 					</div>
 					{#if $payment#}
 	  		 			{#section name=payment loop=$payment#}
-						<div class="c-data-row">
+						<div class="c-data-row" style="height:90px;">
 							<div class="c-data-content order-list clearfix">
 								<div class="c-item f-left content1">
 									<div><a href="javascript:;" order_id="{#$payment[payment].id#}" class="name-link underline">{#$payment[payment].oid#}</a></div>
-									<p>创建时间:{#$payment[payment].addtime|date_format:"%Y-%m-%d %H:%M"#} | 支付方式:{#$payment[payment].payment_name#}</p>
+									<p>创建时间:{#$payment[payment].addtime|date_format:"%Y-%m-%d %H:%M"#} | 支付方式:{#$payment[payment].payment_name#}{#if $payment[payment].pay_type == 7#}余额充值{#elseif $payment[payment].pay_type == 8#}{#/if#}</p>
+                                    <p>{#$payment[payment].description#}</p>
 								</div>
 								<div class="c-item f-left content2">
 									<span class="order-not-done">{#if $payment[payment].is_paid==1#}未完成{#/if#}{#if $payment[payment].is_paid==2#}<span style="color:#4CA51F">已支付</span>{#/if#}</span>

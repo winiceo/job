@@ -11,6 +11,7 @@
 */
 define('IN_QISHI', true);
 require_once(dirname(__FILE__).'/company_common.php');
+require_once(QISHI_ROOT_PATH . '/genv/func_company.php');
 $smarty->assign('leftmenu',"service");
 //我的账户 -> 积分操作 
 if ($act=='j_account')
@@ -25,7 +26,9 @@ if ($act=='j_account')
 	$smarty->assign('setmeal',$my_setmeal);
 	//积分
 	$my_points = get_user_points(intval($_SESSION['uid']));
+    $my_balance = get_user_balance(intval($_SESSION['uid']));
 	$smarty->assign('points',$my_points);
+    $smarty->assign('balance', $my_balance);
 	$smarty->assign('act','j_account');
 	$smarty->assign('title','我的账户 - 企业会员中心 - '.$_CFG['site_name']);
 	//积分消费明细
@@ -193,6 +196,42 @@ elseif ($act=='order_add_save')
 			{
 			showmsg("添加订单失败！",0);
 			}
+} elseif ($act == 'pay_add') {
+    $smarty->assign('title', '在线充值 - 企业会员中心 - ' . $_CFG['site_name']);
+    $smarty->assign('payment', get_payment());
+    $smarty->assign('points', get_user_points($_SESSION['uid']));
+    $smarty->assign('balance', get_user_balance($_SESSION['uid']));
+
+    $smarty->display('member_company/company_pay_add.htm');
+} elseif ($act == 'pay_add_save') {
+    if (!$cominfo_flge) {
+        $link[0]['text'] = "填写企业资料";
+        $link[0]['href'] = 'company_info.php?act=company_profile';
+        showmsg("请先填写您的企业资料！", 1, $link);
+    }
+    $myorder = get_user_order($_SESSION['uid'], 1);
+    $order_num = count($myorder);
+    if ($order_num >= 5) {
+        $link[0]['text'] = "立即查看";
+        $link[0]['href'] = '?act=order_list&is_paid=1';
+        showmsg("未处理的订单不能超过 5 条，请先处理后再次申请！", 1, $link, true, 8);
+    }
+    $amount = (trim($_POST['amount'])) . (intval($_POST['amount'])) ? trim($_POST['amount']) : showmsg('请填写充值金额！', 1);
+    ($amount < $_CFG['payment_min']) ? showmsg("单笔充值金额不能少于 " . $_CFG['payment_min'] . " 元！", 1) : '';
+    $payment_name = empty($_POST['payment_name']) ? showmsg("请选择付款方式！", 1) : $_POST['payment_name'];
+    $paymenttpye = get_payment_info($payment_name);
+    if (empty($paymenttpye)) showmsg("支付方式错误！", 0);
+    $fee = number_format(($amount / 100) * $paymenttpye['fee'], 1, '.', '');//手续费
+    $order['oid'] = strtoupper(substr($paymenttpye['typename'], 0, 1)) . "-" . date('ymd', time()) . "-" . date('His', time());//订单号
+    $order['v_url'] = $_CFG['site_domain'] . $_CFG['site_dir'] . "include/payment/respond_" . $paymenttpye['typename'] . ".php";
+    $order['v_amount'] = $amount + $fee;
+    $points = $amount * $_CFG['payment_rate'];
+    $order_id = add_order($_SESSION['uid'], 7, $order['oid'], $amount, $payment_name, "现金充值:" . $points, $timestamp, $points, '', 1);
+    if ($order_id) {
+        header("location:?act=payment&order_id=" . $order_id);
+    } else {
+        showmsg("添加订单失败！", 0);
+    }
 }
 elseif ($act=='payment')
 {
