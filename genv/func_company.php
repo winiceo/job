@@ -34,10 +34,10 @@ function get_user_can_balance($uid)
 //查看职位有没有已经在推广
 function get_job_reward_one($jobid,$uid,$promotionid)
 {
-    global $db;
-    $jobid=intval($jobid);
-    $sql = "select * from ".table('jobs_reward')." where cp_jobid='{$jobid}' AND cp_uid='{$uid}' AND cp_promotionid='{$promotionid}'  LIMIT 1";
-    return $db->getone($sql);
+//    global $db;
+//    $jobid=intval($jobid);
+//    $sql = "select * from ".table('jobs_reward')." where cp_jobid='{$jobid}' AND cp_uid='{$uid}' AND cp_promotionid='{$promotionid}'  LIMIT 1";
+//    return $db->getone($sql);
 }
 //查看职位有没有已经在推广
 function get_promotion_info($jobid,$promotionid)
@@ -85,7 +85,7 @@ function balance_deal($uid,$type=1,$money=0)
     global $db,$timestamp;
     $money=intval($money);
     $uid=intval($uid);
-    $balance=get_user_balance($uid);
+    $balance=get_user_can_balance($uid);
     if ($type==1)
     {
         $sql = "UPDATE ".table('members_points')." SET balance= balance+{$money} WHERE uid='{$uid}' LIMIT 1";
@@ -150,7 +150,28 @@ function report_deal_reward($uid,$i_type=1,$balance=0)
     if (!$db->query($sql))return false;
     return true;
 }
+//查看职位有没有已经在推广
+function get_company_profile($uid)
+{
+    global $db;
+    $uid=intval($uid);
+    $sql = "select * from ".table('company_profile')." where uid='{$uid}'     LIMIT 1";
+    return $db->getone($sql);
+}
 
+//获取积分计划
+function get_points_plan($order="id asc ")
+{
+    global $db;
+    $row_arr = array();
+
+    $result = $db->query("SELECT * FROM " . table('company_points') . " order by ".$order." ");
+    while ($row = $db->fetch_array($result)) {
+
+        $row_arr[] = $row;
+    }
+    return $row_arr;
+}
 
 function get_member_check_list($offset, $perpage, $get_sql = '')
 {
@@ -159,7 +180,9 @@ function get_member_check_list($offset, $perpage, $get_sql = '')
     $limit = " LIMIT " . $offset . ',' . $perpage;
     $result = $db->query("SELECT m.*,c.status as check_status,c.id as cid,c.addtime FROM " . table('members') . " as m " . $get_sql . $limit);
     while ($row = $db->fetch_array($result)) {
-        $row['company_url'] = url_rewrite('QS_companyshow', array('id' => $row['id']));
+        $company=get_company_profile($row["uid"]);
+        $row['company_url'] = url_rewrite('QS_companyshow', array('id' => $company['id']));
+        $row['company_name'] = $company['companyname'];
         $address = $db->getone("select log_address,log_id,log_uid from " . table("members_log") . " where log_type = '1000' and log_uid = " . $row['uid'] . " order by log_id asc limit 1");
         $row['ipAddress'] = $address['log_address'];
         $row_arr[] = $row;
@@ -204,12 +227,19 @@ function get_clue_log_list($id)
     $sql = "select * from ".table('jobs_reward_clue_log')." where    cid='{$id}' order by id desc  ";
     $result=$db->query($sql);
     while ($row = $db->fetch_array($result)) {
-
+        $row["addtime"]=date("Y-m-d H:i",$row["addtime"]);
         $row_arr[] = $row;
     }
     return $row_arr;
 }
 
+
+function json_array($json){
+    $json=str_replace('&quot;', '"', trim($json));
+    $json=(array)json_decode($json);
+    return $json;
+
+}
 
 //增加订单
 function admin_add_order($uid,$pay_type,$oid,$amount,$payment_name,$description,$addtime,$points='',$setmeal='',$utype='1')

@@ -237,8 +237,9 @@ function set_reward_dialog(className)
                     var pro_name = $("#pro_name").val();
                     var interview_num=$("#interview_num").val();
                     var interview_money=$("#interview_money").val();
+                    var interview_success_num=$("#interview_success_num").val();
                     var interview_success_money=$("#interview_success_money").val();
-                    $.get("company_ajax.php?act=reward_add_save",{jobid:jobid,catid:catid,interview_num:interview_num,interview_money:interview_money,pro_name:pro_name,interview_success_money:interview_success_money},
+                    $.get("company_ajax.php?act=reward_add_save",{jobid:jobid,catid:catid,interview_num:interview_num,interview_money:interview_money,pro_name:pro_name,interview_success_num:interview_success_num,interview_success_money:interview_success_money},
                         function(result)
                         {
                             myDialog.content(result);

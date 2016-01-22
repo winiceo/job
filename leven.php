@@ -287,6 +287,21 @@ $app->get('/genv/init', function ($request, $response) {
 
     }
 
+    exit;
+    $g=ORM::for_table("qs_members_points_rule")->where("name","resume_checked")->find_one();
+    if(!$g){
+        $g=ORM::for_table("qs_members_points_rule")->create();
+        $g->utype=1;
+        $g->title="上传的简历审核通过";
+        $g->name="resume_checked";
+        $g->operation=1;
+        $g->value=10;
+        $g->save();
+
+
+
+    }
+exit;
     $g=ORM::for_table("qs_category_group")->where("g_alias","Genv_check_false")->find_one();
     if(!$g){
         $g=ORM::for_table("qs_category_group")->create();

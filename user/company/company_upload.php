@@ -13,6 +13,7 @@ define('IN_QISHI', true);
 require_once(dirname(__FILE__) . '/company_common.php');
 
 $smarty->assign('leftmenu', "recruitment");
+
 if ($act == 'upload') {
     require_once(QISHI_ROOT_PATH . 'include/page.class.php');
 
@@ -111,6 +112,13 @@ if ($act == 'upload') {
 
     $smarty->display('member_company/company_upload_list.htm');
 } elseif ($act == 'cheking_resume') {
+    if (!$cominfo_flge){
+
+            $link[0]['text'] = "完善企业资料";
+            $link[0]['href'] = 'company_info.php?act=company_profile';
+            showmsg("为了达到更好的招聘效果，请先完善您的企业资料！",1,$link);
+
+    }
     //待审核简历
     require_once(QISHI_ROOT_PATH . 'include/page.class.php');
     require_once(QISHI_ROOT_PATH . 'genv/func_resume_upload.php');
@@ -158,6 +166,13 @@ if ($act == 'upload') {
 
     $smarty->display('member_company/company_upload.htm');
 } elseif ($act == 'apply_check') {
+    if (!$cominfo_flge){
+
+        $link[0]['text'] = "完善企业资料";
+        $link[0]['href'] = 'company_info.php?act=company_profile';
+        showmsg("为了达到更好的招聘效果，请先完善您的企业资料！",1,$link);
+
+    }
     $data = array();
     $data["uid"] = $_SESSION["uid"];
     $data["addtime"] = time();
@@ -186,7 +201,7 @@ if ($act == 'upload') {
         showmsg('有一份简历你没有提供审结果', 1, $link);
     }
     $resume = get_resume_temp_basic($id);
-    resume_check_log_add($id);
+    //resume_check_log_add($id);
 
     if (empty($resume)) {
 

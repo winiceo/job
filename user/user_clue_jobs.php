@@ -13,6 +13,7 @@ define('IN_QISHI', true);
 require_once(dirname(__FILE__) . '/../include/common.inc.php');
 $act = isset($_REQUEST['act']) ? trim($_REQUEST['act']) : 'app';
 require_once(QISHI_ROOT_PATH . 'include/mysql.class.php');
+require_once(QISHI_ROOT_PATH . 'genv/func_company.php');
 $db = new mysql($dbhost, $dbuser, $dbpass, $dbname);
 if ((empty($_SESSION['uid']) || empty($_SESSION['username']) || empty($_SESSION['utype'])) && $_COOKIE['QS']['username'] && $_COOKIE['QS']['password'] && $_COOKIE['QS']['uid']) {
     require_once(QISHI_ROOT_PATH . 'include/fun_user.php');
@@ -60,7 +61,10 @@ if ($user['status'] == "2") {
 if ($act == "app") {
     $id = isset($_GET['id']) ? $_GET['id'] : exit("id 丢失");
     $jobs = app_get_jobs($id);
-    if (empty($jobs)) {
+    $promotion=get_promotion_info($id,5);
+
+    $json=json_array($promotion["cp_json"]);
+    if (empty($jobs)||empty($promotion)) {
         exit('<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
 			    <tr>
 					<td width="20" align="right"></td>
@@ -70,6 +74,11 @@ if ($act == "app") {
 			    </tr>
 			</table>');
     }
+    $detail[]="面试人数：".$json["num"]."<br>";
+    $detail[]="面试成功金额：".$json["amount"]."<br>";
+    $detail[]="招聘人数：".$json["success_num"]."<br>";
+    $detail[]="招聘成功金额：".$json["success_amount"]."<br>";
+    $detail=join(" ",$detail);
 
     ?>
     <script type="text/javascript">
@@ -192,7 +201,12 @@ if ($act == "app") {
                 <input type="button" name="Submit" id="ajax_app" class="but130lan" value="提交线索"/>
             </td>
         </tr>
+        <tr><td></td>
+            <td ><?php echo $detail;?></td>
+
+        </tr>
     </table>
+
 
 
     <table width="100%" border="0" cellspacing="5" cellpadding="0" id="waiting" style="display:none">

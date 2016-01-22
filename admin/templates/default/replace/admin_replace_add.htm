@@ -1,5 +1,14 @@
 {#include file="sys/admin_header.htm"#}
+<script>
 
+    $(document).ready(function() {
+
+
+        showmenu("#parent_name", "#menu4", "#parent_id");
+
+    })
+
+</script>
 <div class="admin_main_nr_dbox">
     <div class="pagetit">
         <div class="ptit"> {#$pageheader#}</div>
@@ -29,6 +38,29 @@
 
                     </td>
                 </tr>
+
+                <tr>
+                    <td class="tit">对应字段：</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <div>
+                            {#qishi_get_classify set="类型:QS_relpace_cols,列表名:li"#}
+                            <input type="text" value="请选择"  readonly="readonly" name="parent_name" id="parent_name" class="input_text_200 input_text_selsect"/>
+                            <input name="parent_id" id="parent_id" type="hidden"   />
+                            <div id="menu4" class="menu">
+                                <ul>
+                                    {#foreach from=$li item=list#}
+                                    <li id="{#$list.id#}" title="{#$list.name#}">{#$list.name#}</li>
+                                    {#/foreach#}
+                                </ul>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+
                 <tr>
                     <td class="tit">内容：</td>
                 </tr>

@@ -165,7 +165,7 @@ if($act == 'list')
 
     require_once(QISHI_ROOT_PATH.'include/page.class.php');
     $oederbysql=" order BY id DESC ";
-    $wheresql=" where num>=3 and status=1";
+    $wheresql=" ";
 
     $total_sql="SELECT COUNT(*) AS num FROM ".table('resume_temp').$wheresql;
 
@@ -186,6 +186,9 @@ if($act == 'list')
     $smarty->display('personal/admin_personal_resume_temp.htm');
 }elseif($act == 'perform_temp')
 {
+
+
+
     require_once(QISHI_ROOT_PATH . '/genv/func_resume_upload.php');
 
     check_token();

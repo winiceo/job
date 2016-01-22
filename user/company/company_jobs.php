@@ -181,6 +181,8 @@ elseif ($act=='jobs_templates')
 }
 elseif ($act=='addjobs')
 {
+
+
 		$smarty->assign('user',$user);
 		$smarty->assign('jobs_templates',get_jobs_templates());
 		if ($cominfo_flge)

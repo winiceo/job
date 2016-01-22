@@ -13,6 +13,8 @@ define('IN_QISHI', true);
 require_once(dirname(__FILE__).'/company_common.php');
 require_once(QISHI_ROOT_PATH . '/genv/func_company.php');
 $smarty->assign('leftmenu',"service");
+$smarty->assign('act',$act);
+
 //我的账户 -> 积分操作 
 if ($act=='j_account')
 {
@@ -30,6 +32,7 @@ if ($act=='j_account')
 	$smarty->assign('points',$my_points);
     $smarty->assign('balance', $my_balance);
 	$smarty->assign('act','j_account');
+
 	$smarty->assign('title','我的账户 - 企业会员中心 - '.$_CFG['site_name']);
 	//积分消费明细
 	if(trim($_GET['detail']) == '1')
@@ -60,11 +63,13 @@ if ($act=='j_account')
 		$offset=($page->nowindex-1)*$perpage;
 		$smarty->assign('report',get_user_report($offset, $perpage,$wheresql));
 		$smarty->assign('page',$page->show(3));
+
 		$smarty->display('member_company/company_my_account_detail.htm');
 	}
 	//积分规则
 	else
 	{
+
 		$smarty->assign('points_rule',get_points_rule());
 		$smarty->display('member_company/company_my_account.htm');
 	}
@@ -159,7 +164,24 @@ elseif ($act=='order_add')
 	$smarty->assign('title','在线充值 - 企业会员中心 - '.$_CFG['site_name']);
 	$smarty->assign('payment',get_payment());
 	$smarty->assign('points',get_user_points($_SESSION['uid']));
-	$smarty->display('member_company/company_order_add.htm');
+    $smarty->assign('balance', get_user_balance($_SESSION['uid']));
+    $smarty->assign('balance_can', get_user_can_balance($_SESSION['uid']));
+    $plants=get_points_plan("money desc");
+    if($plants){
+
+        $smarty->assign('points_plan',get_points_plan());
+        $testJSON=array();
+        foreach ( $plants as $key => $value ) {
+            foreach($value as $p=>$m){
+                $testJSON[$key][$p] = urlencode(  $m );
+            }
+        }
+         $json_str=  urldecode( json_encode ( $testJSON,JSON_UNESCAPED_UNICODE ) );
+
+        $smarty->assign('points_plan_js',$json_str);
+
+    }
+    $smarty->display('member_company/company_order_add.htm');
 }
 elseif ($act=='order_add_save')
 {
@@ -201,8 +223,18 @@ elseif ($act=='order_add_save')
     $smarty->assign('payment', get_payment());
     $smarty->assign('points', get_user_points($_SESSION['uid']));
     $smarty->assign('balance', get_user_balance($_SESSION['uid']));
+    $smarty->assign('balance_can', get_user_can_balance($_SESSION['uid']));
+
 
     $smarty->display('member_company/company_pay_add.htm');
+}elseif ($act == 'pay_reduce') {
+    $smarty->assign('title', '在线充值 - 企业会员中心 - ' . $_CFG['site_name']);
+    $smarty->assign('payment', get_payment());
+    $smarty->assign('points', get_user_points($_SESSION['uid']));
+    $smarty->assign('balance', get_user_balance($_SESSION['uid']));
+    $smarty->assign('balance_can', get_user_can_balance($_SESSION['uid']));
+
+    $smarty->display('member_company/company_pay_reduce.htm');
 } elseif ($act == 'pay_add_save') {
     if (!$cominfo_flge) {
         $link[0]['text'] = "填写企业资料";
@@ -228,7 +260,89 @@ elseif ($act=='order_add_save')
     $points = $amount * $_CFG['payment_rate'];
     $order_id = add_order($_SESSION['uid'], 7, $order['oid'], $amount, $payment_name, "现金充值:" . $points, $timestamp, $points, '', 1);
     if ($order_id) {
+
         header("location:?act=payment&order_id=" . $order_id);
+    } else {
+        showmsg("添加订单失败！", 0);
+    }
+}elseif ($act == 'pay_add_points_save') {
+    //余额购买积分；
+    if (!$cominfo_flge) {
+        $link[0]['text'] = "填写企业资料";
+        $link[0]['href'] = 'company_info.php?act=company_profile';
+        showmsg("请先填写您的企业资料！", 1, $link);
+    }
+    $myorder = get_user_order($_SESSION['uid'], 1);
+    $order_num = count($myorder);
+    if ($order_num >= 5) {
+        $link[0]['text'] = "立即查看";
+        $link[0]['href'] = '?act=order_list&is_paid=1';
+        showmsg("未处理的订单不能超过 5 条，请先处理后再次申请！", 1, $link, true, 8);
+    }
+    $amount = (trim($_POST['amount'])) . (intval($_POST['amount'])) ? trim($_POST['amount']) : showmsg('请填写充值金额！', 1);
+    $description = trim($_POST['description'])  ;
+    $points = 0;
+    if($amount>get_user_can_balance($_SESSION["uid"])){
+        showmsg("超过可用余额！", 1);
+    }
+    $points = $amount * $_CFG['payment_rate'];
+
+    $plants=get_points_plan("money desc");
+    $free_points=0;
+    if($plants){
+        foreach($plants as $key=>$v){
+            if($amount>=$v["money"]){
+                $free_points=$v["free_points"];
+                break;
+            }
+        }
+    }
+    $points=$points+$free_points;
+
+    $order_id = add_order($_SESSION['uid'], 4, $order['oid'], $amount, $payment_name, "余额购买积分:" . $points, $timestamp, $points, '', 1);
+    if ($order_id) {
+        $sql = "UPDATE ".table('order')." SET is_paid=2,payment_time='{$timestamp}'  WHERE id='{$order_id}' LIMIT 1";
+
+        $db->query($sql);
+
+        report_deal($_SESSION['uid'],1,$points);
+        $user_points=get_user_points($_SESSION['uid']);
+       // $notes="操作人：{$_SESSION['admin_name']},说明：确认收款。收款金额：{$order['amount']} 。".date('Y-m-d H:i',time())."通过：".get_payment_info($order['payment_name'],true)." 成功充值 ".$order['amount']."元，(+{$order['points']})，(剩余:{$user_points}),订单:{$v_oid}";
+       // write_memberslog($order['uid'],1,9001,$user['username'],$notes);
+
+        header("location:?act=order_list");
+    } else {
+        showmsg("添加订单失败！", 0);
+    }
+}elseif ($act == 'pay_reduce_save') {
+
+    //提现订单生成
+    if (!$cominfo_flge) {
+        $link[0]['text'] = "填写企业资料";
+        $link[0]['href'] = 'company_info.php?act=company_profile';
+        showmsg("请先填写您的企业资料！", 1, $link);
+    }
+    $myorder = get_user_order($_SESSION['uid'], 1);
+    $order_num = count($myorder);
+    if ($order_num >= 5) {
+        $link[0]['text'] = "立即查看";
+        $link[0]['href'] = '?act=order_list&is_paid=1';
+        showmsg("未处理的订单不能超过 5 条，请先处理后再次申请！", 1, $link, true, 8);
+    }
+    $amount = (trim($_POST['amount'])) . (intval($_POST['amount'])) ? trim($_POST['amount']) : showmsg('请填写充值金额！', 1);
+    $description = empty($_POST['description']) ? showmsg("请选择收款信息！", 1) : $_POST['description'];
+
+    $order['oid'] = "TX-" . date('ymd', time()) . "-" . date('His', time());//订单号
+
+    $points = 0;
+    if($amount>get_user_can_balance($_SESSION["uid"])){
+        showmsg("提现金额超过可用余额！", 1);
+    }
+
+    $order_id = add_order($_SESSION['uid'], 9, $order['oid'], $amount, "moneyreduce", "余额提现:" . $amount.";".$description, $timestamp, $points, '', 1);
+
+    if ($order_id) {
+        header("location:?act=order_list");
     } else {
         showmsg("添加订单失败！", 0);
     }
@@ -315,7 +429,8 @@ elseif ($act=='setmeal_order_add')
 	$smarty->assign('title','申请服务 - 企业会员中心 - '.$_CFG['site_name']);
 	$smarty->assign('setmeal',get_setmeal_one($setmealid));
 	$smarty->assign('payment',get_payment());
-	$smarty->display('member_company/company_order_add_setmeal.htm');
+
+    $smarty->display('member_company/company_order_add_setmeal.htm');
 }
 elseif ($act=='setmeal_order_add_save')
 {
@@ -400,7 +515,7 @@ elseif ($act=='gifts_apy')
 	$info=$db->getone("select * from ".table('gifts')." where account='{$account}'  AND password='{$pwd}' LIMIT 1 ");
 	if (empty($info))
 	{
-		showmsg("卡号或密码错误",0);
+		showmsg("卡号或?苈氪砦?",0);
 	}
 	else
 	{

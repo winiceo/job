@@ -49,6 +49,43 @@
                 e.stopPropagation();
                 $('.state-icon').not($(this)).next().hide();
             });
+            $('.get_telephone').on('click', function (e) {
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '{#$QISHI.site_dir#}user/company/company_ajax.php',
+                    data: {
+                        "act": "get_telephone",
+                                "id": id
+
+                    },
+                    success: function (data) {
+
+
+                        if (data.err == "0") {
+                            $("#telephone").html((data.data))
+                            $('.div_check').show();
+                        }
+                        else if(data.err==1) {
+                            alert("简历不存在");
+                            $('.div_check').hide();
+                        }else if(data.err==2) {
+                            alert("你有未审核的简历");
+                            window.location.href="{#$QISHI.site_dir#}user/company/company_upload.php?act=check_resume_detail&id="+data.data
+                            $('.div_check').hide();
+                        }
+                    },
+                    dataType: "json"
+                });
+
+                e.stopPropagation();
+            });
+            // 删除弹出
+            delete_dialog('.ctrl-del', '#form1');
+            //邀请面试弹出
+            inviteJob_dialog('.inter-job', "{#$QISHI.site_dir#}user/user_invited.php", '{#$smarty.session.utype#}');
+            // 发送到邮箱弹出
+            companySendToEmail_dialog('.db-btn.btn3', './company_ajax.php');
+
             $('.state-list .state').on('click', function (e) {
                 var resume_state = $(this).attr('state');
                 var resume_state_cn = $(this).text();
@@ -68,12 +105,9 @@
                 });
                 e.stopPropagation();
             });
-            // 删除弹出
-            delete_dialog('.ctrl-del', '#form1');
-            //邀请面试弹出
-            inviteJob_dialog('.inter-job', "{#$QISHI.site_dir#}user/user_invited.php", '{#$smarty.session.utype#}');
-            // 发送到邮箱弹出
-            companySendToEmail_dialog('.db-btn.btn3', './company_ajax.php');
+
+
+
         })
 
 
@@ -513,11 +547,15 @@
                         <td height="30" width="80" align="right" bgcolor="#FFFFFF"
                             style=" border-bottom:1px #CCCCCC dashed">联系电话：
                         </td>
-                        <td bgcolor="#FFFFFF" style=" border-bottom:1px #CCCCCC dashed">
-                            {#$resume.telephone#}
+                        <td bgcolor="#FFFFFF" id="telephone" style=" border-bottom:1px #CCCCCC dashed">
+
+                            <input type="SUBMIT" value="我要审核" class="contact-btn get_telephone" data-id="{#$resume.id#}" />
+                            点击，获取电话
                         </td>
                     </tr>
                 </table>
+
+                <div class="div_check" style="display: none">
                 {#if $resumeaudit#}
                 <form id="Form2" name="Form2" method="post" action="?act=del_auditreason">
                     <div class="toptit">简历审核日志</div>
@@ -569,7 +607,7 @@
                 </div>
 
 
-                {#/if#}
+                {#/if#}</div>
             </div>
         </div>
     </div>

@@ -46,4 +46,30 @@ function get_replace_one($id)
 	$sql = "select * from ".table('relation')." where id=".intval($id)."";
 	return $db->getone($sql);
 }
+function get_title_list()
+{
+    global $db;
+    $row_arr = array();
+    $result = $db->query("SELECT id,name FROM ".table('relation')." where type=1 group by name");
+    while($row = $db->fetch_array($result))
+    {
+
+
+        $row_arr[] = $row;
+    }
+    return $row_arr;
+}
+function get_source_list()
+{
+    global $db;
+    $row_arr = array();
+    $result = $db->query("SELECT id,source FROM ".table('relation')." where type=1 group by source ");
+    while($row = $db->fetch_array($result))
+    {
+
+
+        $row_arr[] = $row;
+    }
+    return $row_arr;
+}
 ?>

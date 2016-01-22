@@ -11,14 +11,36 @@
 <script src="{#$QISHI.site_template#}js/jquery.js" type="text/javascript" language="javascript"></script>
 <script src="{#$QISHI.site_template#}js/jquery.validate.min.js" type='text/javascript' language="javascript"></script>
 <script type="text/javascript">
+var js_plants='{#$points_plan_js#}';
+var plants=[];
+if(js_plants){
+    plants=jQuery.parseJSON(js_plants)
+
+}
+function check_free(amount){
+    //console.log(amount)
+    for(var i=0;i<plants.length;i++){
+        //console.log(plants[i].money)
+        if(parseInt(amount)>=parseInt(plants[i].money)){
+            return plants[i].free_points;
+        }
+    }
+    return 0;
+}
+
 $(document).ready(function()
 {
 	//计算获得积分数量
 	$("#amount").keyup(function(){	
 		if((/^(\+|-)?\d+$/.test($(this).val())) && $(this).val()>={#$QISHI.payment_min#})
 		{
-		$("#count").css("display","");	
-		$("#show_val").html("充值金额为<strong style=\"color:#003399\">&nbsp;&nbsp;"+$(this).val()+"&nbsp;&nbsp;</strong>元，可获得：&nbsp;&nbsp;<span style=\"color: #009900; font-size:22px; font-style:italic\">"+$(this).val()*{#$QISHI.payment_rate#}+"</span>&nbsp;&nbsp;{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}");   
+		$("#count").css("display","");
+        var str=""
+            console.log(check_free($(this).val()))
+        if(check_free($(this).val())>0){
+            str=";<span style=\"color: red; font-size:22px; font-style:italic\">赚送"+check_free($(this).val())+"{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}</span>"
+        }
+		$("#show_val").html("充值金额为<strong style=\"color:#003399\">&nbsp;&nbsp;"+$(this).val()+"&nbsp;&nbsp;</strong>元，可获得：&nbsp;&nbsp;<span style=\"color: #009900; font-size:22px; font-style:italic\">"+$(this).val()*{#$QISHI.payment_rate#}+"</span>&nbsp;&nbsp;{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}"+str);
 		}
 		else
 		{
@@ -81,69 +103,61 @@ $(document).ready(function() {
 			</div>
 
 			<div class="navs">
-                <a href="?act=pay_add"  >现金充值</a>
-        {#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
-        <a href="?act=order_add" class="se">积分充值</a>
-        {#/if#}
-        {#if $QISHI.operation_mode=="2" || $QISHI.operation_mode=="3"#}
-        <a href="?act=setmeal_list">申请VIP套餐</a>
-        {#/if#}
-        <a href="?act=order_list">我的订单</a>
-        {#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
-        <a href="?act=gifts">礼品卡</a>
-        {#/if#}
+                {#include file="member_company/order_nav.htm"#}
+
 				<div class="clear"></div>
 			</div>
 		</div>
 		<div class="balance margin-common">
-  			<div class="bal_text" style="margin-bottom:0;">您的账户剩余<span> {#$points#} </span>{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="company_service.php?act=j_account&detail=1">[积分明细]</a>&nbsp;&nbsp;<a target="_blank" href="company_service.php?act=j_account">[积分消费规则]</a></div>
-  		</div>
-  		<div class="bar">
-  			<div class="bar_step1">
-  				<p>填写订单</p>
-  			</div>
-  			<div class="bar_step2 hui">
-  				<p>确认订单</p>
-  			</div>
-  			<div class="bar_step3 hui">
-  				<p>提交订单</p>
-  			</div>
-  		</div>
-  		<form id="Form1" name="Form1" method="post" action="?act=order_add_save"  >
-  		<div class="intrgration_box margin-common">
-  			<table>
-  				<tbody>
-  					<tr>
-  						<td height="30" width="100">充值金额：</td>
-  						<td width="240"><input type="text" name="amount" id="amount" maxlength="8" class="input_text_200"/>&nbsp;元</td>
-              <td> （单笔金额不能低于{#$QISHI.payment_min#}元）&nbsp; 1元 = {#$QISHI.payment_rate#}{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}</td>
-  					</tr>
-  					<tr id="count" style="display:none;">
-  						<td></td>
-  						<td colspan="2"><span id="show_val"></span></td>
-  					</tr>
-  				</tbody>
-  			</table>
-  			<table>
-  				<tbody>
-  					{#section name=payment loop=$payment#}
-  					<tr>
-  						<td height="30" width="100">{#if $smarty.section.payment.index==0#}支付方式：{#/if#}</td>
-  						<td width="150"><input type="radio" name="payment_name" value="{#$payment[payment].typename#}" id="payment_name" />&nbsp;&nbsp;<img src="{#$QISHI.site_dir#}include/payment/logo/{#$payment[payment].typename#}.gif" alt="" width="88" height="30"/></td>
-  						<td> <p>({#$payment[payment].p_introduction#})</p></td>
-  					</tr>
-  					{#/section#}
-  				</tbody> 
-  			</table>  
-			<table>
-				<tr>
-					<td height="30" width="100">&nbsp;</td>
-					<td width="150"><div id="pay_er"> </td> 
-				</tr>
-			</table> 
-  			<input class="but130lan intrgration_but" type="submit" style="margin-top:0;" name="submit" value="充值"/>
-  		</div>
-  		</form>
+            <div class="bal_text" style="margin-bottom:0;">您的账户总余额<span> {#$balance#} </span>元;可用余额<span> {#$balance_can#} </span>元;您的账户剩余<span> {#$points#} </span>{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="company_service.php?act=j_account&detail=1">[积分明细]</a>&nbsp;&nbsp;<a target="_blank" href="company_service.php?act=j_account">[积分消费规则]</a></div>
+
+        </div>
+        <div class="balance margin-common">
+            <div class="bal_text" style="margin-bottom:0;">
+                <form action="?act=pay_add_points_save" method="post" id="Form1" style="margin-top:20px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+                        <tr>
+                            <td width="90" align="right">购买：</td>
+                            <td><input name="amount"  type="text" class="input_text_100" id="amount" maxlength="80"   value="{#$balance#}"/>元</td>
+                            <td><div id="show_val"></div></td>
+                        </tr>
+
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+                            <tbody>
+                            <tr>
+                                <td width="90" align="right" valign="top">备注：</td>
+                                <td width="500"><textarea name="description" id="description" cols="30" rows="10" class="input_textarea_500"></textarea></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+                            <tbody>
+                            <tr>
+                                <td width="90" align="right" valign="top">说明：</td>
+                                <td width="500" colspan="2"> {#if $points_plan#}
+                                    {#foreach from=$points_plan item=list#}
+                                    {#$list.name#};<br>
+                                    {#/foreach#}
+                                    {#/if#}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
+                            <tr>
+                                <td align="right" width="90">&nbsp;</td>
+                                <td width="130"><input type="submit" name="Submit" value="购买" class="but100lan" /></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                </form>
+
+
+            </div>
+        </div>
+
+
   	</div>
   </div>
   <div class="clear"></div>

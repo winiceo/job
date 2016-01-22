@@ -19,24 +19,29 @@
         <tr>
             <td height="50">面试人数：</td>
             <td><input name="interview_num" type="text" class="input_text_200 interview" id="interview_num"
-                       maxlength="3" data-value="{#$cat_minday#}" value=""/></td>
-            <td>名，不能小于{#$cat_minday#}</td>
+                       maxlength="3" data-value="{#$num#}" value="{#$num#}"/></td>
+            <td>名，不能小于{#$num#}</td>
         </tr>
         <tr>
             <td height="50">面试金额：</td>
             <td><input name="interview_money" type="text" class="input_text_200 interview" id="interview_money"
-                       maxlength="6" data-value="{#$cat_maxday#}" value=""/></td>
-            <td>元，不能小于{#$cat_maxday#}</td>
+                       maxlength="6" data-value="{#$amount#}" value="{#$amount#}"/></td>
+            <td>元，不能小于{#$amount#}</td>
+        </tr>
+        <tr ><td colspan="3"><div style="border-bottom: 1px solid #ccc;
+    width:90%;margin-bottom:10px;height:10px;"></div></td></tr>
+        <tr>
+            <td height="50">招聘人数：</td>
+            <td><input name="interview_success_num" type="text" class="input_text_200 interview"
+                       id="interview_success_num" data-value="{#$success_num#}" maxlength="6" value="{#$success_num#}"/></td>
+            <td>元，不能小于{#$success_num#}</td>
         </tr>
         <tr>
             <td height="50">成功金额：</td>
             <td><input name="interview_success_money" type="text" class="input_text_200 interview"
-                       id="interview_success_money" data-value="{#$points_perday#}" maxlength="6" value=""/></td>
-            <td>元，不能小于{#$points_perday#}</td>
+                       id="interview_success_money" data-value="{#$success_amount#}" maxlength="6" value="{#$success_amount#}"/></td>
+            <td>元，不能小于{#$success_amount#}</td>
         </tr>
-
-
-
         </tbody>
     </table>
     <table width="480">
@@ -61,18 +66,17 @@
 </div>
 {#$cat_notes#}
 <script type="text/javascript">
-
+    get_result_money()
     function disable_submit(){
         $("#submit_ok").prop( "disabled",true).removeClass("but95cheng").addClass('but95hui');
-
-
     }
     function get_result_money(){
         var interview_num=$("#interview_num").val();
         var interview_money=$("#interview_money").val();
+        var interview_success_num=$("#interview_success_num").val();
         var interview_success_money=$("#interview_success_money").val();
         var my_balance=parseInt($("#balance").val());
-        var rs=parseInt(interview_num)*parseInt(interview_money)+parseInt(interview_success_money);
+        var rs=parseInt(interview_num)*parseInt(interview_money)+parseInt(interview_success_num)*parseInt(interview_success_money);
         console.log(rs>my_balance);
         var r = /^[0-9]*[1-9][0-9]*$/;
         if(r.test(rs)){
@@ -120,13 +124,26 @@
                 get_result_money();
             }
         });
+        $("#interview_success_num").keyup(function () {
+            if (!(/^(\+|-)?\d+$/.test($(this).val()))) {
+                disable_submit();
+                $("#count").html("<br />输入不正确，必须为数字<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else if ($(this).val() < $(this).data("value")) {
+                disable_submit();
+                $("#count").html("<br />面试成功人数不小能小于"+$(this).data("value")+"<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+            } else {
+
+                $("#count").html("");
+                get_result_money();
+            }
+        })
         $("#interview_success_money").keyup(function () {
             if (!(/^(\+|-)?\d+$/.test($(this).val()))) {
                 disable_submit();
                 $("#count").html("<br />输入不正确，必须为数字<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
             } else if ($(this).val() < $(this).data("value")) {
                 disable_submit();
-                $("#count").html("<br />面试成功金额不能"+$(this).data("value")+"<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
+                $("#count").html("<br />面试成功金额不能小于"+$(this).data("value")+"<strong style=\"color:#009900\">&nbsp;&nbsp;" + $(this).val() + "&nbsp;&nbsp;</strong> ");
             } else {
 
                 $("#count").html("");

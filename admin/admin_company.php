@@ -940,6 +940,8 @@ elseif($act == 'members_list')
         elseif ($consultant == "1") {
             $wheresql .= " AND c.status = 1";
         }
+    }else{
+        $wheresql .= " AND  c.status=0";
     }
 
     $joinsql = " LEFT JOIN " . table('resume_check_apply') . " as c ON m.uid=c.uid ";
@@ -951,6 +953,7 @@ elseif($act == 'members_list')
     $member = get_member_check_list($offset, $perpage, $joinsql . $wheresql . $oederbysql);
     $smarty->assign('pageheader', "企业会员");
     $smarty->assign('member', $member);
+
     $smarty->assign('page', $page->show(3));
     $smarty->display('company/admin_company_user_check_list.htm');
 } elseif ($act == 'delete_user')  
@@ -1820,6 +1823,7 @@ elseif($act == "consultant_del"){
 
         $promotion=array_merge($promotion,(array)$json);
     }
+
     $member=get_member_info($clue["uid"]);
 
 
@@ -1834,7 +1838,7 @@ elseif($act == "consultant_del"){
     $smarty->display('company/admin_company_clue_detail.htm');
 }elseif ($act == 'clue_log_save') {
     check_token();
-     $id = intval($_POST['id']);
+    $id = intval($_POST['id']);
     if (!$id) {
         adminmsg("参数错误！", 1);
     }
@@ -1842,6 +1846,7 @@ elseif($act == "consultant_del"){
     $setsqlarr["notes"] = !empty($_POST['notes']) ? trim($_POST['notes']) : adminmsg('请填写日志内容！', 1);
     $setsqlarr['addtime'] = time();
     $setsqlarr['admin_name'] = $_SESSION["admin_name"];
+    $setsqlarr['nexttime'] = $_POST["nexttime"];
 
 
     $db->inserttable(table('jobs_reward_clue_log'), $setsqlarr );
@@ -1858,6 +1863,7 @@ elseif($act == "consultant_del"){
         $amount = intval($_POST['amount']);
         $company_uid=$_POST["company_uid"];
         $reason=$_POST["reason"];
+        $clue_id=$_POST["clue_id"];
 
         if(!balance_deal($company_uid,2,$amount)){
             adminmsg("处理失败", 2);
@@ -1869,11 +1875,21 @@ elseif($act == "consultant_del"){
         $order['oid'] = "KK-" . date('ymd', time()) . "-" . date('His', time());//订单号
         $order_id = admin_add_order($_SESSION['uid'], 8, $order['oid'], $amount, "余额扣费", $notes, $timestamp, 0, '', 1);
 
+
+        $setsqlarr["cid"] = $clue_id;
+        $setsqlarr["notes"] = $notes;
+        $setsqlarr['addtime'] = time();
+        $setsqlarr['admin_name'] = $_SESSION["admin_name"];
+        $setsqlarr['nexttime'] = "";
+        $db->inserttable(table('jobs_reward_clue_log'), $setsqlarr );
+
+
         !$order_id? adminmsg("扣费失败！", 0) : adminmsg("扣费成功！", 2);
     }elseif (trim($_POST['add_money'])) {
         $amount = intval($_POST['amount1']);
         $member_uid=$_POST["member_uid"];
         $reason=$_POST["reason1"];
+        $clue_id=$_POST["clue_id"];
 
         if(!balance_deal_person($member_uid,1,$amount)){
             adminmsg("处理失败", 2);
@@ -1884,7 +1900,57 @@ elseif($act == "consultant_del"){
         $order['oid'] = "KK-" . date('ymd', time()) . "-" . date('His', time());//订单号
         $order_id = admin_add_order($_SESSION['uid'], 7, $order['oid'], $amount, "余额增加", $notes, $timestamp, 0, '', 1);
 
+        $setsqlarr["cid"] = $clue_id;
+        $setsqlarr["notes"] = "用户id:".$member_uid.";".$notes;
+        $setsqlarr['addtime'] = time();
+        $setsqlarr['admin_name'] = $_SESSION["admin_name"];
+        $setsqlarr['nexttime'] = "";
+        $db->inserttable(table('jobs_reward_clue_log'), $setsqlarr );
+
         !$order_id? adminmsg("奖励失败！", 0) : adminmsg("奖励成功！", 2);
     }
+}elseif ($act == 'company_points') {
+    //审核列表审核
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "com_user_show");
+
+    $list = get_points_plan();
+    $smarty->assign('pageheader', "积分增送方案");
+    $smarty->assign('list', $list);
+
+
+    $smarty->display('company/admin_company_points.htm');
+}elseif ($act == 'points_plan_save') {
+    //审核列表审核
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "com_user_show");
+
+    $setsqlarr['name'] = !empty($_POST['name']) ? trim($_POST['name']):adminmsg('请填写名称！',1);
+    $setsqlarr['money'] = !empty($_POST['money']) ? trim($_POST['money']):adminmsg('金额不能为空！',1);
+    $setsqlarr['free_points'] = !empty($_POST['free_points']) ? trim($_POST['free_points']):adminmsg('赠送积分不能为空！',1);
+
+
+    $insert_id=$db->inserttable(table('company_points'),$setsqlarr,true);
+    write_log("添加积分赠送方案".$setsqlarr['name'], $_SESSION['admin_name'],3);
+    $link[0]['text'] = "返回列表";
+    $link[0]['href'] = "?act=company_points";
+
+    adminmsg('添加成功！',2,$link);
+
+    $smarty->display('company/admin_company_points.htm');
+}elseif ($act == 'points_plan_del') {
+    //审核列表审核
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    $id = !empty($_REQUEST['id']) ? trim($_REQUEST['id']):adminmsg('id不能为空！',1);
+
+    if (!$db->query("Delete from ".table('company_points')." WHERE id IN (".$id.")")){
+        adminmsg("删除失败！",0);
+    } else{
+        adminmsg("删除成功！",0);
+
+    }
+
+
 }
 ?>

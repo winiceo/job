@@ -70,12 +70,13 @@ function get_resume_temp_basic($id)
         $info['age']=date("Y")-$info['birthdate'];
         $info['number']="N".str_pad($info['id'],7,"0",STR_PAD_LEFT);
         $info['lastname']=$info['fullname'];
+
         return $info;
     }
 }
 //查看是否有没审核的记录
 function resume_log_not_check(){
-    $rs=\ORM::for_table(table("resume_check_log"))->where("uid",$_SESSION["uid"])->where("result","")->order_by_asc("addtime")->find_one();
+    $rs=\ORM::for_table(table("resume_check_log"))->where("uid",$_SESSION["uid"])->where_null("result")->order_by_asc("addtime")->find_one();
     return $rs;
 }
 //是否存在查看历史
@@ -188,6 +189,7 @@ function import_resume_temp($id)
         Genv::log($response);
         return $response;
     }
+    $upload_uid=$rs["upload_uid"];
 
     $username = uniqid() . time();
     $email = trim($rs["email"]);
@@ -305,6 +307,7 @@ function import_resume_temp($id)
         $resume['specialty'] = addslashes($rs["specialty"]);
         $resume['complete_percent'] = addslashes($rs["complete_percent"]);
         $pid = $db->inserttable(table("resume"), $resume, 1);
+        $response["resume_id"]=$pid;
         if ($pid) {
             //索引表
             $searchtab['id'] = $pid;
@@ -434,12 +437,43 @@ function import_resume_temp($id)
 //            }
 
         }
+        \ORM::for_table(table("resume_temp"))->where("id",$id)->delete_many();
+        \ORM::for_table(table("resume_check_log"))->where("rid",$id)->delete_many();
+        check_pass_add_point($upload_uid,$pid);
+
     }
-    \ORM::for_table(table("resume_temp"))->where("id",$id)->delete_many();
-    \ORM::for_table(table("resume_check_log"))->where("rid",$id)->delete_many();
+
+    //给上传者增加积分；
+
     return $response;
 
 }
+
+function check_pass_add_point($uid,$pid){
+    global $db;
+    $sql = "select * from ".table('members')." where uid = '{$uid}' LIMIT 1";
+    $user=$db->getone($sql);
+
+    if($user){
+        // 简历审核通过积分处理
+        $rule=get_cache('points_rule');
+
+        if ($rule['resume_checked']['value']>0)
+        {
+
+            $time=time();
+            report_deal($uid,$rule['resume_checked']['type'],$rule['resume_checked']['value']);
+            $user_points=get_user_points($uid);
+            $operator=$rule['resume_checked']['type']=="1"?"+":"-";
+            $url="<a href=/resume/resume-show.php?id=".$pid." target=_blank>查看简历</a>";
+
+            write_memberslog($uid,1,9001,$user["username"]," 简历通过审核{$url}，{$_CFG['points_byname']}({$operator}{$rule['company_logo_points']['value']})，(剩余:{$user_points})",1,1016,"简历审核通过","{$operator}{$rule['resume_checked']['value']}","{$user_points}");
+        }
+    }
+
+
+}
+
 //导入简历时的注册会员
 function import_user_register_upload($username,$password,$member_type=0,$email,$mobile,$uc_reg=true)
 {
@@ -563,7 +597,7 @@ function excel_upload($file){
 
 
     $reader = new SpreadsheetReader($file);
-    error_reporting(E_ALL ^ E_NOTICE);
+   // error_reporting(E_ALL ^ E_NOTICE);
     $data=array();
     $cols = array();//存储字段信息；
 
@@ -641,6 +675,8 @@ function resume_upload_insert($file_path)
             $rs[]=$obj->save();
         }
     }
+
+
     return $rs;
 };
 //删除临时简历

@@ -177,6 +177,15 @@ elseif($act=="set_promotion"){
 			$contents=str_replace('{#$cat_minday#}',$promotion['cat_minday'],$contents);
 			$contents=str_replace('{#$cat_maxday#}',$promotion['cat_maxday'],$contents);
             if ($catid == 5) {
+
+
+                $json=json_array($promotion["cp_json"]);
+
+                foreach($json as $key=>$v){
+
+                    $contents = str_replace('{#$'.$key.'#}', $v, $contents);
+
+                }
                 $contents = str_replace('{#$cat_notes#}', htmlspecialchars_decode($promotion['cat_notes']), $contents);
                 $contents = str_replace('{#$balance#}', $balance, $contents);
 
@@ -202,13 +211,22 @@ elseif($act=="set_promotion"){
     $tpl = '../../templates/' . $_CFG['template_dir'] . "member_company/ajax_set_date_promotion.htm";
     $contents = file_get_contents($tpl);
     if($catid==5){
-         $json=str_replace('&quot;', '"', trim($promotion["cp_json"]));
-        $block_balance=json_decode($json)->block_balance;
+         $json=json_array($promotion["cp_json"]);
+        $block_balance=$json['block_balance'];
 
+        $detail[]="面试人数：".$json["num"]."<br>";
+        $detail[]="面试成功金额：".$json["amount"]."<br>";
+        $detail[]="招聘人数：".$json["success_num"]."<br>";
+        $detail[]="招聘成功金额：".$json["success_amount"]."<br>";
+        $detail=join(" ",$detail);
         $other='<tr>
             <td height="50">冻结金额：</td>
             <td>'.$block_balance.'</td>
-            <td> </td>
+
+        </tr><tr>
+            <td height="50">明细：</td>
+
+            <td>'.$detail.'</td>
         </tr>';
     }else{
         $other='<tr>
@@ -336,6 +354,7 @@ elseif ($act == "reward_add_save") {
     $jobid = intval($_POST['jobid']) ? intval($_POST['jobid']) : exit("职位id丢失！");
     $interview_num = intval($_POST['interview_num']) ? intval($_POST['interview_num']) : exit("请填写面试人数！");
     $interview_money = intval($_POST['interview_money']) ? intval($_POST['interview_money']) : exit("请填写面试金额！");
+    $interview_success_num = intval($_POST['interview_success_num']) ? intval($_POST['interview_success_num']) : exit("请招聘人数！");
     $interview_success_money = intval($_POST['interview_success_money']) ? intval($_POST['interview_success_money']) : exit("请填写面试成功金额！");
 
 
@@ -353,16 +372,21 @@ elseif ($act == "reward_add_save") {
     if ($jobid > 0) {
         $pro_cat = get_promotion_category_one($catid);
 
-        if ($pro_cat["cat_minday"] > $interview_num) {
+        $json=json_array($pro_cat["cp_json"]);
+
+        if ($json["num"] > $interview_num) {
             exit("面试人数有误！");
         }
-        if ($pro_cat["cat_maxday"] > $interview_money) {
+        if ($json["amount"] > $interview_money) {
             exit("面试金额有误！");
         }
-        if ($pro_cat["cat_points"] > $interview_success_money) {
-            exit("面试成功金额有误！");
+        if ($json["success_num"]> $interview_success_num) {
+            exit("招聘人数有误！");
         }
-        $block_balance = $interview_num * $interview_money + $interview_success_money;
+        if ($json["success_amount"]> $interview_success_money) {
+            exit("招聘成功金额有误！");
+        }
+        $block_balance = $interview_num * $interview_money + $interview_success_num*$interview_success_money;
 
 
         if ($block_balance > $can_balance) {
@@ -380,27 +404,28 @@ elseif ($act == "reward_add_save") {
 
 
         $json=array();
-        $json["interview_num"]=$interview_num;
-        $json["interview_money"]=$interview_money;
-        $json["interview_success_money"]=$interview_success_money;
+        $json["num"]=$interview_num;
+        $json["amount"]=$interview_money;
+        $json["success_num"]=$interview_success_num;
+        $json["success_amount"]=$interview_success_money;
         $json["block_balance"]=$block_balance;
 
         $setsqlarr['cp_json'] = json_encode($json);
         $db->inserttable(table('promotion'), $setsqlarr);
-        $setsqlarr['addtime'] = time();
-        $setsqlarr['interview_num'] = $interview_num;
-        $setsqlarr['interview_money'] = $interview_money;
-        $setsqlarr['interview_success_money'] = $interview_success_money;
-
-        if ($db->inserttable(table('jobs_reward'), $setsqlarr)) {
+//        $setsqlarr['addtime'] = time();
+//        $setsqlarr['interview_num'] = $interview_num;
+//        $setsqlarr['interview_money'] = $interview_money;
+//        $setsqlarr['interview_success_money'] = $interview_success_money;
+//
+//        if ($db->inserttable(table('jobs_reward'), $setsqlarr)) {
             //标注简历推广
             set_job_reward($jobid, $setsqlarr['cp_promotionid'], $val_code);
             //锁定金额
             block_balance_reward($uid, $block_balance);
             $can_balance = get_user_can_balance($uid);
-            write_memberslog($uid, 1, 9200, $_SESSION['username'], "{$pro_cat['cat_name']}：<strong>{$jobs['jobs_name']}</strong>，悬赏简历 冻结 {$block_balance} ，(可用:{$can_balance})", 1, 1018, "{$pro_cat['cat_name']}", "-{$block_balance}", "{$can_balance}");
+            write_memberslog($uid, 1, 9200, $_SESSION['username'], "{$pro_cat['cat_name']}：<strong>{$jobs['jobs_name']}</strong>，悬赏简历冻结 {$block_balance} ，(可用:{$can_balance})", 1, 1018, "{$pro_cat['cat_name']}", "-{$block_balance}", "{$can_balance}");
             exit('推广成功！');
-        }
+
     } else {
         exit("推广失败！");
     }
@@ -959,6 +984,30 @@ elseif($act == "jobs_all_refresh_ajax")
 			}
 		}
 	}
+}elseif($act=="get_telephone"){
+    require_once(QISHI_ROOT_PATH . 'genv/func_resume_upload.php');
+
+    $id=$_REQUEST["id"];
+    $rs = resume_log_not_check();
+    $data=array();
+    $data["err"]=0;
+
+    if ($rs && $rs->rid != $id) {
+        $data["err"]=2;
+        $data["data"]=$rs->rid;
+
+    }else{
+        $resume = get_resume_temp_basic($id);
+        resume_check_log_add($id);
+        if($resume){
+            $data["data"]=urlencode($resume["telephone"]);
+        }else{
+            $data["err"]=1;
+        }
+    }
+
+    echo  urldecode(json_encode($data));
+    exit;
 }
 unset($smarty);
 ?>

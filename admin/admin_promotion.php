@@ -183,8 +183,14 @@ elseif($act == 'edit_category')
 	get_token();
 	$id=intval($_GET['id']);
 	$smarty->assign('navlabel',"category");
-	$smarty->assign('show',get_promotion_cat_one($id));
+    $show=get_promotion_cat_one($id);
+	$smarty->assign('show',$show);
+
     if($id==5){
+        $rs=(array) json_decode($show["cp_json"]);
+        var_dump($rs);
+        $smarty->assign('interv',$rs);
+
         $smarty->display('promotion/admin_promotion_category_edit5.htm');
 
     }else{
@@ -195,13 +201,23 @@ elseif($act=='edit_category_save')
 {	
 	check_token();
 	$setsqlarr['cat_name']=trim($_POST['cat_name'])?trim($_POST['cat_name']):adminmsg('您没有填写方案名称！',1);
-	$setsqlarr['cat_available']=intval($_POST['cat_available']);
-	$setsqlarr['cat_minday']=intval($_POST['cat_minday']);
+
+
+    $setsqlarr['cat_available']=intval($_POST['cat_available']);
+    if(intval($_POST['id'])==5){
+        $setsqlarr["cp_json"]=json_encode($_POST["interv"]);
+
+    }else{
+        	$setsqlarr['cat_minday']=intval($_POST['cat_minday']);
 	$setsqlarr['cat_maxday']=intval($_POST['cat_maxday']);
 	$setsqlarr['cat_points']=intval($_POST['cat_points']);
 	$setsqlarr['cat_order']=intval($_POST['cat_order']);
+    }
+
 	$setsqlarr['cat_notes']=trim($_POST['cat_notes']);
+
 	$wheresql=" cat_id='".intval($_POST['id'])."'";
+
 		if ($db->updatetable(table('promotion_category'),$setsqlarr,$wheresql))
 		{
 		$link[0]['text'] = "方案列表";

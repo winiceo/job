@@ -1,0 +1,114 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript" src="js/jquery.userinfotip-min.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	$("#ButDel").QSdialog({
+	DialogContent:"#GetDelInfo",
+	DialogContentType:"id",
+	DialogAddObj:"#DelSel",	
+	DialogWidth:"500",
+	DialogAddType:"html"	
+	});
+
+	//点击批量设置顾问
+	$("#AddConsultant").click(function(){
+		$("form[name=form1]").attr("action","?act=consultant_install");
+		$("form[name=form1]").submit()
+	});
+});
+</script>
+<div class="admin_main_nr_dbox">
+<div class="pagetit">
+	<div class="ptit"> {#$pageheader#}</div>
+  <div class="clear"></div>
+</div>
+
+
+  <form id="form1" name="form1" method="post" action="?act=delete_user">
+  {#$inputtoken#}
+  <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="list" class="link_lan">
+    <tr>
+      <td  class="admin_list_tit admin_list_first" >名称</td>
+
+      <td  class="admin_list_tit">金额</td>
+	  <td  class="admin_list_tit">赠送</td>
+
+      <td width="13%"  align="center"  class="admin_list_tit" >操作</td>
+    </tr>
+	{#foreach from=$list item=list#}
+      <tr>
+      <td class="admin_list admin_list_first">
+          {#$list.name#}
+ 		</td>
+
+        <td class="admin_list">
+            {#$list.money#}
+		</td>
+          <td class="admin_list">
+              {#$list.free_points#}
+          </td>
+
+
+        <td align="center" class="admin_list">
+
+            <a href="?act=points_plan_del&id={#$list.id#}">删除</a>
+		</td>
+      </tr>
+      {#/foreach#}
+    </table>
+	<span id="DelSel"></span>
+  </form>
+	{#if !$list#}
+	<div class="admin_list_no_info">没有任何信息！</div>
+	{#/if#}
+    <br> <hr><br>
+    添加增送积分方案
+    <form id="Form" name="Form" method="post" action="?act=points_plan_save">
+        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+            <tr>
+                <td class="admin_list admin_list_first">
+                    方案名称:
+                </td>
+                <td class="admin_list admin_list_first">
+                   <input name="name" class="input_text_200" />
+                </td>
+
+            </tr>
+            <tr>
+                <td class="admin_list admin_list_first">
+                    金额:
+                </td>
+                <td class="admin_list admin_list_first">
+                    <input name="money" class="input_text_100" />
+                </td>
+            </tr>
+            <tr>
+                <td class="admin_list admin_list_first">
+                    赠送积分:
+                </td>
+                <td class="admin_list admin_list_first">
+                    <input name="free_points" class="input_text_100" />
+                </td>
+            </tr>
+            <tr>
+                <td class="admin_list admin_list_first">
+
+                </td>
+                <td class="admin_list admin_list_first" colspan="2">
+                    {#$inputtoken#}
+                    <input name="submit3" type="submit" class="admin_submit" value="添加">
+                </td>
+
+
+            </tr>
+    </table>
+    </form>
+    <div id="GetDelInfo" style="display: none" >
+
+		</div>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

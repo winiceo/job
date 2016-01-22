@@ -1,5 +1,14 @@
 {#include file="sys/admin_header.htm"#}
+<script>
 
+    $(document).ready(function() {
+
+
+        showmenu("#parent_name", "#menu4", "#parent_id");
+
+    })
+
+</script>
 <div class="admin_main_nr_dbox">
     <div class="pagetit">
         <div class="ptit"> {#$pageheader#}</div>
@@ -27,6 +36,24 @@
                             <input name="type" type="radio" value="1" {#if $show.type=="1"#}checked="checked"{#/if#} />
                             标题</label>
 
+
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <div>
+                            {#qishi_get_classify set="类型:QS_relpace_cols,列表名:li"#}
+                            <input type="text" value="{#$show.parent_name|default:"请选择"#}"  readonly="readonly" name="parent_name" id="parent_name" class="input_text_200 input_text_selsect"/>
+                            <input name="parent_id" id="parent_id" type="hidden" value="{#$show.parent_id#}" />
+                            <div id="menu4" class="menu">
+                                <ul>
+                                    {#foreach from=$li item=list#}
+                                    <li id="{#$list.id#}" title="{#$list.name#}">{#$list.name#}</li>
+                                    {#/foreach#}
+                                </ul>
+                            </div>
+                        </div>
 
                     </td>
                 </tr>

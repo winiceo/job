@@ -75,18 +75,22 @@
                 </tr>
                 <tr>
                     <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
-                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试人数： {#$promotion.interview_num#}
+                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试人数： {#$promotion.num#}
                     </td>
 
 
                     <td height="30" width="30%" style=" border-bottom:1px #CCCCCC dashed"><span
-                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试金额： {#$promotion.interview_money#}
+                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试金额： {#$promotion.amount#}
+                    </td>
+                    <td height="30" style=" border-bottom:1px #CCCCCC dashed"><span
+                            style="color:#FF3300; font-weight:bold">*</span>招聘人数：
+                        {#$promotion.success_num#}
                     </td>
 
 
                     <td height="30" style=" border-bottom:1px #CCCCCC dashed"><span
-                            style="color:#FF3300; font-weight:bold">*</span>悬赏面试成功金额：
-                        {#$promotion.interview_success_money#}
+                            style="color:#FF3300; font-weight:bold">*</span>招聘成功金额：
+                        {#$promotion.success_amount#}
                     </td>
 
                 </tr>
@@ -153,7 +157,16 @@
                     备注:
                 </td>
                 <td class="admin_list admin_list_first">
-                    <textarea name="notes" id="notes"></textarea>
+                    <textarea name="notes" id="notes" style="width:500px;height:100px;"></textarea>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="admin_list admin_list_first">
+                    下次访问时间:
+                </td>
+                <td class="admin_list admin_list_first">
+                    <input name="nexttime" id="nexttime" class="input_text_100" />
                 </td>
 
             </tr>
@@ -183,7 +196,10 @@
                 内容
             </td>
             <td class="admin_list admin_list_tit">
-                时间
+                下次联系时间
+            </td>
+            <td class="admin_list admin_list_tit">
+             时间
             </td>
 
         </tr>
@@ -196,7 +212,10 @@
                 {#$list.notes#}
             </td>
             <td class="admin_list admin_list_first">
-                {#$list.addtime|date:"Y-m-d H:i"#}
+                {#$list.nexttime#}
+            </td>
+            <td class="admin_list admin_list_first">
+                {#$list.addtime#}
             </td>
 
         </tr>
@@ -226,6 +245,7 @@
         <tr>
             <td height="25">&nbsp;</td>
             <td> {#$inputtoken#}
+                <input type="hidden" name="clue_id" value="{#$clue.id#}">
                 <input type="hidden" name="company_uid" value="{#$company_profile.uid#}">
                 <input type="submit" name="reduce_money" value="确定" class="admin_submit"/></td>
         </tr>
@@ -247,6 +267,8 @@
             <tr>
                 <td height="25">&nbsp;</td>
                 <td> {#$inputtoken#}
+                    <input type="hidden" name="clue_id" value="{#$clue.id#}">
+
                     <input type="hidden" name="member_uid" value="{#$member.uid#}">
                     <input type="submit" name="add_money" value="确定" class="admin_submit"/></td>
             </tr>

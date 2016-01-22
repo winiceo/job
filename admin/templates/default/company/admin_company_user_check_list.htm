@@ -28,7 +28,7 @@ $(document).ready(function()
   <div class="seltpye_x">
 		<div class="left">审核状态</div>
 		<div class="right">
-		<a href="{#"status:"|qishi_parse_url#}" {#if $smarty.get.status==""#}class="select"{#/if#}>不限</a>
+		<!--<a href="{#"status:"|qishi_parse_url#}" {#if $smarty.get.status==""#}class="select"{#/if#}>不限</a>-->
 		<a href="{#"status:0"|qishi_parse_url#}" {#if $smarty.get.status=="0"#}class="select"{#/if#}>待审核</a>
 		<a href="{#"status:1"|qishi_parse_url#}" {#if $smarty.get.status=="1"#}class="select"{#/if#}>审核通过</a>
 		<div class="clear"></div>
@@ -41,7 +41,8 @@ $(document).ready(function()
     <tr>
       <td  class="admin_list_tit admin_list_first" >
       <label id="chkAll"><input type="checkbox" name=" " title="全选/反选" id="chk"/>用户名</label></td>
-      <td  class="admin_list_tit">email</td>
+
+      <td  class="admin_list_tit">企业名</td>
 	  <td  class="admin_list_tit">手机</td>
       <td  class="admin_list_tit">企业信息</td>
       <td width="10%"   align="center"   class="admin_list_tit">注册时间</td>
@@ -55,12 +56,13 @@ $(document).ready(function()
       <td class="admin_list admin_list_first">
         <input name="tuid[]" type="checkbox" id="tuid" value="{#$list.uid#}"/>{#$list.username#}(<span style="color:red">{#if $list.check_status==1#}已通过{#else#}未通过{#/if#}</span>)
 		</td>
- 		<td class="admin_list">
-		{#$list.email#}
-		
-		{#if $list.email_audit=="1"#}<span style="color:#009900">[验]</span>{#/if#}
-		<a href="admin_mail.php?act=send&email={#$list.email#}&uid={#$list.uid#}"> <img src="images/email.gif" border="0" title="发送邮件" /></a>		
-		</td>
+          <td class="admin_list">
+
+
+
+              <a href="{#$list.company_url#}" target="_blank">{#$list.company_name#}</a>
+          </td>
+
 		 <td  class="admin_list">
 		 {#if $list.mobile#}{#$list.mobile#}<a href="admin_sms.php?act=send&mobile={#$list.mobile#}&uid={#$list.uid#}"><img src="images/sms.gif" border="0" title="发送短信" /></a>
 {#else#}未填写{#/if#}

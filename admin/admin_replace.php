@@ -30,19 +30,31 @@ if ($act == 'list') {
     else
     {
 
-        if (!empty($_GET['type']))
-        {
-            if ($_GET['type']=="1")
-            {
-                $wheresql.=" AND `type` = 1";
-            }
-            elseif ($_GET['type']=="2")
-            {
-                $wheresql.=" AND type = 2";
+        if (!empty($_GET['type'])) {
+            if ($_GET['type'] == "1") {
+                $wheresql .= " AND `type` = 1";
+            } elseif ($_GET['type'] == "2") {
+                $wheresql .= " AND type = 2";
             }
 
         }
+        if (!empty($_GET['source'])) {
+            $source=$_GET["source"];
+
+             $wheresql .= " AND `source` = '".$source."'";
+
+
+        }
+        if (!empty($_GET['title'])) {
+
+            $wheresql .= " AND `parent_name` = '".$_GET["title"]."' ";
+
+
+        }
+
     }
+
+
 
     $total_sql = "SELECT COUNT(*) AS num FROM " . table('relation').$wheresql;
     $total_val = $db->get_total($total_sql);
@@ -53,6 +65,14 @@ if ($act == 'list') {
     $smarty->assign('list', $list);
     $smarty->assign('page', $page->show(3));
     $smarty->assign('navlabel', "list");
+
+    $smarty->assign('source_list', get_source_list());
+    $smarty->assign('title_list', get_title_list());
+
+    $smarty->assign('source', $_GET['source']);
+    $smarty->assign('title', $_GET['title']);
+    $smarty->assign('type', $_GET['type']);
+
     get_token();
     $smarty->display('replace/admin_replace.htm');
 } elseif ($act == 'add') {
@@ -64,7 +84,9 @@ if ($act == 'list') {
     $setsqlarr['name'] = !empty($_POST['name']) ? trim($_POST['name']) : adminmsg('原内容不能为空', 1);
     $setsqlarr['value'] = !empty($_POST['value']) ? trim($_POST['value']) : adminmsg('替换后新内容不能为空', 1);
     $setsqlarr['type'] = !empty($_POST['type']) ? trim($_POST['type']) : adminmsg('分类', 1);
-    $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['value']) : "";
+    $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['source']) : "";
+    $setsqlarr['parent_name'] = !empty($_POST['parent_name']) ? trim($_POST['parent_name']) : "";
+    $setsqlarr['parent_id'] = !empty($_POST['parent_id']) ? trim($_POST['parent_id']) : "";
 
 
     if ($db->inserttable(table('relation'), $setsqlarr)) {
@@ -86,8 +108,10 @@ if ($act == 'list') {
     $setsqlarr['name'] = !empty($_POST['name']) ? trim($_POST['name']) : adminmsg('原内容不能为空', 1);
     $setsqlarr['value'] = !empty($_POST['value']) ? trim($_POST['value']) : adminmsg('替换后新内容不能为空', 1);
     $setsqlarr['type'] = !empty($_POST['type']) ? trim($_POST['type']) : adminmsg('分类', 1);
-    $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['value']) : "";
+    $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['source']) : "";
 
+    $setsqlarr['parent_name'] = !empty($_POST['parent_name']) ? trim($_POST['parent_name']) : "";
+    $setsqlarr['parent_id'] = !empty($_POST['parent_id']) ? trim($_POST['parent_id']) : "";
 
     $wheresql = " id=" . intval($_POST['id']);
     !$db->updatetable(table('relation'), $setsqlarr, $wheresql) ? adminmsg("修改失败！", 0) : adminmsg("修改成功！", 2, $link);

@@ -82,24 +82,15 @@ $(document).ready(function() {
 
 			<div class="navs">
 
-        <a href="?act=pay_add" class="se">现金充值</a>
+                {#include file="member_company/order_nav.htm"#}
 
-        {#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
-        <a href="?act=order_add"  >积分充值</a>
-        {#/if#}
-        {#if $QISHI.operation_mode=="2" || $QISHI.operation_mode=="3"#}
-        <a href="?act=setmeal_list">申请VIP套餐</a>
-        {#/if#}
-        <a href="?act=order_list">我的订单</a>
-        {#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
-        <a href="?act=gifts">礼品卡</a>
-        {#/if#}
 				<div class="clear"></div>
 			</div>
 		</div>
 
         <div class="balance margin-common">
-            <div class="bal_text" style="margin-bottom:0;">您的账户可用余额<span> {#$balance#} </span>元&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="bal_text" style="margin-bottom:0;">您的账户总余额<span> {#$balance#} </span>元;可用余额<span> {#$balance_can#} </span>元;您的账户剩余<span> {#$points#} </span>{#$QISHI.points_quantifier#}{#$QISHI.points_byname#}&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="company_service.php?act=j_account&detail=1">[积分明细]</a>&nbsp;&nbsp;<a target="_blank" href="company_service.php?act=j_account">[积分消费规则]</a>
+
             </div>
 
         </div>

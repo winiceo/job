@@ -25,14 +25,41 @@
         <div class="clear"></div>
     </div>
     <div class="seltpye_x">
-        <div class="left">分类</div>
+        <div class="left">标题</div>
         <div class="right">
-            <a href="{#" type:"|qishi_parse_url#}" {#if $smarty.get.type==""#}class="select"{#/if#}>不限</a>
-            <a href="{#" type:1"|qishi_parse_url#}" {#if $smarty.get.type=="1"#}class="select"{#/if#}>标题</a>
-            <a href="{#" type:2"|qishi_parse_url#}" {#if $smarty.get.type=="2"#}class="select"{#/if#}>内容</a>
+
+            <a href="{#"type:"|qishi_parse_url#}" {#if $smarty.get.type==""#}class="select"{#/if#}>不限</a>
+            <a href="{#"type:1"|qishi_parse_url#}" {#if $smarty.get.type=="1"#}class="select"{#/if#}>标题</a>
+            <a href="{#"type:2"|qishi_parse_url#}" {#if $smarty.get.type=="2"#}class="select"{#/if#}>内容</a>
 
             <div class="clear"></div>
         </div>
+
+        <div class="clear"></div>
+    </div>
+    <div class="seltpye_x">
+        <div class="left">字段</div>
+        <div class="right" style="height:100%;">
+            <a href="{#"title:"|qishi_parse_url#}" {#if $smarty.get.title==""#}class="select"{#/if#}>不限</a>
+            {#foreach from=$title_list item=list_s#}
+            <a href="{#"title:$list_s.name"|qishi_parse_url#}" {#if $smarty.get.title==$list_s.name#}class="select"{#/if#}>{#$list_s.name#}</a>
+
+            {#/foreach#}
+            <div class="clear"></div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    <div class="seltpye_x">
+        <div class="left">来源分类</div>
+        <div class="right">
+            <a href="{#"source:"|qishi_parse_url#}" {#if $smarty.get.source==""#}class="select"{#/if#}>不限</a>
+            {#foreach from=$source_list item=list_s#}
+            <a href="{#"source:$list_s.source"|qishi_parse_url#}" {#if $smarty.get.source==$list_s.source#}class="select"{#/if#}>{#$list_s.source#}</a>
+             {#/foreach#}
+            <div class="clear"></div>
+        </div>
+
         <div class="clear"></div>
     </div>
 
@@ -47,6 +74,7 @@
                 <td align="center" class="admin_list_tit" width="10%"> 替换后内容</td>
                 <td align="center" class="admin_list_tit" width="10%"> 类型</td>
                 <td align="center" class="admin_list_tit" width="10%"> 备注</td>
+                <td align="center" class="admin_list_tit" width="10%"> 字段</td>
 
                 <td width="130" align="center" class="admin_list_tit">操作</td>
             </tr>
@@ -67,6 +95,10 @@
                 <td class="admin_list admin_list_first">
 
                     {#$list.source#}
+                </td>
+                <td class="admin_list admin_list_first">
+
+                    {#$list.parent_name#}
                 </td>
 
                 <td align="center" class="admin_list">

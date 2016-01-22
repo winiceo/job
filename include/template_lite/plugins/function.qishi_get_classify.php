@@ -214,6 +214,18 @@ elseif ($act =="QS_major")
 	$list[] = $row;
 	}
 }
+elseif ($act=="QS_relpace_cols")
+{
+
+        $result = $db->query("SELECT * FROM ".table('relation')." where type=1");
+        while($row = $db->fetch_array($result))
+        {
+            $list[] =$row;
+        }
+       // $list=array_unique($list);
+//        $list=implode(",",$list);
+
+}
 else
 {
 	if (!empty($_CAT[$act]))

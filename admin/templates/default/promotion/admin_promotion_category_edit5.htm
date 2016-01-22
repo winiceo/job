@@ -35,10 +35,11 @@
  
 		  </td>
           </tr>
+
 		  <tr>
             <td align="right">面试人数最少：</td>
             <td>
-			<input name="cat_minday" type="text" class="input_text_200"   maxlength="3" value="{#$show.cat_minday#}"/>天
+			<input name="interv[num]" type="text" class="input_text_200"   maxlength="3" value="{#$interv.num#}"/>人
            <span class="admin_note"> </span>
 		   </td>
           </tr>
@@ -46,24 +47,25 @@
 	 <tr>
             <td align="right">面试金额最少：</td>
             <td>
-			<input name="cat_maxday" type="text" class="input_text_200"   maxlength="6" value="{#$show.cat_maxday#}"/>天
+			<input name="interv[amount]" type="text" class="input_text_200"   maxlength="6" value="{#$interv.amount#}"/>元
            <span class="admin_note"> </span>
 		   </td>
           </tr>
-	 <tr>
-            <td align="right">面试成功金额最少：</td>
-            <td>
-			<input name="cat_points" type="text" class="input_text_200"   maxlength="6" value="{#$show.cat_points#}"/>点
-           <span class="admin_note"> “0”不消耗</span>
-		   </td>
-          </tr>
+
 		   <tr>
-            <td align="right">方案排序：</td>
+            <td align="right">招聘人数：</td>
             <td>
-			<input name="cat_order" type="text" class="input_text_200"   maxlength="3" value="{#$show.cat_order#}"/>
-           <span class="admin_note"> 数字越大，排序越靠前</span>
+			<input name="interv[success_num]" type="text" class="input_text_200"   maxlength="3" value="{#$interv.success_num#}"/>
+           <span class="admin_note">人</span>
 		   </td>
           </tr>
+            <tr>
+                <td align="right">面试成功金额最少：</td>
+                <td>
+                    <input name="interv[success_amount]" type="text" class="input_text_200"   maxlength="6" value="{#$interv.success_amount#}"/>点
+                    <span class="admin_note">元</span>
+                </td>
+            </tr>
 		   <tr>
             <td align="right" valign="top">方案说明：</td>
             <td>
