@@ -300,7 +300,7 @@ function get_abcd($key,$num,$paper_id){
 	$sql = "SELECT * FROM ".table('evaluation_result')." WHERE paper_id=".$paper_id." and result_options='".$key."' ORDER BY result_num desc ";
 
 	$list = $db->getall($sql);
- 
+
 	foreach($list as $p=>$value){
 		if($value["result_num"]>=$num){
 			return $value["result_description"];
