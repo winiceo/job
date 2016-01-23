@@ -12,6 +12,8 @@
 define('IN_QISHI', true);
 require_once(dirname(__FILE__).'/../include/common.inc.php');
 $act =$_GET['act']?trim($_GET['act']):"del_record";
+require_once(QISHI_ROOT_PATH.'genv/lib.php');
+
 // 删除记录
 if($act == 'del_record')
 {
@@ -103,17 +105,50 @@ elseif($act == 'next_page')
 	//提交
 	if($_REQUEST['submit_button'])
 	{
-		$score = 0;
+
 		$paperall = json_decode($_SESSION['paper_info'],true);
-		//循环 session
-		for ($i=1; $i <= $page_num; $i++) 
-		{
-			foreach ($paperall[$i] as $key => $value) 
+
+		if($paper_info["result_type"]==1){
+			$score = array();
+
+
+			//循环 session
+			for ($i=1; $i <= $page_num; $i++)
 			{
-				$score += intval($value['score']);
+				foreach ($paperall[$i] as $key => $value)
+				{
+					$score[trim($value['score'])][]=$value['score'];
+				}
 			}
+			$temp=array();
+			foreach($score as $key=>$v){
+				$temp[]=$key."共".count($v)."个";
+			}
+			$result=join(";",$temp);
+			$setsqlarr['score'] = $result;
+
+
+
+			$setsqlarr['result_description']="您的得分为{$result}<br>分析结果如下:".get_result_abcd($score,$paper_info["id"]);
+
+		}elseif($paper_info["result_type"]==2){
+			$score = 0;
+
+
+			//循环 session
+			for ($i=1; $i <= $page_num; $i++)
+			{
+				foreach ($paperall[$i] as $key => $value)
+				{
+					$score += intval($value['score']);
+				}
+			}
+			$setsqlarr['score'] = $score;
+
+			$setsqlarr['result_description']="您的得分为{$score}<br>分析结果如下:".get_result_score($score,$paper_info["id"]);
+
+
 		}
-		$setsqlarr['score'] = $score;
 		$setsqlarr['uid'] = $_SESSION['uid'];
 		$setsqlarr['paper_id'] = $id;
 		$setsqlarr['paper_title'] = $paper_info['title'];
@@ -133,6 +168,7 @@ elseif($act == 'next_page')
 			$link[0]['href'] = 'my_evaluation.php';
 			showmsg('答题失败！',0,$link);
 		}
+
 	}
 	else
 	{
@@ -237,5 +273,38 @@ elseif($act == 'is_answer_next')
 		exit('ok');
 	}
 }
+//按分获取结果
+function get_result_score($score,$paper_id){
+	global $db;
+	$sql = "SELECT * FROM ".table('evaluation_result')." WHERE paper_id=".$paper_id." ORDER BY result_score desc ";
+	$list = $db->getall($sql);
+	foreach($list as $key=>$value){
+		if($value["result_score"]>=$score){
+			return $value["result_description"];
+		}
+	}
+}
+//按ABCD获取结果
+function get_result_abcd($score,$paper_id){
 
+
+	$result=array();
+	foreach($score as $key=>$value){
+		 $result[]=get_abcd($key,count($value),$paper_id);
+	}
+	return join("<br>",$result);
+
+}
+function get_abcd($key,$num,$paper_id){
+	global $db;
+	$sql = "SELECT * FROM ".table('evaluation_result')." WHERE paper_id=".$paper_id." and result_options='".$key."' ORDER BY result_num desc ";
+
+	$list = $db->getall($sql);
+ 
+	foreach($list as $p=>$value){
+		if($value["result_num"]>=$num){
+			return $value["result_description"];
+		}
+	}
+}
 ?>

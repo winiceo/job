@@ -107,6 +107,8 @@ elseif($act == 'paper_add')
 	//测评类型
 	$evaluat_type = get_evaluation_category();
 	$smarty->assign('evaluat_type',$evaluat_type);
+	$show["result_type"]=1;
+	$smarty->assign('show',$show);
 	$smarty->assign('pageheader',"人才测评 ");
 	$smarty->display('evaluation/admin_evaluation_add.htm');
 }
@@ -137,6 +139,7 @@ elseif($act == 'paper_save')
 	$setarr["suitable_crowd"]=$_POST["suitable_crowd"]?trim($_POST["suitable_crowd"]):adminmsg("请输使用人群");
 	$setarr["description"]=$_POST["description"]?trim($_POST["description"]):adminmsg("请输入试卷描述");
 	$setarr["explain"]=$_POST["explain"]?trim($_POST["explain"]):adminmsg("请输入得分说明");
+	$setarr["result_type"]=$_POST["result_type"]?trim($_POST["result_type"]):adminmsg("答案类型不能为空");
 	//修改
 	if($id>0)
 	{
@@ -363,7 +366,7 @@ elseif($act == 'add_option_save')
 			{	
 				$setsqlarr['question_id']=$question_id;
 				$setsqlarr['name']=trim($_POST['name'][$i]);
-				$setsqlarr['score']=intval($_POST['score'][$i]);
+				$setsqlarr['score']=($_POST['score'][$i]);
 				$setsqlarr['paper_id']=$question_info['paper_id'];
 				!$db->inserttable(table('evaluation_option'),$setsqlarr)?adminmsg("保存失败！",0):"";
 				$num=$num+$db->affected_rows();
@@ -474,6 +477,150 @@ elseif($act=="record_del")
 	if ($num>0)
 	{
 		write_log("后台删除测评记录,共删除".$return."行", $_SESSION['admin_name'],3);
+		adminmsg("删除成功！共删除".$num."行",2);
+	}
+	else
+	{
+		adminmsg("删除失败！",0);
+	}
+}
+// 试卷结果分析
+elseif($act == 'result_list')
+{
+	get_token();
+	// 试卷id
+	$paper_id=intval($_GET['id']);
+	if($paper_id <= 0)
+	{
+		adminmsg("试卷编号丢失！",0);
+	}
+	require_once(QISHI_ROOT_PATH.'include/page.class.php');
+	$wheresql=" WHERE paper_id=".$paper_id;
+	$oederbysql=" order BY id  DESC";
+
+	$total_sql="SELECT COUNT(*) AS num FROM ".table('evaluation_result').$wheresql;
+	$total=$db->get_total($total_sql);
+	$perpage=50;
+	$page = new page(array('total'=>$total, 'perpage'=>$perpage));
+	$currenpage=$page->nowindex;
+	$offset=($currenpage-1)*$perpage;
+	$list = get_paper_result($offset, $perpage,$wheresql.$oederbysql);
+	$smarty->assign('list',$list);
+
+	$paper_info = get_evaluation_one($paper_id);
+	$smarty->assign('paper_info',$paper_info);
+	$smarty->assign('total',$total);
+	$smarty->assign('page',$page->show(3));
+	$smarty->assign('pageheader',"人才测评");
+	$smarty->display('evaluation/admin_result_list.htm');
+}
+// 新增答案
+
+elseif($act == 'result_add')
+{
+	get_token();
+	// 试卷id
+	$paper_id=intval($_GET['paper_id']);
+	$paper=get_evaluation_one($paper_id);
+	$smarty->assign('paper_id',$paper_id);
+	$smarty->assign('paper',$paper);
+	$smarty->assign('pageheader',"人才测评");
+	$smarty->display('evaluation/admin_result_add.htm');
+}
+// 保存 结果
+elseif($act == 'add_result_save')
+{
+	check_token();
+	$paper_id=intval($_POST['paper_id']);
+	if(empty($paper_id))
+	{
+		adminmsg("试卷信息丢失！");
+	}
+
+	$setarr["result_type"]=$_POST["result_type"]?intval($_POST["result_type"]):adminmsg("答案类型不能为空");
+	$setarr["paper_id"]=$paper_id;
+	if($setarr["result_type"]==1){
+		$setarr["result_options"]=$_POST["result_options"]?($_POST["result_options"]):adminmsg("选项不能为空");
+		$setarr["result_num"]=$_POST["result_num"]?intval($_POST["result_num"]):adminmsg("数目不能为空");
+
+	}elseif($setarr["result_type"]==2){
+		$setarr["result_score"]=$_POST["result_score"]?intval($_POST["result_score"]):adminmsg("得分不能为空");
+
+	}
+	$setarr["result_description"]=$_POST["result_description"]?($_POST["result_description"]):adminmsg("结果不能为空");
+
+
+	$link[0]['text'] = "返回试卷答案列表";
+	$link[0]['href'] = '?act=result_list&id='.$paper_id;
+	!$db->inserttable(table("evaluation_result"),$setarr)?adminmsg("添加失败！"):adminmsg("添加成功！",2,$link);
+
+
+
+	//填写管理员日志
+	write_log("后台成功添加试卷答案！", $_SESSION['admin_name'],3);
+ }
+// 修改测题
+elseif($act == 'result_edit')
+{
+	get_token();
+	$result=get_result_one($_GET['id']);
+	$paper=get_evaluation_one($result["paper_id"]);
+
+	$smarty->assign('paper',$paper);
+	$smarty->assign('pageheader',"人才测评");
+	$smarty->assign('result',$result);
+	$smarty->display('evaluation/admin_result_edit.htm');
+}
+// 修改保存测题
+elseif($act == 'edit_result_save')
+{
+	check_token();
+
+
+
+	$rid=intval($_POST['rid']);
+	$paper_id=intval($_POST['paper_id']);
+	if(empty($paper_id))
+	{
+		adminmsg("试卷信息丢失！");
+	}
+
+	$setarr["result_type"]=$_POST["result_type"]?intval($_POST["result_type"]):adminmsg("答案类型不能为空");
+	$setarr["paper_id"]=$paper_id;
+	if($setarr["result_type"]==1){
+		$setarr["result_options"]=$_POST["result_options"]?($_POST["result_options"]):adminmsg("选项不能为空");
+		$setarr["result_num"]=$_POST["result_num"]?intval($_POST["result_num"]):adminmsg("数目不能为空");
+
+	}elseif($setarr["result_type"]==2){
+		$setarr["result_score"]=$_POST["result_score"]?intval($_POST["result_score"]):adminmsg("得分不能为空");
+
+	}
+	$setarr["result_description"]=$_POST["result_description"]?($_POST["result_description"]):adminmsg("结果不能为空");
+
+
+	$link[0]['text'] = "返回试卷答案列表";
+	$link[0]['href'] = '?act=result_list&id='.$paper_id;
+	!$db->updatetable(table("evaluation_result"),$setarr," id=".$rid)?adminmsg("添加失败！"):adminmsg("更新成功！",2,$link);
+
+
+
+	//填写管理员日志
+	write_log("后台成功修改试卷答案！", $_SESSION['admin_name'],3);
+
+	adminmsg("保存成功！",2,$link);
+
+
+}
+// 删除测题
+elseif($act=="result_del")
+{
+	$id =!empty($_REQUEST['id'])?$_REQUEST['id']:adminmsg("你没有选择测题！",1);
+	$paper_id = $_REQUEST['paper_id'];
+	$num=del_result($id);
+	if ($num>0)
+	{
+
+		write_log("后台删除测题,共删除".$return."行", $_SESSION['admin_name'],3);
 		adminmsg("删除成功！共删除".$num."行",2);
 	}
 	else

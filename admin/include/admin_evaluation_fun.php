@@ -212,4 +212,37 @@ function del_record($id)
 	}
 }
 
+// 获取试卷问题列表
+function get_paper_result($offset, $perpage, $sql= '')
+{
+	global $db,$_CFG;
+	$limit=" LIMIT ".$offset.','.$perpage;
+	$rows = $db->getall("SELECT * FROM ".table('evaluation_result').$sql.$limit);
+	return $rows;
+}
+// 获取答案
+function get_result_one($id)
+{
+	global $db,$_CFG;
+	$id=intval($id);
+	return $db->getone("SELECT * FROM ".table('evaluation_result')." where id=$id limit 1 ");
+}
+// 删除答案
+function del_result($id)
+{
+	global $db;
+	if (!is_array($id))$id=array($id);
+	$sqlin=implode(",",$id);
+	$return=0;
+	if (preg_match("/^(\d{1,10},)*(\d{1,10})$/",$sqlin))
+	{
+		if (!$db->query("Delete from ".table('evaluation_result')." WHERE id IN ({$sqlin})")) return false;
+		$return=$return+$db->affected_rows();
+		return $return;
+	}
+	else
+	{
+		return false;
+	}
+}
 ?>

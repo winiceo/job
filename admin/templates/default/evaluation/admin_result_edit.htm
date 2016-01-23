@@ -1,0 +1,78 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("#add_form").click(function()
+        {
+            $("#html").append($("#html_tpl").html());
+        });
+
+
+
+    });
+
+</script>
+
+
+<div class="admin_main_nr_dbox">
+    <div class="pagetit">
+        <div class="ptit"> {#$pageheader#}</div>
+        <div class="clear"></div>
+    </div>
+    <div class="toptip">
+        <h2>提示：</h2>
+        <p>
+            点击“继续添加”按钮，可同时添加多个测题！<br />
+        </p>
+    </div>
+    <div class="toptit">新增答案结果</div>
+    <form id="form1" name="form1" method="post" action="?act=edit_result_save">
+        {#$inputtoken#}
+        <div id="html_tpl">
+            <table width="100%" border="0" cellspacing="6" cellpadding="0" >
+
+                {#if $paper.result_type==1#}
+
+                <tr class="">
+                    <td width="120" align="right">选项：</td>
+                    <td><input name="result_options" type="text" class="input_text_200"  value="{#$result.result_options#}"/></td>
+                </tr>
+                <tr class="resultA">
+                    <td width="120" align="right">数量：</td>
+                    <td><input name="result_num" type="text" class="input_text_200"  value="{#$result.result_num#}"/></td>
+                </tr>
+                {#elseif $paper.result_type==2#}
+
+
+                    <tr class="resultS">
+                        <td width="120" align="right">得分：</td>
+                        <td><input name="result_score" type="text" class="input_text_200"  value="{#$result.result_score#}"/></td>
+                    </tr>
+                {#/if#}
+
+                <tr>
+                    <td width="120" align="right">答案说明：</td>
+                    <td><textarea name="result_description" style="height: 100px;width:500px;">{#$result.result_description#}</textarea></td>
+                </tr>
+
+            </table>
+        </div>
+        <div id="html"></div>
+        <table width="100%" border="0" cellspacing="6" cellpadding="0">
+            <tr>
+                <td width="120"> </td>
+                <td>
+                    <input type="submit" name="addsave" value="保存" class="admin_submit" />
+                    <input type="hidden" name="paper_id" value="{#$result.paper_id#}"  />
+                    <input type="hidden" name="result_type" value="{#$paper.result_type#}"  />
+                    <input type="hidden" name="rid" value="{#$result.id#}"  />
+                    <input name="submit22" type="button" class="admin_submit"    value="返 回" onclick="window.location='?act=result_list&id={#$result.paper_id#}'"/>
+
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

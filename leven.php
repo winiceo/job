@@ -250,8 +250,10 @@ $app->get('/genv/init', function ($request, $response) {
     $sql[]="alter table ".table('resume_temp')." add num tinyint(3) not null ";
     $sql[]="alter table ".table('resume_temp')." add upload_time int(11) not null ";
 
+    $sql[]="alter table ".table('resume_temp')." add upload_time int(11) not null ";
 
-    $sql[]="alter table ".table('resume_temp')." add status tinyint(1)  not null default 0 ";
+
+    $sql[]="alter table ".table('evaluation_paper')." add result_type tinyint(1)  not null default 1 ";
 
     $sql[]="insert qs_promotion_category set cat_id=5,cat_type=2,cat_name='ÐüÉÍ',cat_notes=''";
 

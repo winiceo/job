@@ -58,7 +58,7 @@ $(document).ready(function()
 				<label id="chkAll"><input type="checkbox" name="chkAll"  id="chk" title="全选/反选" />
 				试卷标题</label>
 				</td>
-				<td  class="admin_list_tit" align="center" width="15%">关键词</td>
+				<td  class="admin_list_tit" align="center" width="15%">答案类型</td>
 				<td  align="center"  class="admin_list_tit"  width="15%">适用人群</td>
 				<td  class="admin_list_tit" align="center">测题数</td>
 				<td  class="admin_list_tit" align="center" >答题时长</td>
@@ -73,7 +73,7 @@ $(document).ready(function()
 					<a href="{#$list.url#}" target="_blank"><span title="{#$list.title#}">{#$list.title#}</span></a>
 				</td>
 				<td  class="admin_list" align="center">
-					<span title="{#$list.keywords#}">{#$list.keywords#}</span>
+					<span title="">{#if $list.result_type==1#}ABCD类{#else#}总分类{#/if#}</span>
 				</td>
 				<td  class="admin_list" align="center">
 					<span title="{#$list.suitable_crowd#}">{#$list.suitable_crowd#}</span>
@@ -91,6 +91,7 @@ $(document).ready(function()
 					<a href="?act=record_list">{#if $list.join_num > 0#}{#$list.join_num#}{#else#}0{#/if#}</a>
 				</td>
 				<td class="admin_list"  align="center" >
+					<a href="?act=result_list&id={#$list.id#}">结果分析</a>&nbsp;&nbsp;
 					<a href="?act=question_list&id={#$list.id#}">管理</a>&nbsp;&nbsp;
 					<a href="?act=paper_edit&id={#$list.id#}">修改</a>&nbsp;&nbsp;
 					<a href="?act=paper_del&id={#$list.id#}">删除</a>

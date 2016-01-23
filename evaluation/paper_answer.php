@@ -23,6 +23,7 @@ $cached_id=$alias.(isset($_REQUEST['id'])?"|".(intval($_REQUEST['id'])%100).'|'.
 
 
 require_once(QISHI_ROOT_PATH.'include/mysql.class.php');
+require_once(QISHI_ROOT_PATH.'genv/lib.php');
 $db = new mysql($dbhost,$dbuser,$dbpass,$dbname);
 $id=$_REQUEST['id']?intval($_REQUEST['id']):0;
 if(empty($_SESSION['utype']) || $_SESSION['utype']!=2)
@@ -82,6 +83,8 @@ foreach ($question_list as $key => $value)
 	$question_list2[intval($offset)+intval($key)+1]['key'] = intval($offset)+intval($key)+1;
 	$question_list2[intval($offset)+intval($key)+1]['option'] = $option_list;
 }
+
+
 $smarty->assign('question_list',$question_list2);
 if(!$smarty->is_cached($mypage['tpl'],$cached_id))
 {

@@ -24,8 +24,9 @@ $cached_id=$alias.(isset($_GET['id'])?"|".(intval($_GET['id'])%100).'|'.intval($
 require_once(QISHI_ROOT_PATH.'include/mysql.class.php');
 $db = new mysql($dbhost,$dbuser,$dbpass,$dbname);
 $id=$_GET['id']?intval($_GET['id']):0;
-$paper_sql = "SELECT r.score,p.* FROM ".table('evaluation_record')." AS r LEFT JOIN  ".table('evaluation_paper')." AS p  ON r.paper_id=p.id  WHERE uid=".$_SESSION['uid']."  and r.id = {$id}  ";
+$paper_sql = "SELECT r.score,r.result_description,p.* FROM ".table('evaluation_record')." AS r LEFT JOIN  ".table('evaluation_paper')." AS p  ON r.paper_id=p.id  WHERE uid=".$_SESSION['uid']."  and r.id = {$id}  ";
 $paper_info = $db->getone($paper_sql);
+//var_dump($paper_info);
 $smarty->assign('paper_info',$paper_info);
 //²âÆÀÍÆ¼ö
 $paper_list_sql = "SELECT * FROM ".table('evaluation_paper')." ORDER BY join_num desc LIMIT 3 ";
