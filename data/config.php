@@ -1,11 +1,11 @@
 <?php
-$dbhost   = "localhost";
+$dbhost   = "123.56.184.152";
 
 $dbname   = "74cms37";
 
-$dbuser   = "root";
+$dbuser   = "zhaohulu";
 
-$dbpass   = "56os.com";
+$dbpass   = "zhaohulu123s";
 
 $pre    = "qs_";
 
