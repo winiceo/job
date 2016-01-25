@@ -95,6 +95,7 @@ $(document).ready(function()
         <td  align="center"   class="admin_list_tit">专业</td>
         <td  align="center"   class="admin_list_tit">邮箱</td>
         <td  align="center"   class="admin_list_tit">电话</td>
+        <td  align="center"   class="admin_list_tit">操作</td>
 
 
 
@@ -112,16 +113,20 @@ $(document).ready(function()
 	 <td align="center"  class="admin_list">{#$list.major_cn#}</td>
 	 <td align="center"  class="admin_list">{#$list.email#}</td>
 	 <td align="center"  class="admin_list">{#$list.telephone#}</td>
+        <td align="center" class="admin_list">
+
+            &nbsp;
+            <a href="?act=resume_temp_show&id={#$list.id#}">审核</a>
+            &nbsp;
+
+        </td>
 
 
 
 
     </tr>
-      <tr bgcolor="#cccccc">
-          <td  class="admin_list admin_list_first" colspan="7">
-              审核日志：{#$list.log#}
-          </td>
-      </tr>
+
+
 	 {#/foreach#}
   </table>
   <span id="OpAudit"></span>
@@ -134,9 +139,8 @@ $(document).ready(function()
 <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
       <tr>
         <td>
-<input type="button" class="admin_submit" id="ButAudit" value="审核简历" />
 
-<input type="button" class="admin_submit" id="ButDel" value="删除"/>
+        <input type="button" class="admin_submit" id="ButDel" value="删除"/>
  		</td>
         <td width="305" align="right">
 

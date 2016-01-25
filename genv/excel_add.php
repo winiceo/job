@@ -21,7 +21,28 @@ require_once 'Classes/PHPExcel/Reader/Excel5.php';
 
 //以上三步加载phpExcel的类
 //$objReader = PHPExcel_IOFactory::createReader('Excel5');//use excel2007 for 2007 format
-$file_path="qcwy.xls";//指定excel文件
+$file="qs_job_field.csv";//指定excel文件
+
+
+
+require('spreadsheet-reader/php-excel-reader/excel_reader2.php');
+
+require('spreadsheet-reader/SpreadsheetReader.php');
+
+
+$reader = new SpreadsheetReader($file);
+// error_reporting(E_ALL ^ E_NOTICE);
+$data=array();
+$cols = array();//存储字段信息；
+
+foreach ($reader as $item)
+{
+    $data[]=$item;
+}
+
+dump($data);
+
+exit;
 $objReader = new PHPExcel_Reader_Excel5(); //use excel2007
 
 

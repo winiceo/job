@@ -197,13 +197,15 @@ function get_reg($value)
 $app->get('/genv/check_pass', function ($request, $response) {
 
     $id = $this->request->getParam("id");
-    $obj = \ORM::for_table(table('resume_temp'))->find_one($id)->as_array();
-    $uid = create_member($obj);
+    $obj = \ORM::for_table(table('resume_temp'))->find_one()->as_array();
 
-    if ($uid) {
-        $obj["uid"] = $uid;
-        createResume($obj);
-    }
+    dump($obj);
+//    $uid = create_member($obj);
+//
+//    if ($uid) {
+//        $obj["uid"] = $uid;
+//        createResume($obj);
+//    }
 
 
 });

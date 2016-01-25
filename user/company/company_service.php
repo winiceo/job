@@ -153,6 +153,7 @@ elseif ($act=='order_list')
 	$smarty->assign('act',$act);
 	$smarty->assign('is_paid',$is_paid);
 	$smarty->assign('payment',get_order_all($offset, $perpage,$wheresql));
+
 	if ($total_val>$perpage)
 	{
 	$smarty->assign('page',$page->show(3));
@@ -209,6 +210,7 @@ elseif ($act=='order_add_save')
 	$order['v_url']=$_CFG['site_domain'].$_CFG['site_dir']."include/payment/respond_".$paymenttpye['typename'].".php";
 	$order['v_amount']=$amount+$fee; 
 	$points=$amount*$_CFG['payment_rate'];
+
 	$order_id=add_order($_SESSION['uid'],4,$order['oid'],$amount,$payment_name,"充值积分:".$points,$timestamp,$points,'',1);
 		if ($order_id)
 			{
@@ -298,6 +300,7 @@ elseif ($act=='order_add_save')
         }
     }
     $points=$points+$free_points;
+	balance_deal($_SESSION["uid"],2,$amount);
 
     $order_id = add_order($_SESSION['uid'], 4, $order['oid'], $amount, $payment_name, "余额购买积分:" . $points, $timestamp, $points, '', 1);
     if ($order_id) {

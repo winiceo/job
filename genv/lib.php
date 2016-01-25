@@ -6,7 +6,7 @@
  * Time: ионГ9:17
  */
 
-require_once(dirname(__FILE__).'/../vendor/autoload.php');
+//require_once(dirname(__FILE__).'/../vendor/autoload.php');
 require (QISHI_ROOT_PATH . 'data/config.php');
 require  'idiorm.php';
 

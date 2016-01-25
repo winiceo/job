@@ -4,7 +4,7 @@
     $(document).ready(function() {
 
 
-        showmenu("#parent_name", "#menu4", "#parent_id");
+        showmenu("#parent_name", "#menu4", "#value");
 
     })
 
@@ -16,7 +16,7 @@
         <div class="clear"></div>
     </div>
 
-    <div class="toptit">添加</div>
+    <div class="toptit">添加标题</div>
 
     <div class="admintable">
 
@@ -24,6 +24,16 @@
             {#$inputtoken#}
             <table width="100%" border="0" cellpadding="3" cellspacing="0">
 
+                <tr>
+                    <td class="tit">来源：</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <input name="source" type="text" class="input_text_200" maxlength="30"/>
+
+                        <span class="admin_note">来源</span></td>
+                </tr>
 
                 <tr>
                     <td class="tit">标题：</td>
@@ -31,14 +41,23 @@
                 <tr>
 
                     <td>
+                        <input name="name" type="text" class="input_text_200" maxlength="20"/>
+                        <span class="admin_note">上传的excel里的标题</span></td>
+                </tr>
+                <tr>
+                    <td class="tit">替换后标题：</td>
+                </tr>
+                <tr>
+
+                    <td>
                         <div>
-                            {#qishi_get_classify set="类型:QS_relpace_cols,列表名:li"#}
+                            {#qishi_get_classify set="类型:QS_relpace_title,列表名:li"#}
                             <input type="text" value="请选择"  readonly="readonly" name="parent_name" id="parent_name" class="input_text_200 input_text_selsect"/>
-                            <input name="parent_id" id="parent_id" type="hidden"   />
+                            <input name="value" id="value" type="hidden"   />
                             <div id="menu4" class="menu">
                                 <ul>
                                     {#foreach from=$li item=list#}
-                                    <li id="{#$list.id#}" title="{#$list.name#}">{#$list.source#}-{#$list.name#}</li>
+                                    <li id="{#$list.key#}" title="{#$list.value#}">{#$list.value#}-{#$list.key#}</li>
                                     {#/foreach#}
                                 </ul>
                             </div>
@@ -46,35 +65,21 @@
 
                     </td>
                 </tr>
-                <tr>
-                    <td class="tit">内容：</td>
-                </tr>
-                <tr>
 
-                    <td>
-                        <input name="name" type="text" class="input_text_200" maxlength="20"/>
-                        <span class="admin_note">上传的excel里的内容</span></td>
-                </tr>
-                <tr>
-                    <td class="tit">替换后内容：</td>
-                </tr>
-                <tr>
 
-                    <td>
-                        <input name="value" type="text" class="input_text_200" maxlength="30"/>
 
-                        <span class="admin_note">替换成标准内容</span></td>
-                </tr>
+
+
+
 
 
                 <tr>
                     <td>
                         <br/>
                         <br/>
+                        <input name="type" type="hidden" value="1"/>
 
-                        <input type="hidden" name="paper_id" value="{#$paper_id#}"/>
-                        <input type="hidden" name="type" value="2"/>
-                        <input type="submit" name="Submit" value="确定提交" class="admin_submit"/>
+                         <input type="submit" name="Submit" value="确定提交" class="admin_submit"/>
 
 
                     </td>

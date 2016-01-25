@@ -180,6 +180,7 @@ function get_jobs_one($id)
 	$val['contact']=$db->getone("select * from ".table('jobs_contact')." where pid='{$id}' LIMIT 1");
 	return $val;
 }
+
 //É¾³ýÖ°Î»
 function del_jobs($id)
 {
@@ -1050,6 +1051,12 @@ function order_paid($v_oid)
         } else {
             $ismoney = 2;
         }
+
+		if(get_user_can_balance($order['uid'])<$order['amount']){
+			adminmsg('Óà¶î²»×ã',1);
+			return false;
+		}
+
 
         balance_deal($order['uid'], 2, $order['amount']);
         $user_balance = get_user_balance($order['uid']);

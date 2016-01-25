@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/../data/config.php');
 require_once(dirname(__FILE__) . '/include/admin_common.inc.php');
 require_once(ADMIN_ROOT_PATH . 'include/admin_replace_fun.php');
 $act = !empty($_GET['act']) ? trim($_GET['act']) : 'list';
-check_permissions($_SESSION['admin_purview'], "crons");
+check_permissions($_SESSION['admin_purview'], "upload_replace");
 $smarty->assign('pageheader', "简历字段替换");
 if ($act == 'list') {
     require_once(QISHI_ROOT_PATH . 'include/page.class.php');
@@ -47,7 +47,7 @@ if ($act == 'list') {
         }
         if (!empty($_GET['title'])) {
 
-            $wheresql .= " AND `parent_name` = '".$_GET["title"]."' ";
+            $wheresql .= " AND `parent_id` = '".$_GET["title"]."' ";
 
 
         }
@@ -79,15 +79,29 @@ if ($act == 'list') {
     get_token();
     $smarty->assign('navlabel', "add");
     $smarty->display('replace/admin_replace_add.htm');
+}elseif ($act == 'add_title') {
+    get_token();
+    $smarty->assign('navlabel', "add_title");
+    $smarty->display('replace/admin_replace_add_title.htm');
 } elseif ($act == 'add_save') {
     check_token();
     $setsqlarr['name'] = !empty($_POST['name']) ? trim($_POST['name']) : adminmsg('原内容不能为空', 1);
     $setsqlarr['value'] = !empty($_POST['value']) ? trim($_POST['value']) : adminmsg('替换后新内容不能为空', 1);
-    $setsqlarr['type'] = !empty($_POST['type']) ? trim($_POST['type']) : adminmsg('分类', 1);
-    $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['source']) : "";
+     $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['source']) : "";
     $setsqlarr['parent_name'] = !empty($_POST['parent_name']) ? trim($_POST['parent_name']) : "";
     $setsqlarr['parent_id'] = !empty($_POST['parent_id']) ? trim($_POST['parent_id']) : "";
+    $setsqlarr['type'] = !empty($_POST['type']) ? trim($_POST['type']) : "";
 
+    if( $setsqlarr['type']==1){
+
+        $setsqlarr['parent_id'] = $setsqlarr["value"];
+    }elseif($setsqlarr['type']==2){
+            $rs=get_replace_one( $setsqlarr['parent_id'] );
+
+            $setsqlarr['parent_id'] = $rs["value"];
+            $setsqlarr['source'] = $rs["source"];
+
+    }
 
     if ($db->inserttable(table('relation'), $setsqlarr)) {
         $link[0]['text'] = "返回列表";
@@ -99,20 +113,36 @@ if ($act == 'list') {
     }
 } elseif ($act == 'edit') {
     get_token();
-    $smarty->assign('show', get_replace_one(intval($_GET['id'])));
-    $smarty->display('replace/admin_replace_edit.htm');
+    $show=get_replace_one(intval($_GET['id']));
+    $smarty->assign('show',$show );
+    if($show["type"]==1){
+        $smarty->display('replace/admin_replace_edit_title.htm');
+
+    }else{
+        $smarty->display('replace/admin_replace_edit.htm');
+
+    }
 } elseif ($act == 'edit_save') {
     check_token();
     $link[0]['text'] = "返回列表";
     $link[0]['href'] = "?act=";
     $setsqlarr['name'] = !empty($_POST['name']) ? trim($_POST['name']) : adminmsg('原内容不能为空', 1);
     $setsqlarr['value'] = !empty($_POST['value']) ? trim($_POST['value']) : adminmsg('替换后新内容不能为空', 1);
-    $setsqlarr['type'] = !empty($_POST['type']) ? trim($_POST['type']) : adminmsg('分类', 1);
     $setsqlarr['source'] = !empty($_POST['source']) ? trim($_POST['source']) : "";
 
     $setsqlarr['parent_name'] = !empty($_POST['parent_name']) ? trim($_POST['parent_name']) : "";
     $setsqlarr['parent_id'] = !empty($_POST['parent_id']) ? trim($_POST['parent_id']) : "";
+    $rs=get_replace_one( $_POST['id']);
+    if( $rs['type']==1){
 
+        $setsqlarr['parent_id'] = $setsqlarr["value"];
+    }elseif($rs['type']==2){
+
+
+        $setsqlarr['parent_id'] = $rs["value"];
+        $setsqlarr['source'] = $rs["source"];
+
+    }
     $wheresql = " id=" . intval($_POST['id']);
     !$db->updatetable(table('relation'), $setsqlarr, $wheresql) ? adminmsg("修改失败！", 0) : adminmsg("修改成功！", 2, $link);
 } elseif ($act == 'del') {

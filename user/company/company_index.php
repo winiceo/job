@@ -12,6 +12,10 @@
 define('IN_QISHI', true);
 require_once(dirname(__FILE__).'/company_common.php');
 $smarty->assign('leftmenu',"index");
+
+require_once(QISHI_ROOT_PATH . 'genv/func_company.php');
+
+
 if ($act=='index')
 {
 	$uid=intval($_SESSION['uid']);

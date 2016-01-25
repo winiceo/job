@@ -15,6 +15,8 @@
             $("form[name=form1]").attr("action", "?act=consultant_install");
             $("form[name=form1]").submit()
         });
+
+        showmenu("#admin_name", "#menu4", "#admin_id");
     });
 </script>
 <div class="admin_main_nr_dbox">
@@ -34,7 +36,7 @@
         </div>
         <div class="clear"></div>
     </div>
-    <form id="form1" name="form1" method="post" action="?act=delete_user">
+    <form id="form1" name="form1" method="post" action="?act=clue_action">
         {#$inputtoken#}
         <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
             <tr>
@@ -43,6 +45,7 @@
                 <td class="admin_list_tit">悬赏职位</td>
                 <td class="admin_list_tit">联系人</td>
                 <td class="admin_list_tit">联系方式</td>
+                <td class="admin_list_tit">审核员</td>
                 <td class="admin_list_tit">日志</td>
 
 
@@ -64,6 +67,9 @@
                     {#$list.link_telephone#}
                 </td>
                 <td class="admin_list">
+                    {#$list.admin_name#}
+                </td>
+                <td class="admin_list">
                     <a href="?act=clue_detail&cid={#$list.id#}">联系日志</a>
                 </td>
 
@@ -72,15 +78,39 @@
             {#/foreach#}
         </table>
         <span id="DelSel"></span>
-    </form>
+
     {#if !$member#}
     <div class="admin_list_no_info">没有任何信息！</div>
     {#/if#}
+    <table width="100%" border="0" cellspacing="10" cellpadding="0" class="admin_list_btm">
+        <tr>
+            <td width="180"><div>
+
+                <input type="text" value="请选择"  readonly="readonly" name="admin_name" id="admin_name" class="input_text_200 input_text_selsect"/>
+                <input name="admin_id" id="admin_id" type="hidden" value="0" />
+                <div id="menu4" class="menu">
+                    <ul>
+                        {#foreach from=$admin item=list#}
+                        <li id="{#$list.admin_id#}" title="{#$list.admin_name#}">{#$list.admin_name#}</li>
+                        {#/foreach#}
+                    </ul>
+                </div>
+            </div>
+            </td>
+            <td>
+                <input type="submit" name="assign" value="线索分配" class="admin_submit"   id="ButAudit" />
+                <input type="submit" name="delete" value="删除" class="admin_submit act"   id="?act=del_clue"/>
+            </td>
+
+        </tr>
+    </table>
     <div class="page link_bk">{#$page#}</div>
     <div id="GetDelInfo" style="display: none">
 
     </div>
+    </form>
 </div>
+
 {#include file="sys/admin_footer.htm"#}
 </body>
 </html>

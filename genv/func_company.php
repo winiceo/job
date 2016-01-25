@@ -97,6 +97,7 @@ function balance_deal($uid,$type=1,$money=0)
         if (!$db->query($sql))return false;
     }
 
+
     return true;
 }
 
@@ -178,17 +179,24 @@ function get_member_check_list($offset, $perpage, $get_sql = '')
     global $db;
     $row_arr = array();
     $limit = " LIMIT " . $offset . ',' . $perpage;
-    $result = $db->query("SELECT m.*,c.status as check_status,c.id as cid,c.addtime FROM " . table('members') . " as m " . $get_sql . $limit);
+
+    $result = $db->query("SELECT m.*,c.status as check_status,c.id as cid,c.addtime,c.reason FROM " . table('resume_check_apply') . " as c " . $get_sql . $limit);
+
+
     while ($row = $db->fetch_array($result)) {
+
         $company=get_company_profile($row["uid"]);
         $row['company_url'] = url_rewrite('QS_companyshow', array('id' => $company['id']));
         $row['company_name'] = $company['companyname'];
+
+        $row['company_id'] = $row['uid'];
         $address = $db->getone("select log_address,log_id,log_uid from " . table("members_log") . " where log_type = '1000' and log_uid = " . $row['uid'] . " order by log_id asc limit 1");
         $row['ipAddress'] = $address['log_address'];
         $row_arr[] = $row;
     }
     return $row_arr;
 }
+
 function get_clue_check_list($offset, $perpage, $get_sql = '')
 {
     global $db;
@@ -218,6 +226,22 @@ function get_member_info($memberuid)
     $sql = "select * from ".table('members')." where uid=".intval($memberuid)." LIMIT 1";
     $val=$db->getone($sql);
     return $val;
+}
+
+
+
+//从UID获取所有简历
+function get_resume_uid($uid)
+{
+    global $db;
+    $uid=intval($uid);
+    $result = $db->query("select * FROM ".table('resume')." where uid='{$uid}'");
+    while($row = $db->fetch_array($result))
+    {
+        $row['resume_url']=url_rewrite('QS_resumeshow',array('id'=>$row['id']));
+        $row_arr[] = $row;
+    }
+    return $row_arr;
 }
 //线索访问日志
 function get_clue_log_list($id)

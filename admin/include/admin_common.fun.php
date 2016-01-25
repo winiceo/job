@@ -307,6 +307,28 @@ function check_permissions($purview,$str)
 		permissions_insufficient();
 		}
 }
+
+
+//是否具有某权限
+function get_permissions($purview,$str)
+{
+	if ($purview=="all")
+	{
+		return true;
+	}
+	else
+	{
+		$purview_arr=explode(',',$purview);
+	}
+	if (in_array($str,$purview_arr))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 function permissions_insufficient()
 {
 	global $smarty;

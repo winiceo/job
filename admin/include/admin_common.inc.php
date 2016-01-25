@@ -12,13 +12,13 @@
 if(!defined('IN_QISHI')) die('Access Denied!');
 header("Content-Type:text/html;charset=".QISHI_CHARSET);
 error_reporting(E_ERROR);
-
-error_reporting(-1);
+//error_reporting(-1);
 
 define('ADMIN_ROOT_PATH', str_replace('include/admin_common.inc.php', '', str_replace('\\', '/', __FILE__)));
 define('QISHI_ROOT_PATH', dirname(ADMIN_ROOT_PATH).'/');
 ini_set('session.save_handler', 'files');
-session_save_path(QISHI_ROOT_PATH.'data/sessions/');
+session_save_path('/data/tmp/session/');
+
 session_start();
 require_once(QISHI_ROOT_PATH.'include/74cms_version.php');
 require_once(ADMIN_ROOT_PATH.'include/mysql.class.php');

@@ -225,6 +225,15 @@ elseif ($act=="QS_relpace_cols")
        // $list=array_unique($list);
 //        $list=implode(",",$list);
 
+}elseif ($act=="QS_relpace_title")
+{
+	$result = $db->query("SELECT * FROM ".table('resume_field')." ");
+	while($row = $db->fetch_array($result))
+	{
+		$list[] =$row;
+	}
+
+
 }
 else
 {

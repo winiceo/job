@@ -13,7 +13,8 @@ if(!defined('IN_QISHI')) exit('Access Denied!');
 define('QISHI_ROOT_PATH',dirname(dirname(__FILE__)).'/');
 error_reporting(E_ERROR);
 ini_set('session.save_handler', 'files');
-session_save_path(QISHI_ROOT_PATH.'data/sessions/');
+session_save_path('/data/tmp/session/');
+
 session_start();
 require_once(QISHI_ROOT_PATH.'data/config.php');
 header("Content-Type:text/html;charset=".QISHI_CHARSET);

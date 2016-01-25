@@ -106,9 +106,9 @@
 							<div class="c-data-content order-list clearfix">
 								<div class="c-item f-left content1">
 									<div><a href="javascript:;" order_id="{#$payment[payment].id#}" class="name-link underline">{#$payment[payment].oid#}</a></div>
-									<p>创建时间:{#$payment[payment].addtime|date_format:"%Y-%m-%d %H:%M"#} | 支付方式:{#$payment[payment].payment_name#}
+									<p>创建时间:{#$payment[payment].addtime|date_format:"%Y-%m-%d %H:%M"#} | 支付方式:{#if $payment[payment].payment_name #}{#$payment[payment].payment_name#}{#else#}余额{#/if#}
                                         {#if $payment[payment].pay_type == 7#}余额充值
-                                        {#elseif $payment[payment].pay_type == 8#}{#/if#}</p>
+                                        {#elseif $payment[payment].pay_type == 8#}余额{#/if#}</p>
                                     <p>{#$payment[payment].description#}</p>
 								</div>
 								<div class="c-item f-left content2">

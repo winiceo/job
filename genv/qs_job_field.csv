@@ -1,0 +1,59 @@
+id,int(10) unsigned,(NULL),NO,PRI,(NULL),auto_increment,?
+id,int(10) unsigned,(NULL),NO,PRI,(NULL),auto_increment, 
+uid,int(10) unsigned,(NULL),NO,MUL, , ,会员uid
+jobs_name,varchar(30),gbk_chinese_ci,NO, , , ,职位名称
+companyname,varchar(50),gbk_chinese_ci,NO, , , ,公司名称
+company_id,int(10) unsigned,(NULL),NO,MUL, , ,公司 id
+company_addtime,int(10) unsigned,(NULL),NO, , , ,公司添加时间
+company_audit,tinyint(1) unsigned,(NULL),NO, ,0, ,公司审核
+recommend,tinyint(1) unsigned,(NULL),NO, ,0, ,推荐职位
+emergency,tinyint(1) unsigned,(NULL),NO, ,0, ,紧急招聘
+highlight,varchar(7),gbk_chinese_ci,NO, , , ,职位变色
+stick,tinyint(1),(NULL),NO, , , ,职位置顶
+nature,tinyint(3) unsigned,(NULL),NO, , , ,工作性质id
+nature_cn,varchar(30),gbk_chinese_ci,NO, , , ,工作性质
+sex,tinyint(1) unsigned,(NULL),NO, ,3, ,性别id
+sex_cn,varchar(3),gbk_chinese_ci,NO, , , ,性别
+amount,smallint(5) unsigned,(NULL),NO, , , ,招聘人数
+topclass,smallint(5) unsigned,(NULL),NO, , , ,职位一级分类
+category,smallint(5) unsigned,(NULL),NO, , , ,职位二级分类
+subclass,smallint(5) unsigned,(NULL),NO, , , ,职位三级分类
+category_cn,varchar(30),gbk_chinese_ci,NO, , , ,职位类别
+trade,smallint(5) unsigned,(NULL),NO, , , ,行业id
+trade_cn,varchar(30),gbk_chinese_ci,NO, , , ,行业
+scale,smallint(5) unsigned,(NULL),NO, , , ,公司规模id
+scale_cn,varchar(30),gbk_chinese_ci,NO, , , ,公司规模
+district,smallint(5) unsigned,(NULL),NO, , , ,地区分类大类
+sdistrict,smallint(5) unsigned,(NULL),NO, , , ,地区分类小类
+district_cn,varchar(30),gbk_chinese_ci,NO, , , ,地区分类
+street,int(10) unsigned,(NULL),NO, , , ,街道id
+street_cn,varchar(50),gbk_chinese_ci,NO, , , ,街道
+tag,varchar(50),gbk_chinese_ci,NO, , , ,标签id
+tag_cn,varchar(100),gbk_chinese_ci,NO, , , ,标签
+education,smallint(5) unsigned,(NULL),NO, , , ,学历id
+education_cn,varchar(30),gbk_chinese_ci,NO, , , ,学历
+experience,smallint(5) unsigned,(NULL),NO, , , ,工作经验id
+experience_cn,varchar(30),gbk_chinese_ci,NO, , , ,工作经验
+wage,smallint(5) unsigned,(NULL),NO, , , ,工资id
+wage_cn,varchar(30),gbk_chinese_ci,NO, , , ,工资
+negotiable,tinyint(1) unsigned,(NULL),NO, ,0, ,面议
+graduate,tinyint(1) unsigned,(NULL),NO, ,0, ,应届生应聘
+contents,text,gbk_chinese_ci,NO, , , ,职位描述
+addtime,int(10) unsigned,(NULL),NO,MUL, , ,添加时间
+deadline,int(10) unsigned,(NULL),NO,MUL, , ,到期时间
+refreshtime,int(10) unsigned,(NULL),NO,MUL, , ,刷新时间
+setmeal_deadline,int(10) unsigned,(NULL),NO,MUL,0, ,套餐到期时间
+setmeal_id,smallint(5) unsigned,(NULL),NO, , , ,套餐id
+setmeal_name,varchar(60),gbk_chinese_ci,NO, , , ,套餐名称
+audit,tinyint(1) unsigned,(NULL),NO, ,1, ,是否审核通过
+display,tinyint(1) unsigned,(NULL),NO, ,1, ,是否显示
+click,int(10) unsigned,(NULL),NO, ,1, ,点击量
+key,text,gbk_chinese_ci,NO, , , ,搜索关键字
+user_status,tinyint(1) unsigned,(NULL),NO, ,1, ,用户身份
+robot,tinyint(1) unsigned,(NULL),NO, ,0, ,是否为采集信息
+tpl,varchar(60),gbk_chinese_ci,NO, , , ,模板
+map_x,"double(9,6)",(NULL),NO, , , ,地图x坐标
+map_y,"double(9,6)",(NULL),NO, , , ,地图y坐标
+add_mode,tinyint(1) unsigned,(NULL),NO, ,1, ,添加方式
+is_entrust,tinyint(1) unsigned,(NULL),NO, ,0, ,接收委托简历
+auto_refresh,tinyint(1) unsigned,(NULL),NO, ,0, ,自动刷新

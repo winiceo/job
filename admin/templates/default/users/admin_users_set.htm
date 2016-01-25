@@ -158,6 +158,27 @@ $(document).ready(function()
 <input name="purview[]" type="checkbox"  value="com_promotion" {#if "com_promotion"|in_array:$admin_set#}checked="checked"{#/if#} />企业推广
 </label>
 </li>
+
+ <li  class="user_box_li">
+<label>
+<input name="purview[]" type="checkbox"  value="company_points" {#if "company_points"|in_array:$admin_set#}checked="checked"{#/if#} />积分充值方案
+</label>
+</li>
+              <li  class="user_box_li">
+                  <label>
+                      <input name="purview[]" type="checkbox"  value="members_check_list" {#if "members_check_list"|in_array:$admin_set#}checked="checked"{#/if#} />简历审核员
+                  </label>
+              </li>
+              <li  class="user_box_li">
+                  <label>
+                      <input name="purview[]" type="checkbox"  value="reward_check_list" {#if "reward_check_list"|in_array:$admin_set#}checked="checked"{#/if#} />人才线索
+                  </label>
+              </li>
+              <li  class="user_box_li">
+                  <label>
+                      <input name="purview[]" type="checkbox"  value="reward_check_list_assign" {#if "reward_check_list_assign"|in_array:$admin_set#}checked="checked"{#/if#} />人才线索分配
+                  </label>
+              </li>
 <li class="clear" style="list-style:none; display:none"></li>
 </ul> 
       </td>
@@ -933,6 +954,12 @@ $(document).ready(function()
 <input name="purview[]" type="checkbox"  value="resume_import" {#if "resume_import"|in_array:$admin_set#}checked="checked"{#/if#} />导入简历
 </label>
 </li>
+              <li  class="user_box_li">
+<label>
+<input name="purview[]" type="checkbox"  value="list_temp" {#if "list_temp"|in_array:$admin_set#}checked="checked"{#/if#} />上传简历审核
+ </label>
+</li>
+
 <!-- -->
 <li class="clear" style="list-style:none; display:none"></li>
 </ul>	
@@ -1300,6 +1327,12 @@ $(document).ready(function()
       <li  class="user_box_li">
       <label>
       <input name="purview[]" type="checkbox"  value="subscribe_list" {#if "subscribe_list"|in_array:$admin_set#}checked="checked"{#/if#} />职位订阅  
+      </label>
+      </li>
+
+    <li  class="user_box_li">
+      <label>
+      <input name="purview[]" type="checkbox"  value="upload_replace" {#if "upload_replace"|in_array:$admin_set#}checked="checked"{#/if#} />简历内容替换
       </label>
       </li>
       <li class="clear" style="list-style:none; display:none"></li>

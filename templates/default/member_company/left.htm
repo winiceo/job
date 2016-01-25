@@ -110,7 +110,7 @@ $(document).ready(function() {
 				<li {#if $smarty.get.act=="favorites_list"#}class="h"{#/if#}><a href="company_recruitment.php?act=favorites_list">收藏的简历</a></li>
 				<li {#if $smarty.get.act=="my_attention"#}class="h"{#/if#}><a href="company_recruitment.php?act=my_attention">浏览过的简历</a></li>
 				<li {#if $smarty.get.act=="view_jobs_log"#}class="h"{#/if#}><a href="company_recruitment.php?act=view_jobs_log">谁看过我的职位</a></li>
-                <li {#if $smarty.get.act=="upload"#}class="h"{#/if#}><a href="company_upload.php?act=upload_list">审核上传简历</a></li>
+                <li {#if $smarty.get.act=="upload"||$smarty.get.act=="upload_list"||$smarty.get.act=="cheking_resume"||$smarty.get.act=="check_resume_detail"#}class="h"{#/if#}><a href="company_upload.php?act=upload">简历置换</a></li>
 
                 </ul>
 			</div>
@@ -127,9 +127,9 @@ $(document).ready(function() {
 				<li {#if $smarty.get.act=="j_account" || $smarty.get.act=="t_account"#}class="h"{#/if#}><a href="company_service.php?act=j_account">我的账户</a></li>
 				{#/if#}
 				{#if $QISHI.operation_mode=="1" || $QISHI.operation_mode=="3"#}
-				<li {#if $smarty.get.act=="order_add" || $smarty.get.act=="setmeal_list" || $smarty.get.act=="order_list" || $smarty.get.act=="payment" || $smarty.get.act=="setmeal_order_add" || $smarty.get.act=="gifts"#}class="h"{#/if#}><a href="company_service.php?act=order_add">充值订单</a></li>
+				<li {#if $smarty.get.act=="order_add" || $smarty.get.act=="setmeal_list" || $smarty.get.act=="order_list" || $smarty.get.act=="payment" || $smarty.get.act=="setmeal_order_add" || $smarty.get.act=="gifts"  ||$smarty.get.act=="pay_reduce"||$smarty.get.act=="pay_add"#}class="h"{#/if#}><a href="company_service.php?act=order_add">充值订单</a></li>
 				{#elseif $QISHI.operation_mode=="2"#}
-				<li {#if $smarty.get.act=="setmeal_list" || $smarty.get.act=="order_list" || $smarty.get.act=="payment" || $smarty.get.act=="setmeal_order_add"#}class="h"{#/if#}><a href="company_service.php?act=setmeal_list">充值订单</a></li>
+				<li {#if $smarty.get.act=="setmeal_list" || $smarty.get.act=="order_list" || $smarty.get.act=="payment" || $smarty.get.act=="setmeal_order_add"|| $smarty.get.act=="pay_add"|| $smarty.get.act=="pay_reduce"  #}class="h"{#/if#}><a href="company_service.php?act=setmeal_list">充值订单</a></li>
 				{#/if#}
 				<li {#if $smarty.get.act=="adv_list" || $smarty.get.act=="adv_order_add" || $smarty.get.act=="sms_order" || $smarty.get.act=="adv_payment" || $smarty.get.act=="sms_order_add" || $smarty.get.act=="sms_payment"#}class="h"{#/if#}><a href="company_service.php?act=adv_list">增值服务</a></li>
 				<li {#if $smarty.get.act=="tpl"#}class="h"{#/if#}><a href="company_promotion.php?act=tpl">企业模板</a></li>

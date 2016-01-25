@@ -1,0 +1,133 @@
+{#include file="sys/admin_header.htm"#}
+<script type="text/javascript" src="js/jquery.userinfotip-min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#ButDel").QSdialog({
+            DialogContent: "#GetDelInfo",
+            DialogContentType: "id",
+            DialogAddObj: "#DelSel",
+            DialogWidth: "500",
+            DialogAddType: "html"
+        });
+        $(".RewardCompany").live("click", function () {
+            var status = ($(this).attr("data-status"))
+            var id = ($(this).attr("data-cid"))
+
+            $("#s" + status).attr("checked", true);
+            if (status == 1) {
+                status = "审核通过"
+            } else if (status == 0) {
+                status = "待审核"
+            }
+            if (status == 2) {
+                status = "拒绝"
+            }
+            $("#status1").text(status);
+            $("#ccid").val(id);
+
+
+            $("#RewardCompany").click();
+
+        })
+        $("#RewardCompany").QSdialog({
+            DialogTitle: "审核操作",
+            DialogContent: "#DivRewardCompany",
+            DialogContentType: "id",
+            DialogAddObj: "#OpRewardCompany",
+            DialogAddType: "html"
+
+        });
+
+
+        //点击批量设置顾问
+        $("#AddConsultant").click(function () {
+            $("form[name=form1]").attr("action", "?act=consultant_install");
+            $("form[name=form1]").submit()
+        });
+    });
+</script>
+<div class="admin_main_nr_dbox">
+    <div class="pagetit">
+        <div class="ptit"> {#$pageheader#}</div>
+        <div class="clear"></div>
+    </div>
+
+
+    <form id="form1" name="form1" method="post" action="?act=check_save">
+        {#$inputtoken#}
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
+            <tr>
+                <td class="admin_list_tit admin_list_first">操作</td>
+                <td class="admin_list_tit admin_list_first">理由</td>
+
+                <td class="admin_list_tit">时间</td>
+                <td class="admin_list_tit">操作者</td>
+
+            </tr>
+            {#foreach from=$loglist item=list#}
+            <tr>
+                <td class="admin_list admin_list_first">
+                    {#if $list.status==0#}待审核{#elseif $list.status==1#}通过{#elseif $list.status==2#}拒绝{#/if#}
+                </td>
+                <td class="admin_list ">
+                    {#$list.reason#}
+                </td>
+                <td class="admin_list">
+
+                    {#$list.addtime|date_format:"%Y-%m-%d"#}
+
+                </td>
+
+                <td class="admin_list">
+                    {#$list.name#}
+                </td>
+
+            </tr>
+            {#/foreach#}
+            {#if !$loglist#}没有记录{#/if#}
+        </table>
+        <span id="RewardCompany"></span>
+        <span id="DelSel"></span>
+        <span id="OpRewardCompany"></span>
+    </form>
+    <input name="submit22" type="button" class="admin_submit" value="返回" onclick="Javascript:window.history.go(-1)">
+    <div class="page link_bk">{#$page#}</div>
+    <div id="GetDelInfo" style="display: none">
+
+    </div>
+</div>
+
+
+<div style="display:none" id="DivRewardCompany">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="6">
+        <tr>
+            <td width="130" height="30">当前状态:</td>
+            <td height="30" id="status1"></td>
+        </tr>
+        <tr>
+            <td width="130" height="30">操作:</td>
+            <td height="30">
+                <input type="radio" name="status" value="1" id="s1">通过
+                 <input type="radio" name="status" value="2" id="s2">拒绝
+            </td>
+        </tr>
+        <tr>
+            <td width="130" height="25">理由:</td>
+            <td>
+                <textarea name="reason" id="reason" cols="50" style="font-size:12px"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td height="25">&nbsp;</td>
+            <td> {#$inputtoken#}
+                <input type="hidden" name="id" id="ccid" value="">
+
+                <input type="submit" name="reduce_money" value="确定" class="admin_submit"/></td>
+        </tr>
+    </table>
+</div>
+{#include file="sys/admin_footer.htm"#}
+</body>
+</html>

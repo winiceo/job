@@ -10,10 +10,12 @@
  * ============================================================================
 */
 define('IN_QISHI', true);
+
 require_once(dirname(__FILE__).'/../data/config.php');
 require_once(dirname(__FILE__).'/include/admin_common.inc.php');
 require_once(ADMIN_ROOT_PATH.'include/admin_personal_fun.php');
 require_once(QISHI_ROOT_PATH.'include/fun_weixin.php');
+
 $act = !empty($_GET['act']) ? trim($_GET['act']) : 'list';
 if($act == 'list')
 {
@@ -157,66 +159,6 @@ if($act == 'list')
 	$smarty->assign('page',$page->show(3));
 	$smarty->assign('total_val',$total_val);
 	$smarty->display('personal/admin_personal_resume.htm');
-}if($act == 'list_temp')
-{
-    get_token();
-    check_permissions($_SESSION['admin_purview'],"resume_show");
-    require_once(QISHI_ROOT_PATH . '/genv/func_resume_upload.php');
-
-    require_once(QISHI_ROOT_PATH.'include/page.class.php');
-    $oederbysql=" order BY id DESC ";
-    $wheresql=" ";
-
-    $total_sql="SELECT COUNT(*) AS num FROM ".table('resume_temp').$wheresql;
-
-    $total_val=$db->get_total($total_sql);
-    $page = new page(array('total'=>$total_val, 'perpage'=>$perpage,'getarray'=>$_GET));
-    $currenpage=$page->nowindex;
-    $offset=($currenpage-1)*$perpage;
-
-    $getsql="SELECT * FROM ".table('resume_temp')." ".$wheresql.$oederbysql;
-
-    $resumelist = get_resume_temp_list($offset,$perpage,$getsql);
-
-
-    $smarty->assign('pageheader',"简历列表");
-    $smarty->assign('resumelist',$resumelist);
-    $smarty->assign('page',$page->show(3));
-    $smarty->assign('total_val',$total_val);
-    $smarty->display('personal/admin_personal_resume_temp.htm');
-}elseif($act == 'perform_temp')
-{
-
-
-
-    require_once(QISHI_ROOT_PATH . '/genv/func_resume_upload.php');
-
-    check_token();
-    $id =!empty($_REQUEST['id'])?$_REQUEST['id']:adminmsg("你没有选择简历！",1);
-    if (!empty($_REQUEST['delete']))
-    {
-        check_permissions($_SESSION['admin_purview'],"resume_del");
-        if ($n=del_resume_temp($id))
-        {
-            adminmsg("删除成功！该删除 {$n} 行",2);
-        }
-        else
-        {
-            adminmsg("删除失败！",0);
-        }
-    }
-    if (!empty($_POST['set_audit']))
-    {
-        check_permissions($_SESSION['admin_purview'],"resume_audit");
-
-        if (!is_array($id))  $id=array($id);
-
-        foreach($id as $item){
-
-            import_resume_temp($item);
-        }
-        adminmsg("设置成功！",1);
-    }
 }
 elseif($act == 'perform')
 {
@@ -1089,5 +1031,103 @@ elseif($act == 'import')
 		$total++; 
 	}
 	adminmsg("共有".$total."条数据，导入".$count."条数据成功",2);
+}if($act == 'list_temp')
+{
+	get_token();
+
+	check_permissions($_SESSION['admin_purview'],"list_temp");
+	require_once(QISHI_ROOT_PATH . '/genv/func_resume_upload.php');
+
+	require_once(QISHI_ROOT_PATH.'include/page.class.php');
+	$oederbysql=" order BY id DESC ";
+	$wheresql=" ";
+
+	$total_sql="SELECT COUNT(*) AS num FROM ".table('resume_temp').$wheresql;
+
+	$total_val=$db->get_total($total_sql);
+	$page = new page(array('total'=>$total_val, 'perpage'=>$perpage,'getarray'=>$_GET));
+	$currenpage=$page->nowindex;
+	$offset=($currenpage-1)*$perpage;
+
+	$getsql="SELECT * FROM ".table('resume_temp')." ".$wheresql.$oederbysql;
+
+	$resumelist = get_resume_temp_list($offset,$perpage,$getsql);
+
+
+	$smarty->assign('pageheader',"简历列表");
+	$smarty->assign('resumelist',$resumelist);
+	$smarty->assign('page',$page->show(3));
+	$smarty->assign('total_val',$total_val);
+	$smarty->display('personal/admin_personal_resume_temp.htm');
+
+}elseif($act == 'perform_temp')
+{
+	check_permissions($_SESSION['admin_purview'],"list_temp");
+
+	require_once(QISHI_ROOT_PATH . '/genv/func_resume_upload.php');
+
+	check_token();
+	$id =!empty($_REQUEST['id'])?$_REQUEST['id']:adminmsg("你没有选择简历！",1);
+	if (!empty($_REQUEST['delete']))
+	{
+		check_permissions($_SESSION['admin_purview'],"resume_del");
+		if ($n=del_resume_temp($id))
+		{
+			adminmsg("删除成功！该删除 {$n} 行",2);
+		}
+		else
+		{
+			adminmsg("删除失败！",0);
+		}
+	}
+	if (!empty($_POST['set_audit']))
+	{
+
+		if (!is_array($id))  $id=array($id);
+
+
+
+		foreach($id as $item){
+
+			import_resume_temp($item);
+		}
+
+		$link[0]['text'] = "返回简历列表";
+		$link[0]['href'] = '?act=list_temp';
+		adminmsg('简历审核成功！',1,$link);
+ 	}
 }
+elseif($act == 'resume_temp_show')
+{
+	require_once(QISHI_ROOT_PATH . '/genv/func_resume_upload.php');
+
+	check_permissions($_SESSION['admin_purview'],"resume_show");
+
+
+	$id =!empty($_REQUEST['id'])?intval($_REQUEST['id']):adminmsg("你没有选择简历！",1);
+	//$uid =intval($_REQUEST['uid']);
+	$smarty->assign('pageheader',"查看简历");
+	$resume=get_resume_temp_basic($id);
+	if (empty($resume))
+	{
+		$link[0]['text'] = "返回简历列表";
+		$link[0]['href'] = '?act=list_temp';
+		adminmsg('简历不存在或已经被删除！',1,$link);
+	}
+	$smarty->assign('random',mt_rand());
+	$smarty->assign('time',time());
+	$smarty->assign('url',$_SERVER["HTTP_REFERER"]);
+	$smarty->assign('resume',$resume);
+	$log_list=get_resume_check_loglist($id);
+
+	$smarty->assign("log_list",$log_list);
+//	$smarty->assign('resume_education',get_resume_education($uid,$id));
+//	$smarty->assign('resume_work',get_resume_work($uid,$id));
+//	$smarty->assign('resume_training',get_resume_training($uid,$id));
+//	$smarty->assign('resumeaudit',get_resumeaudit_one($id));
+	$smarty->display('personal/admin_personal_resume_temp_show.htm');
+}
+
+
+
 ?>

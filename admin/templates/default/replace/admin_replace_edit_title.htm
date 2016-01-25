@@ -4,7 +4,7 @@
     $(document).ready(function() {
 
 
-        showmenu("#parent_name", "#menu4", "#parent_id");
+        showmenu("#parent_name", "#menu4", "#value");
 
     })
 
@@ -24,29 +24,17 @@
 
             {#$inputtoken#}
             <table width="100%" border="0" cellpadding="3" cellspacing="0">
-
-
                 <tr>
-                    <td class="tit">字段：</td>
+                    <td class="tit">来源：</td>
                 </tr>
                 <tr>
 
                     <td>
-                        <div>
-                            {#qishi_get_classify set="类型:QS_relpace_cols,列表名:li"#}
-                            <input type="text" value="{#$show.parent_name|default:"请选择"#}"  readonly="readonly" name="parent_name" id="parent_name" class="input_text_200 input_text_selsect"/>
-                            <input name="parent_id" id="parent_id" type="hidden" value="{#$show.parent_id#}" />
-                            <div id="menu4" class="menu">
-                                <ul>
-                                    {#foreach from=$li item=list#}
-                                    <li id="{#$list.id#}" title="{#$list.name#}">{#$list.name#}-{#$list.source#}</li>
-                                    {#/foreach#}
-                                </ul>
-                            </div>
-                        </div>
+                        <input name="source" type="text" class="input_text_200" maxlength="30" value="{#$show.source#}"/>
 
-                    </td>
+                        <span class="admin_note">来源</span></td>
                 </tr>
+
                 <tr>
                     <td class="tit">内容：</td>
                 </tr>
@@ -60,15 +48,26 @@
                     <td class="tit">替换后内容：</td>
                 </tr>
                 <tr>
+                    <td class="tit">字段：</td>
+                </tr>
+                <tr>
 
                     <td>
-                        <input name="value" type="text" class="input_text_200" maxlength="30" value="{#$show.value#}"/>
+                        <div>
+                            {#qishi_get_classify set="类型:QS_relpace_title,列表名:li"#}
+                            <input type="text" value="{#$show.parent_name|default:"请选择"#}"  readonly="readonly" name="parent_name" id="parent_name" class="input_text_200 input_text_selsect"/>
+                            <input name="value" id="value" type="hidden" value="{#$show.parent_id#}" />
+                            <div id="menu4" class="menu">
+                                <ul>
+                                    {#foreach from=$li item=list#}
+                                    <li id="{#$list.key#}" title="{#$list.value#}">{#$list.value#}-{#$list.key#}</li>
+                                    {#/foreach#}
+                                </ul>
+                            </div>
+                        </div>
 
-                        <span class="admin_note">替换成标准内容</span></td>
+                    </td>
                 </tr>
-
-
-
 
                 <tr>
                     <td>

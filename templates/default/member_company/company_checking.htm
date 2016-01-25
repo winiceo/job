@@ -114,6 +114,15 @@
 
         });
     </script>
+    <style>
+         .account-top-block1 {
+
+            overflow: hidden;
+            background-color: #e5f2fa;
+            line-height: 50px;
+            margin: 0 15px 20px 15px;
+        }
+        </style>
 </head>
 <body {#if
       $QISHI.body_bgimg#}style="background:url({#$QISHI.site_domain#}{#$QISHI.site_dir#}data/{#$QISHI.updir_images#}/{#$QISHI.body_bgimg#}) repeat-x center 38px;"
@@ -135,11 +144,20 @@
                 </div>
                 {#include file="member_company/upload_nav.htm"#}
             </div>
-
+            {#if  $apply_rs.status!=1#}
             <div class="account-wrap">
-                <div class="account-top-block clearfix" style="height: 60px;padding-left: 5px;">
+                <div class="account-top-block1 clearfix" style=" padding-left: 5px;">
 
-                    {#if $apply #}
+                    {#if !$apply_rs || $apply_rs.status==2#}
+                        {#if $loglist#}
+                            {#foreach from=$loglist item=list#}
+
+                            {#$list.addtime|date_format:"%Y-%m-%d"#}
+                            {#if $list.status==0#}不通过{#elseif $list.status==1#}通过{#elseif $list.status==2#}拒绝{#/if#}
+                            理由:{#$list.reason#};<br>
+
+                            {#/foreach#}
+                        {#/if#}
                     <form action="?act=apply_check" method="post" id="Form_upload" enctype="multipart/form-data">
                         <table id="upform" width="100%" border="0" cellspacing="0" cellpadding="0" class="tableall">
                             <tbody>
@@ -153,13 +171,14 @@
 
                             </tbody>
                         </table>
-
                     </form>
-                    {#else#}
-                    {#if $is_check==1#}您已经是审核员，可以审核简历{#else#}正在审核中{#/if#}
+                    {#elseif $apply_rs.status==0#}
+
+                        您的审请正在处理中
                     {#/if#}
                 </div>
             </div>
+            {#/if#}
 
             <form id="form1" name="form1" method="post" action="?act=set_apply_jobs">
                 <div class="company-data-list">

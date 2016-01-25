@@ -914,17 +914,28 @@ elseif($act == 'members_list')
 }elseif($act=="check_save"){
     get_token();
     check_permissions($_SESSION['admin_purview'], "com_user_show");
-    $cid = !empty($_REQUEST['cid']) ? $_REQUEST['cid'] : adminmsg("你没有选择会员！", 1);
-    $status=!empty($_REQUEST['status'])?intval($_REQUEST["status"]):0;
-    $sql=vsprintf("update   %s set status=%d where id=%d ",array(table("resume_check_apply"),$status,$cid));
 
+
+
+    $cid = !empty($_REQUEST['id']) ? $_REQUEST['id'] : adminmsg("你没有选择会员！", 1);
+    $status=!empty($_REQUEST['status'])?intval($_REQUEST["status"]):0;
+    $reason=($_REQUEST['reason']);
+    $sql=vsprintf("update   %s set status=%d,reason='%s' where id=%d ",array(table("resume_check_apply"),$status,$reason,$cid));
+	$data=array();
+	$data["cid"]=$cid;
+	$data["addtime"]=time();
+	$data["name"]=$_SESSION["admin_name"];
+	$data["reason"]=$reason;
+	$data["status"]=$status;
+
+	$db->inserttable(table("resume_check_apply_log"),$data);
     $db->query($sql);
     adminmsg("操作成功！", 1);
 
 } elseif ($act == 'members_check_list') {
     //审核列表审核
     get_token();
-    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    check_permissions($_SESSION['admin_purview'], "members_check_list");
     require_once(QISHI_ROOT_PATH . 'include/page.class.php');
     $wheresql = " WHERE m.utype=1 ";
     $oederbysql = " order BY m.uid DESC ";
@@ -939,13 +950,18 @@ elseif($act == 'members_list')
         } //已分配
         elseif ($consultant == "1") {
             $wheresql .= " AND c.status = 1";
+        }elseif ($consultant == "2") {
+            $wheresql .= " AND c.status = 2";
         }
+		$smarty->assign('status',$_GET['status']);
     }else{
-        $wheresql .= " AND  c.status=0";
+		$smarty->assign('status', 0);
+
+		$wheresql .= " AND  c.status=0";
     }
 
-    $joinsql = " LEFT JOIN " . table('resume_check_apply') . " as c ON m.uid=c.uid ";
-    $total_sql = "SELECT COUNT(*) AS num FROM " . table('members') . " as m " . $joinsql . $wheresql;
+    $joinsql = " LEFT JOIN " . table('members') . " as m ON m.uid=c.uid ";
+    $total_sql = "SELECT COUNT(*) AS num FROM " . table('resume_check_apply') . " as c " . $joinsql . $wheresql;
     $total_val = $db->get_total($total_sql);
     $page = new page(array('total' => $total_val, 'perpage' => $perpage, 'getarray' => $_GET));
     $currenpage = $page->nowindex;
@@ -956,7 +972,29 @@ elseif($act == 'members_list')
 
     $smarty->assign('page', $page->show(3));
     $smarty->display('company/admin_company_user_check_list.htm');
-} elseif ($act == 'delete_user')  
+} elseif ($act == 'applay_check_log') {
+    //审核列表审核
+    get_token();
+    check_permissions($_SESSION['admin_purview'], "members_check_list");
+    require_once(QISHI_ROOT_PATH . 'include/page.class.php');
+
+
+
+
+	$sql = "SELECT *  FROM " . table('resume_check_apply_log') . " where cid=".$_GET["cid"]." order by id desc";
+   	global $db;
+	$result=$db->query($sql);
+	$row_arr=array();
+	while ($row = $db->fetch_array($result)) {
+
+		$row_arr[] = $row;
+	}
+
+	$smarty->assign('pageheader', "企业会员");
+    $smarty->assign('loglist', $row_arr);
+
+     $smarty->display('company/admin_company_user_check_log.htm');
+} elseif ($act == 'delete_user')
 {	
 	check_token();
 	check_permissions($_SESSION['admin_purview'],"com_user_del");
@@ -1598,7 +1636,8 @@ elseif($act == 'company_news_save')
 
 }
  elseif($act == 'management')
-{	
+{
+
 	$id=intval($_GET['id']);
 	$u=get_user($id);
 	if (!empty($u))
@@ -1623,6 +1662,7 @@ elseif($act == 'company_news_save')
 		setcookie('QS[username]',$u['username'],0,$QS_cookiepath,$QS_cookiedomain);
 		setcookie('QS[password]',$u['password'],0,$QS_cookiepath,$QS_cookiedomain);
 		setcookie('QS[utype]',$u['utype'], 0,$QS_cookiepath,$QS_cookiedomain);
+
 		header("Location:".get_member_url($u['utype']));
 	}	
 } 
@@ -1779,9 +1819,9 @@ elseif($act == "consultant_del"){
 	del_consultant($id);
 	adminmsg("删除成功！",2);
 }elseif ($act == 'reward_check_list') {
-    //人才简历审核列表
+    //人才线索审核列表;
     get_token();
-    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    check_permissions($_SESSION['admin_purview'], "reward_check_list");
     require_once(QISHI_ROOT_PATH . 'include/page.class.php');
     $wheresql = " WHERE 1=1 ";
     $oederbysql = " order BY addtime DESC ";
@@ -1792,12 +1832,19 @@ elseif($act == "consultant_del"){
         //未分配
         $consultant = intval($_GET['status']);
         if ($consultant == "0") {
-            $wheresql .= " AND  c.status=0";
+            $wheresql .= " AND  m.member_id is null";
         } //已分配
         elseif ($consultant == "1") {
-            $wheresql .= " AND c.status = 1";
+            $wheresql .= " AND m.member_id <> null";
         }
     }
+
+
+	//分配权限
+	$assign=get_permissions($_SESSION['admin_purview'], "reward_check_list_assign");
+	if(!$assign){
+		$wheresql .= " AND c.admin_id = ".$_SESSION["admin_id"];
+	}
 
     $total_sql = "SELECT COUNT(*) AS num FROM " . table('jobs_reward_clue') . " as m " .  $wheresql;
     $total_val = $db->get_total($total_sql);
@@ -1806,13 +1853,19 @@ elseif($act == "consultant_del"){
     $offset = ($currenpage - 1) * $perpage;
     $member = get_clue_check_list($offset, $perpage,   $wheresql . $oederbysql);
 
-    $smarty->assign('pageheader', "人才线索");
+	$admin=$db->getall("select * from ".table("admin"). " where admin_id!=1 order by admin_id");
+	$smarty->assign('admin', $admin);
+
+	$smarty->assign('pageheader', "人才线索");
     $smarty->assign('member', $member);
     $smarty->assign('page', $page->show(3));
+	$smarty->assign("assign",$assign);
     $smarty->display('company/admin_company_user_clue_list.htm');
 } elseif ($act == 'clue_detail') {
     get_token();
-    $id = !empty($_REQUEST['cid']) ? $_REQUEST['cid'] : adminmsg("参数有误！", 1);
+	require_once(ADMIN_ROOT_PATH.'include/admin_user_fun.php');
+
+	$id = !empty($_REQUEST['cid']) ? $_REQUEST['cid'] : adminmsg("参数有误！", 1);
     $clue = get_clue_one($id);
     $company_profile = get_company_one_id($clue["company_id"]);
     $clue_log=get_clue_log_list($id);
@@ -1826,7 +1879,14 @@ elseif($act == "consultant_del"){
 
     $member=get_member_info($clue["uid"]);
 
+ 	if($clue["member_id"]){
+		$resume["uid"]=$clue["member_id"];
+		$resume["list"]=get_resume_uid($clue["member_id"]);
+		$smarty->assign('resume', $resume);
 
+		//dump($resume);
+
+	}
     $smarty->assign('clue', $clue);
     $smarty->assign('company_profile', $company_profile);
     $smarty->assign('promotion', $promotion);
@@ -1912,7 +1972,7 @@ elseif($act == "consultant_del"){
 }elseif ($act == 'company_points') {
     //审核列表审核
     get_token();
-    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    check_permissions($_SESSION['admin_purview'], "company_points");
 
     $list = get_points_plan();
     $smarty->assign('pageheader', "积分增送方案");
@@ -1923,7 +1983,7 @@ elseif($act == "consultant_del"){
 }elseif ($act == 'points_plan_save') {
     //审核列表审核
     get_token();
-    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    check_permissions($_SESSION['admin_purview'], "company_points");
 
     $setsqlarr['name'] = !empty($_POST['name']) ? trim($_POST['name']):adminmsg('请填写名称！',1);
     $setsqlarr['money'] = !empty($_POST['money']) ? trim($_POST['money']):adminmsg('金额不能为空！',1);
@@ -1941,7 +2001,7 @@ elseif($act == "consultant_del"){
 }elseif ($act == 'points_plan_del') {
     //审核列表审核
     get_token();
-    check_permissions($_SESSION['admin_purview'], "com_user_show");
+    check_permissions($_SESSION['admin_purview'], "company_points");
     $id = !empty($_REQUEST['id']) ? trim($_REQUEST['id']):adminmsg('id不能为空！',1);
 
     if (!$db->query("Delete from ".table('company_points')." WHERE id IN (".$id.")")){
@@ -1952,5 +2012,117 @@ elseif($act == "consultant_del"){
     }
 
 
+}
+elseif($act == 'clue_members_add_save')
+{
+	check_token();
+
+	check_permissions($_SESSION['admin_purview'],"per_user_add");
+	require_once(ADMIN_ROOT_PATH.'include/admin_user_fun.php');
+ 	if (strlen(trim($_POST['password']))<6) adminmsg('密码必须为6位以上！',1);
+	$cid=$_POST['cid'];
+
+	$sql['password'] = !empty($_POST['password']) ? trim($_POST['password']):adminmsg('请填写密码！',1);
+	$sql['mobile'] = !empty($_POST['mobile']) ? trim($_POST['mobile']):adminmsg('请填写手机号！',1);
+	if ($sql['password']<>trim($_POST['password1']))
+	{
+		adminmsg('两次输入的密码不相同！',1);
+	}
+	$sql['utype'] = !empty($_POST['member_type']) ? intval($_POST['member_type']):adminmsg('你没有选择注册类型！',1);
+	if (empty($_POST['email']) || !preg_match("/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/",$_POST['email']))
+	{
+		adminmsg('电子邮箱格式错误！',1);
+	}
+	$sql['email']= trim($_POST['email']);
+	$sql['username'] = $sql['email'];
+
+	if (get_user_inusername($sql['username']))
+	{
+		adminmsg('该用户名已经被使用！',1);
+	}
+	if (get_user_inemail($sql['email']))
+	{
+		adminmsg('该 Email 已经被注册！',1);
+	}
+	if (get_user_inmobile($sql['mobile']))
+	{
+		adminmsg('该 手机号 已经被注册！',1);
+	}
+	if(defined('UC_API'))
+	{
+		include_once(QISHI_ROOT_PATH.'uc_client/client.php');
+		if (uc_user_checkname($sql['username'])<>"1")
+		{
+			adminmsg('该用户名已经被使用或者用户名非法！',1);
+			exit();
+		}
+		elseif (uc_user_checkemail($sql['email'])<>"1")
+		{
+			adminmsg('该 Email已经被使用或者非法！',1);
+			exit();
+		}
+		else
+		{
+			uc_user_register($sql['username'],$sql['password'],$sql['email']);
+		}
+	}
+	$sql['pwd_hash'] = randstr();
+	$sql['password'] = md5(md5($sql['password']).$sql['pwd_hash'].$QS_pwdhash);
+	$sql['reg_time']=time();
+	$sql['reg_ip']=$online_ip;
+	$insert_id=$db->inserttable(table('members'),$sql,true);
+
+ 	$db->updatetable(table('jobs_reward_clue'),array("member_id"=>$insert_id,"link_telephone"=>$sql['mobile'])," id =".$cid);
+	if ($insert_id)
+	{
+		$db->query("INSERT INTO ".table('members_points')." (uid) VALUES ('{$insert_id}')");
+		//填写管理员日志
+		write_log("添加id为".$insert_id."的个人会员", $_SESSION['admin_name'],3);
+		write_memberslog($insert_id,1,1000,$sql['username'],"管理员在后台新增会员");
+
+
+
+		$setsqlarr["cid"] = $cid;
+		$setsqlarr["notes"] = "管理员创建用户信息";
+		$setsqlarr['addtime'] = time();
+		$setsqlarr['admin_name'] = $_SESSION["admin_name"];
+
+
+		$db->inserttable(table('jobs_reward_clue_log'), $setsqlarr );
+		$link[0]['text'] = "返回列表";
+		$link[0]['href'] = "?act=clue_detail&cid=".$cid;
+		adminmsg('添加成功！',2,$link);
+	}
+}elseif ($act == 'clue_action') {
+	check_token();
+
+	check_permissions($_SESSION['admin_purview'], "reward_check_list_assign");
+	$id = $_POST['tuid'];
+	if (!is_array($id)){
+		adminmsg('请选择线索！',1);
+	}
+	$sqlin=implode(",",$id);
+	if (trim($_POST['assign'])) {
+
+		$setsqlarr['admin_id']= !empty($_POST['admin_id']||$_POST['admin_id']!=0) ? trim($_POST['admin_id']):adminmsg('请选择管理员！',1);
+
+		$setsqlarr['admin_name'] =  $_POST['admin_name'] ;
+
+		$db->updatetable(table('jobs_reward_clue'), $setsqlarr," id IN ({$sqlin})");
+
+ 		adminmsg("分配成功！", 2);
+
+	}elseif (trim($_POST['delete'])) {
+
+		if ($db->query("Delete from ".table('jobs_reward_clue')." WHERE id IN ({$sqlin})")) {
+			$num = $db->affected_rows();
+			if ($num > 0) {
+				adminmsg("删除成功！共删除" . $num . "行", 2);
+			}
+		}else
+		{
+			adminmsg("删除失败！",0);
+		}
+	}
 }
 ?>

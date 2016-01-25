@@ -42,7 +42,8 @@ class mysql {
     }
 
     function query($sql){
-        error_log($sql . "\n", 3, "/data/logs/74cms/" . '74cms.log');
+
+        error_log($sql . "\n", 3, "/data/logs/74cms/74cms.log");
     	if(!$query=@mysql_query($sql, $this->linkid)){
     		$this->dbshow("Query error:$sql");
     	}else{

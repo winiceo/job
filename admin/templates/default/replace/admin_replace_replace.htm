@@ -23,10 +23,24 @@
         <form action="?act=add_save" method="post" name="FormData" id="FormData">
             {#$inputtoken#}
             <table width="100%" border="0" cellpadding="3" cellspacing="0">
+                <tr>
+                    <td class="tit">类型：</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="type" value="2" checked="checked"/>
+                            字段内容</label>
+                        <label>
+                            <input name="type" type="radio" value="1"/>
+                            标题</label>
 
+
+                    </td>
+                </tr>
 
                 <tr>
-                    <td class="tit">标题：</td>
+                    <td class="tit">对应字段：</td>
                 </tr>
                 <tr>
 
@@ -38,7 +52,7 @@
                             <div id="menu4" class="menu">
                                 <ul>
                                     {#foreach from=$li item=list#}
-                                    <li id="{#$list.id#}" title="{#$list.name#}">{#$list.source#}-{#$list.name#}</li>
+                                    <li id="{#$list.id#}" title="{#$list.name#}">{#$list.name#}</li>
                                     {#/foreach#}
                                 </ul>
                             </div>
@@ -46,6 +60,7 @@
 
                     </td>
                 </tr>
+
                 <tr>
                     <td class="tit">内容：</td>
                 </tr>
@@ -65,6 +80,16 @@
 
                         <span class="admin_note">替换成标准内容</span></td>
                 </tr>
+                <tr>
+                    <td class="tit">备注：</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <input name="source" type="text" class="input_text_200" maxlength="30"/>
+
+                        <span class="admin_note">备注</span></td>
+                </tr>
 
 
                 <tr>
@@ -73,7 +98,6 @@
                         <br/>
 
                         <input type="hidden" name="paper_id" value="{#$paper_id#}"/>
-                        <input type="hidden" name="type" value="2"/>
                         <input type="submit" name="Submit" value="确定提交" class="admin_submit"/>
 
 

@@ -41,8 +41,9 @@
         <div class="left">字段</div>
         <div class="right" style="height:100%;">
             <a href="{#"title:"|qishi_parse_url#}" {#if $smarty.get.title==""#}class="select"{#/if#}>不限</a>
-            {#foreach from=$title_list item=list_s#}
-            <a href="{#"title:$list_s.name"|qishi_parse_url#}" {#if $smarty.get.title==$list_s.name#}class="select"{#/if#}>{#$list_s.name#}</a>
+            {#qishi_get_classify set="类型:QS_relpace_cols,列表名:li"#}
+            {#foreach from=$li item=list_s#}
+            <a href="{#"title:$list_s.value"|qishi_parse_url#}" {#if $smarty.get.title==$list_s.value#}class="select"{#/if#}>{#$list_s.name#}</a>
 
             {#/foreach#}
             <div class="clear"></div>
@@ -68,13 +69,13 @@
         {#$inputtoken#}
         <table width="100%" border="0" cellpadding="0" cellspacing="0" id="list" class="link_lan">
             <tr>
-                <td class="admin_list_tit admin_list_first">
-                    <label id="chkAll"><input type="checkbox" name="chkAll" id="chk" title="全选/反选"/>内容</label>
+                <td class="admin_list_tit admin_list_first"  width="10%">
+                    <label id="chkAll"><input type="checkbox" name="chkAll" id="chk" title="全选/反选"/>替换前内容</label>
                 </td>
                 <td align="center" class="admin_list_tit" width="10%"> 替换后内容</td>
                 <td align="center" class="admin_list_tit" width="10%"> 类型</td>
-                <td align="center" class="admin_list_tit" width="10%"> 备注</td>
-                <td align="center" class="admin_list_tit" width="10%"> 字段</td>
+                <td align="center" class="admin_list_tit" width="10%"> 来源</td>
+                <td align="center" class="admin_list_tit" width="10%"> 标题</td>
 
                 <td width="130" align="center" class="admin_list_tit">操作</td>
             </tr>
@@ -98,7 +99,7 @@
                 </td>
                 <td class="admin_list admin_list_first">
 
-                    {#$list.parent_name#}
+                    {#if $list.type==2#}{#$list.parent_name#}{#else#}---{#/if#}
                 </td>
 
                 <td align="center" class="admin_list">

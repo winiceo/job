@@ -172,6 +172,7 @@ function import_resume_temp($id)
     $response["error"]=0;
 
     $rs = \ORM::for_table(table("resume_temp"))->where("id", $id)->find_one();
+
     if($rs){
         $rs=$rs->as_array();
         //update_resume_status($id);
@@ -180,6 +181,7 @@ function import_resume_temp($id)
             $response["msg"]="已经存在相同手机号的用户，导入失败！";
             $response["error"]=1;
             Genv::log($response);
+
             return $response;
         }
 
@@ -220,8 +222,8 @@ function import_resume_temp($id)
             $member_info['education_cn'] = $education_cn;
             $member_info['education'] = getId($education_cn, "QS_education")["c_id"];
         } else {
-            $member_info['education_cn'] = "初中";
-            $member_info['education'] = 65;
+            $member_info['education_cn'] = "大专";
+            $member_info['education'] = 69;
         }
 
         $experience_cn = get_reg($rs["experience_cn"]);
@@ -302,12 +304,24 @@ function import_resume_temp($id)
             $resume['wage_cn'] = "面议";
             $resume['wage'] = 294;
         }
-        $resume['addtime'] = $rs["addtime"];
-        $resume['refreshtime'] = $rs["refreshtime"];
+        $resume['addtime'] = time();
+        $resume['refreshtime'] = time();
         $resume['specialty'] = addslashes($rs["specialty"]);
         $resume['complete_percent'] = addslashes($rs["complete_percent"]);
+        $resume['display_name'] = 2;
+        $resume['entrust'] = 0;
+        $resume['resume_from_pc'] = 1;
+        $resume['photo'] = 0;
+        $resume['email_notify'] = 1;
+        $resume['click'] =1;
+        $resume['photo'] = 0;
+        $resume['photo'] = 0;
+
+
         $pid = $db->inserttable(table("resume"), $resume, 1);
         $response["resume_id"]=$pid;
+        change_level($userid,$pid);
+
         if ($pid) {
             //索引表
             $searchtab['id'] = $pid;
@@ -448,6 +462,152 @@ function import_resume_temp($id)
     return $response;
 
 }
+
+//获取简历基本信息
+function get_resume_basic1($uid,$id)
+{
+    global $db;
+    $id=intval($id);
+    $uid=intval($uid);
+    $info=$db->getone("select * from ".table('resume')." where id='{$id}'  AND uid='{$uid}' LIMIT 1 ");
+
+    if (empty($info))
+    {
+        return false;
+    }
+    else
+    {
+        $info['age']=date("Y")-$info['birthdate'];
+        $info['number']="N".str_pad($info['id'],7,"0",STR_PAD_LEFT);
+        $info['lastname']=$info['fullname'];
+        return $info;
+    }
+}
+//获取教育经历列表
+function get_resume_education1($uid,$pid)
+{
+    global $db;
+    if (intval($uid)!=$uid) return false;
+    $sql = "SELECT * FROM ".table('resume_education')." WHERE  pid='".intval($pid)."' AND uid='".intval($uid)."' ";
+    return $db->getall($sql);
+}
+//获取：工作经历
+function get_resume_work1($uid,$pid)
+{
+    global $db;
+    $sql = "select * from ".table('resume_work')." where pid='".$pid."' AND uid=".intval($uid)."" ;
+    return $db->getall($sql);
+}
+//获取：培训经历列表
+function get_resume_training1($uid,$pid)
+{
+    global $db;
+    $sql = "select * from ".table('resume_training')." where pid='".intval($pid)."' AND  uid='".intval($uid)."' ";
+    return $db->getall($sql);
+}
+//获取意向职位
+function get_resume_jobs1($pid)
+{
+    global $db;
+    $pid=intval($pid);
+    $sql = "select * from ".table('resume_jobs')." where pid='{$pid}'  LIMIT 20" ;
+    return $db->getall($sql);
+}
+//获取：语言能力列表
+function get_resume_language1($uid,$pid)
+{
+    global $db;
+    $sql = "select * from ".table('resume_language')." where pid='".intval($pid)."' AND  uid='".intval($uid)."' ";
+    return $db->getall($sql);
+}
+// 获取简历附件图片
+function get_resume_img1($uid,$pid)
+{
+    global $db;
+    $sql = "SELECT * FROM ".table('resume_img')." WHERE  resume_id='".intval($pid)."' AND uid='".intval($uid)."' ";
+    return $db->getall($sql);
+}
+
+//获取：证书列表
+function get_resume_credent1($uid,$pid)
+{
+    global $db;
+    $sql = "select * from ".table('resume_credent')." where pid='".intval($pid)."' AND  uid='".intval($uid)."' ";
+    return $db->getall($sql);
+}
+function change_level($uid,$pid){
+    global $db;
+    $setsqlarr=array();
+
+    $percent=0;
+
+
+    $resume_basic=get_resume_basic1($uid,$pid);
+    $resume_education=get_resume_education1($uid,$pid);
+    $resume_work=get_resume_work1($uid,$pid);
+    $resume_training=get_resume_training1($uid,$pid);
+    $resume_tag=$resume_basic['tag'];
+    $resume_specialty=$resume_basic['specialty'];
+    $resume_photo=$resume_basic['photo_img'];
+    $resume_language=get_resume_language1($uid,$pid);
+    $resume_credent=get_resume_credent1($uid,$pid);
+    $resume_img=get_resume_img1($uid,$pid);
+    if (!empty($resume_basic))$percent=$percent+35;
+    if (!empty($resume_education))$percent=$percent+15;
+    if (!empty($resume_work))$percent=$percent+15;
+    if (!empty($resume_training))$percent=$percent+5;
+    if (!empty($resume_tag))$percent=$percent+5;
+    if (!empty($resume_specialty))$percent=$percent+5;
+    if (!empty($resume_photo))$percent=$percent+5;
+    if (!empty($resume_language))$percent=$percent+5;//语言
+    if (!empty($resume_credent))$percent=$percent+5;//证书
+    if (!empty($resume_img))$percent=$percent+5;//附件
+
+    $setsqlarr['complete_percent']=$percent;
+    if($setsqlarr['complete_percent']<60){
+        $setsqlarr['level'] = 1;
+    }elseif($setsqlarr['complete_percent']>=60 && $setsqlarr['complete_percent']<80){
+        $setsqlarr['level'] = 2;
+    }elseif($setsqlarr['complete_percent']>=80){
+        $setsqlarr['level'] = 3;
+    }
+
+
+    require_once(QISHI_ROOT_PATH.'include/splitword.class.php');
+    $sp = new SPWord();
+    $setsqlarr['key']=addslashes($resume_basic['intention_jobs']).addslashes($resume_basic['recentjobs']).addslashes($resume_basic['specialty']);
+    $setsqlarr['key']=addslashes($resume_basic['fullname']).$sp->extracttag($setsqlarr['key']);
+    $setsqlarr['key']=str_replace(","," ",addslashes($resume_basic['intention_jobs']))." {$setsqlarr['key']} ".addslashes($resume_basic['education_cn']);
+    $setsqlarr['key']=$sp->pad($setsqlarr['key']);
+    if (!empty($resume_education))
+    {
+        foreach($resume_education as $li)
+        {
+            $setsqlarr['key']=addslashes($li['school'])." {$setsqlarr['key']} ".addslashes($li['speciality']);
+        }
+    }
+    if (!empty($resume_work))
+    {
+        foreach($resume_work as $li)
+        {
+            $setsqlarr['key']=addslashes($li['companyname'])." {$setsqlarr['key']} ".addslashes($li['speciality']);
+        }
+    }
+    if (!empty($resume_training))
+    {
+        foreach($resume_training as $li)
+        {
+            $setsqlarr['key']=addslashes($li['agency'])." {$setsqlarr['key']} ".addslashes($li['speciality']);
+        }
+    }
+
+
+      $db->updatetable(table("resume"), $setsqlarr, " id =".$pid);
+
+
+
+}
+
 
 function check_pass_add_point($uid,$pid){
     global $db;
@@ -671,6 +831,7 @@ function resume_upload_insert($file_path)
             $value["upload_time"]=time();
             $value["file"]=$file_path;
 
+
             $obj = \ORM::for_table(table('resume_temp'))->create($value);
             $rs[]=$obj->save();
         }
@@ -722,6 +883,26 @@ function get_resume_check_log($id){
         return   implode(";",$items);
     }
     return "";
-
-
 }
+
+function get_check_info($memberuid)
+{
+    global $db;
+    $sql = "select * from ".table('members')." where uid=".intval($memberuid)." LIMIT 1";
+    $val=$db->getone($sql);
+    return $val;
+}
+
+//读取简历的审核日志；
+function get_resume_check_loglist($id){
+    global $db;
+    $rs=$db->getall(vsprintf("select * from %s where rid=%d",array(table("resume_check_log"),$id)));
+    if($rs){
+        foreach($rs as $key=>$value){
+            $rs[$key]["member"]=get_check_info($value["uid"]);
+        }
+    }
+    return $rs;
+}
+
+

@@ -11,7 +11,6 @@
 */
 define('IN_QISHI', true);
 require_once(dirname(__FILE__) . '/company_common.php');
-
 $smarty->assign('leftmenu', "recruitment");
 
 if ($act == 'upload') {
@@ -112,6 +111,7 @@ if ($act == 'upload') {
 
     $smarty->display('member_company/company_upload_list.htm');
 } elseif ($act == 'cheking_resume') {
+    //error_reporting(-1);
     if (!$cominfo_flge){
 
             $link[0]['text'] = "完善企业资料";
@@ -139,14 +139,29 @@ if ($act == 'upload') {
     $rs = $db->getone("select * from " . table("resume_check_apply") . " where uid=" . $_SESSION["uid"]);
 
     if ($rs) {
-        $smarty->assign("is_check", $rs["status"]);
+        global $db;
+        $sql = "SELECT *  FROM " . table('resume_check_apply_log') . " where cid=".$rs["id"]." order by id desc";
+
+        $result=$db->query($sql);
+        $row_arr=array();
+        while ($row = $db->fetch_array($result)) {
+
+            $row_arr[] = $row;
+        }
+
+
+
+        $smarty->assign("loglist",$row_arr);
     } else {
         $smarty->assign("is_check", 0);
 
     }
-    $smarty->assign('apply', $rs ? 0 : 1);
+
+
+    $smarty->assign('apply_rs', $rs);
 
     $smarty->display('member_company/company_checking.htm');
+
 } elseif ($act == 'my_checked_resume') {
     require_once(QISHI_ROOT_PATH . 'include/page.class.php');
 
@@ -178,7 +193,12 @@ if ($act == 'upload') {
     $data["addtime"] = time();
     $rs = $db->getfirst("select * from " . table("resume_check_apply") . " where uid=" . $data["uid"]);
     if ($rs) {
-        showmsg("已经提交过审请,请勿重复提交", 1);
+        $data["status"]=0;
+        $wheresql=" uid='".intval( $data["uid"] )."' ";
+
+        $db->updatetable(table("resume_check_apply"),$data,$wheresql);
+
+        showmsg("您的审请已经提交,请等待管理员审核", 1);
 
     } else {
         $db->inserttable(table("resume_check_apply"), $data);
